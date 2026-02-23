@@ -1,0 +1,421 @@
+{
+  "meta": {
+    "product": "Mos Health",
+    "persona": "Founder / CEO",
+    "version": "1.0",
+    "priority_legend": {
+      "must_ask": "Highest signal. Do not skip.",
+      "high_value": "Ask if time allows.",
+      "nice_to_ask": "Only if condition matches AND time allows."
+    },
+    "green_note": "Questions marked green: true are Patrycja's top picks — at least one green question per section must be included."
+  },
+  "sections": {
+    "pre_call_opener": {
+      "label": "Pre-Call Opener",
+      "instruction": "Pick exactly 1. Choose the health-signal variant if LinkedIn shows fitness/sport/health content. Otherwise choose from the no-signal set.",
+      "questions": [
+        {
+          "id": "opener_health_1",
+          "condition": "linkedin_health_signal == true",
+          "priority": "must_ask",
+          "green": false,
+          "text": "I saw you're into [running / cycling / CrossFit] — do you use any specific supplements or protocols to keep your performance up? I'm genuinely curious what works for people at your pace.",
+          "why": "Creates peer-to-peer energy. Bridges naturally to team-level questions."
+        },
+        {
+          "id": "opener_health_2",
+          "condition": "linkedin_health_signal == true",
+          "priority": "high_value",
+          "green": false,
+          "text": "You clearly invest in your own performance — do you think about your team's physical baseline the same way, or is that a separate conversation entirely?",
+          "why": "Bridges personal health to team-level thinking."
+        },
+        {
+          "id": "opener_no_health_1",
+          "condition": "linkedin_health_signal == false",
+          "priority": "high_value",
+          "green": false,
+          "text": "Do you personally take any supplements or follow any protocols to stay sharp during intense work periods — or is that not really your thing?",
+          "why": "Low-pressure yes/no entry point."
+        },
+        {
+          "id": "opener_no_health_2",
+          "condition": "linkedin_health_signal == false",
+          "priority": "high_value",
+          "green": true,
+          "text": "How do you personally deal with long days and back-to-back weeks — anything specific that helps you recover or stay focused?",
+          "why": "Gets at personal coping patterns naturally."
+        },
+        {
+          "id": "opener_no_health_3",
+          "condition": "linkedin_health_signal == false",
+          "priority": "nice_to_ask",
+          "green": true,
+          "text": "When you have a stretch of really hard weeks — what's the first thing that suffers for you personally? Sleep, focus, energy, exercise?",
+          "why": "Opens the 'health is the first compromise' theme gently."
+        }
+      ]
+    },
+    "ambition_paradox": {
+      "label": "The Ambition Paradox",
+      "instruction": "Pick 1-2. Let them describe the gap in their own language. Silence or 'I don't know' is itself a signal.",
+      "questions": [
+        {
+          "id": "ambition_1",
+          "condition": null,
+          "priority": "must_ask",
+          "green": false,
+          "text": "When the company goes through a really intense sprint — a big launch, fundraise, tight deadline — what's the first thing you notice people cutting corners on?",
+          "why": "Listen for: sleep, exercise, eating, skipping breaks. Don't suggest answers."
+        },
+        {
+          "id": "ambition_2",
+          "condition": null,
+          "priority": "must_ask",
+          "green": true,
+          "text": "Do you ever feel like there's a gap between how ambitious your team is and what they can actually sustain physically over time?",
+          "why": "Direct test of the paradox. If yes — dig deep."
+        },
+        {
+          "id": "ambition_3",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Have you ever lost someone good — not because they left for another job, but because they just burned out and couldn't keep up anymore?",
+          "why": "Connects the paradox to real, personal cost."
+        },
+        {
+          "id": "ambition_4",
+          "condition": null,
+          "priority": "high_value",
+          "green": true,
+          "text": "When you walk around the office in the afternoon — say around 3 PM — what does the energy actually look like (compared to morning)? What do you see?",
+          "why": "Gets behavioral observation, not opinion."
+        }
+      ]
+    },
+    "opening": {
+      "label": "Opening",
+      "instruction": "Pick exactly 1. Choose based on culture_type from enriched data.",
+      "questions": [
+        {
+          "id": "opening_goal",
+          "condition": "culture_type == 'Goal-Oriented'",
+          "priority": "must_ask",
+          "green": false,
+          "text": "What's the biggest bottleneck to your team's output right now?",
+          "why": "Matches goal-oriented culture — speaks their language of output and speed."
+        },
+        {
+          "id": "opening_people",
+          "condition": "culture_type == 'People-Oriented'",
+          "priority": "must_ask",
+          "green": false,
+          "text": "What's the biggest people challenge you're dealing with as you scale?",
+          "why": "Matches people-oriented culture — leads with the human dimension."
+        },
+        {
+          "id": "opening_unknown",
+          "condition": "culture_type == 'Mix' || culture_type == 'Unknown'",
+          "priority": "must_ask",
+          "green": false,
+          "text": "What are your top 3 priorities this quarter — and which one feels most at risk?",
+          "why": "Safe default when culture type is ambiguous — surfaces their actual frame."
+        }
+      ]
+    },
+    "output_and_capacity": {
+      "label": "Output & Capacity Discovery",
+      "instruction": "Pick 1-2. Prioritize GREEN questions. At least one GREEN must be included.",
+      "questions": [
+        {
+          "id": "capacity_1",
+          "condition": null,
+          "priority": "must_ask",
+          "green": true,
+          "text": "When your team has a rough afternoon — low energy, hard to focus — what do you usually attribute that to?",
+          "why": "Gets root cause attribution without leading."
+        },
+        {
+          "id": "capacity_2",
+          "condition": null,
+          "priority": "must_ask",
+          "green": false,
+          "text": "Have you ever tried to measure how many hours of real deep work your team actually gets per day — not hours at desk, but real focused output?",
+          "why": "Direct yes/no — important to know if they've even framed this."
+        },
+        {
+          "id": "capacity_3",
+          "condition": null,
+          "priority": "must_ask",
+          "green": true,
+          "text": "Is increasing your team's capacity — getting more output without adding headcount — something you're actively trying to solve right now?",
+          "why": "Validates whether capacity is a live priority."
+        },
+        {
+          "id": "capacity_4",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Walk me through a recent week where the team was really on — what made it work?",
+          "why": "Gets past behavior, not hypothesis."
+        },
+        {
+          "id": "capacity_5",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Tell me about the last time a key person on your team was visibly off their game. What did you attribute it to?",
+          "why": "Surfaces real attribution patterns."
+        },
+        {
+          "id": "capacity_6",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "How do you currently think about the difference between your team being busy versus genuinely productive?",
+          "why": "Probes if they've operationalized this distinction."
+        },
+        {
+          "id": "capacity_7",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Do you notice a difference in the quality of work that comes out in the morning versus late afternoon? Is it obvious or subtle?",
+          "why": "Tests whether they've noticed output quality decline across the day."
+        },
+        {
+          "id": "capacity_8",
+          "condition": "energy_or_output_mentioned == true",
+          "priority": "nice_to_ask",
+          "green": true,
+          "text": "Is the afternoon energy drop something you've tried to solve, or something you've accepted as part of how offices work?",
+          "why": "Use if they've already mentioned energy or output patterns."
+        },
+        {
+          "id": "capacity_9",
+          "condition": "problem_established == true",
+          "priority": "nice_to_ask",
+          "green": true,
+          "text": "If you could get one extra hour of focused output per person per day without adding headcount — what would you do with that capacity?",
+          "why": "Use only after the problem is established — reveals ambition and opportunity size."
+        },
+        {
+          "id": "capacity_10",
+          "condition": null,
+          "priority": "nice_to_ask",
+          "green": false,
+          "text": "Have you ever noticed that your highest performers tend to manage their health most deliberately — sleep, exercise, diet? Or is it random?",
+          "why": "Tests whether they've connected performance to health themselves."
+        }
+      ]
+    },
+    "benefits_and_people": {
+      "label": "Benefits & People Investment",
+      "instruction": "Pick 1-2. Prioritize GREEN questions. At least one GREEN must be included. Apply conditional questions based on known benefits data.",
+      "questions": [
+        {
+          "id": "benefits_1",
+          "condition": null,
+          "priority": "must_ask",
+          "green": false,
+          "text": "Walk me through what you currently offer your team in terms of perks and benefits. What was the last thing you added?",
+          "why": "Gets current state and recency."
+        },
+        {
+          "id": "benefits_2",
+          "condition": null,
+          "priority": "must_ask",
+          "green": true,
+          "text": "Tell me about the last benefit you added — what made you add it, and how did you know if it worked?",
+          "why": "Reveals decision trigger and success metrics."
+        },
+        {
+          "id": "benefits_3",
+          "condition": null,
+          "priority": "high_value",
+          "green": true,
+          "text": "Which benefits do your people actually talk about — and which ones do you suspect they never use?",
+          "why": "Surfaces utilization reality."
+        },
+        {
+          "id": "benefits_4",
+          "condition": null,
+          "priority": "high_value",
+          "green": true,
+          "text": "If you had to cut 20% of your people budget tomorrow, what stays and what goes — and why?",
+          "why": "Reveals true priority stack."
+        },
+        {
+          "id": "benefits_5",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "How do you personally think about ROI on people investments — employee satisfaction, retention, or something more tied to output?",
+          "why": "Frames their mental model for evaluation."
+        },
+        {
+          "id": "benefits_6",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Do you feel like the benefits you currently offer are making a difference in how your team feels at work?",
+          "why": "Honest gap question — surfaces dissatisfaction without leading."
+        },
+        {
+          "id": "benefits_7",
+          "condition": "benefits_includes_food == true",
+          "priority": "nice_to_ask",
+          "green": false,
+          "text": "You're already investing in food for the team — beyond that, what do people rely on to stay sharp through the afternoon?",
+          "why": "Use only if benefits include catered lunch or food perks."
+        },
+        {
+          "id": "benefits_8",
+          "condition": "benefits_includes_wellness_stipend == true",
+          "priority": "nice_to_ask",
+          "green": false,
+          "text": "With the wellness stipend you offer — do you have any sense of what people are actually spending it on?",
+          "why": "Use only if a wellness stipend or LSA exists in benefits."
+        }
+      ]
+    },
+    "purchase_process": {
+      "label": "Purchase Process",
+      "instruction": "Pick exactly 1. Use the thin-benefits variant if benefits stack is minimal or unknown.",
+      "questions": [
+        {
+          "id": "purchase_1",
+          "condition": "benefits_stack == 'minimal' || benefits_stack == 'unknown'",
+          "priority": "must_ask",
+          "green": false,
+          "text": "Tell me about the last benefit or tool you bought for the team — what was the process, and what did it cost per person per month?",
+          "why": "Use when benefits stack is thin or unknown — surfaces buying behavior from scratch."
+        },
+        {
+          "id": "purchase_2",
+          "condition": "benefits_stack != 'minimal'",
+          "priority": "high_value",
+          "green": true,
+          "text": "What was the last thing you tried that didn't work? What killed it — adoption, cost, fit?",
+          "why": "Surfaces veto patterns — use when they have an existing benefits stack to reference."
+        },
+        {
+          "id": "purchase_3",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Tell me about a benefit you recently rejected. What was the actual deal-killer?",
+          "why": "Gets veto criteria from real past decisions."
+        }
+      ]
+    },
+    "wellness_competitor": {
+      "label": "Wellness Competitor Check",
+      "instruction": "Pick exactly 1. Conditional on whether a wellness competitor was detected in benefits.",
+      "questions": [
+        {
+          "id": "wellness_competitor_1",
+          "condition": "wellness_competitor_detected == true",
+          "priority": "must_ask",
+          "green": false,
+          "text": "You have [competitor name] in place — how are employees actually engaging with it day-to-day?",
+          "why": "Opens honest conversation about utilization of existing wellness tool."
+        },
+        {
+          "id": "wellness_no_competitor_1",
+          "condition": "wellness_competitor_detected == false",
+          "priority": "must_ask",
+          "green": false,
+          "text": "Are you seeing any patterns around burnout, energy, or focus issues with the team?",
+          "why": "Entry point for wellness conversation when no competitor is present."
+        }
+      ]
+    },
+    "app_discovery": {
+      "label": "App Discovery — Founder Perspective",
+      "instruction": "Pick 1-2. Frame as: 'we're figuring out what to build' — not 'here's what we're building.' At least one GREEN must be included.",
+      "questions": [
+        {
+          "id": "app_1",
+          "condition": null,
+          "priority": "must_ask",
+          "green": true,
+          "text": "What health or wellness apps do you currently use — even occasionally? Which one have you actually stuck with longest, and what made it different?",
+          "why": "Gets current behavior and retention drivers from lived experience."
+        },
+        {
+          "id": "app_2",
+          "condition": null,
+          "priority": "must_ask",
+          "green": false,
+          "text": "If you had a dashboard showing how your team is doing health-wise — sleep quality, energy trends, focus patterns — would you actually look at it? What would you do with it?",
+          "why": "Tests demand for team-level health data before we build it."
+        },
+        {
+          "id": "app_3",
+          "condition": null,
+          "priority": "must_ask",
+          "green": false,
+          "text": "What's the line for you between 'useful insight into my team's wellbeing' and 'invasive surveillance'? Where does it flip?",
+          "why": "Critical privacy boundary mapping — do not assume."
+        },
+        {
+          "id": "app_4",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "What does 'proving this is working' look like to you — employee feedback survey, usage data, or something you'd actually see in their output?",
+          "why": "Defines success metrics they'd trust."
+        },
+        {
+          "id": "app_5",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "If an AI could look at your team's health data and give you a weekly signal — 'your team is running low, consider X' — would you trust that? What would make you trust it?",
+          "why": "Tests AI-guided recommendations for executives."
+        },
+        {
+          "id": "app_6",
+          "condition": null,
+          "priority": "nice_to_ask",
+          "green": false,
+          "text": "What's the most useful notification you've ever received from any app — one that actually made you do something differently?",
+          "why": "Gets at effective nudge design."
+        }
+      ]
+    },
+    "stress_tests": {
+      "label": "Stress Tests — Commitment & Reality Checks",
+      "instruction": "Pick 0-1. Use only in second meetings or when you sense they're being politely positive but not genuinely committed.",
+      "questions": [
+        {
+          "id": "stress_1",
+          "condition": null,
+          "priority": "high_value",
+          "green": true,
+          "text": "What are you doing right now to solve the focus/energy problem? If nothing — why hasn't it become a priority yet?",
+          "why": "Tests urgency vs. lip service."
+        },
+        {
+          "id": "stress_2",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Imagine we sign a contract today. What's the most likely thing that causes this to fail in your specific office environment?",
+          "why": "Surfaces real objections disguised as support."
+        },
+        {
+          "id": "stress_3",
+          "condition": null,
+          "priority": "high_value",
+          "green": false,
+          "text": "Tell me about a benefit you recently rejected. What was the actual deal-killer?",
+          "why": "Gets veto criteria from real past decisions."
+        }
+      ]
+    }
+  }
+}

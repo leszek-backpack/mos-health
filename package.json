@@ -1,0 +1,20 @@
+{
+  "name": "mos-health",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mos Health OS — AI-powered GTM workspace. Run via Claude Code.",
+  "type": "module",
+  "scripts": {
+    "fetch": "tsx briefs/scripts/fetch-linkedin.ts",
+    "create-doc": "tsx briefs/scripts/create-google-doc.ts",
+    "test:rapidapi": "tsx briefs/scripts/test-rapidapi.ts",
+    "test:google": "tsx briefs/scripts/test-google-docs.ts"
+  },
+  "dependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0"
+  }
+}
