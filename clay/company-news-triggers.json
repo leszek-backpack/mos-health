@@ -1,0 +1,399 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-23T12:00:00.000Z",
+  "columnCount": 18,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Company Name",
+      "type": "text",
+      "typeSettings": {}
+    },
+    {
+      "index": 1,
+      "name": "Company LinkedIn Slug",
+      "type": "text",
+      "typeSettings": {}
+    },
+    {
+      "index": 2,
+      "name": "Company Domain",
+      "type": "text",
+      "typeSettings": {}
+    },
+    {
+      "index": 3,
+      "name": "Scrape Company Posts",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "json" },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"GET\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://fresh-linkedin-scraper-api.p.rapidapi.com/api/v1/company/posts?company=\" + {{@Company LinkedIn Slug}}"
+          },
+          { "name": "queryString" },
+          { "name": "body" },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "X-RapidAPI-Key": "\"YOUR_RAPIDAPI_KEY\"",
+              "X-RapidAPI-Host": "\"fresh-linkedin-scraper-api.p.rapidapi.com\""
+            }
+          },
+          { "name": "fieldPaths" },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          { "name": "returnResponseMetadata" },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          { "name": "followRedirectsOptions|maxRedirects" },
+          { "name": "responseTimeout" },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          { "name": "retryOptions|maxRetries" },
+          { "name": "retryOptions|statusCodesToRetry" },
+          { "name": "retryOptions|errorCodesToRetry" }
+        ],
+        "conditionalRunFormulaText": "!!{{@Company LinkedIn Slug}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            { "limit": 1, "bucket": ["WORKSPACE_ID"], "durationMs": 3000 }
+          ]
+        }
+      }
+    },
+    {
+      "index": 4,
+      "name": "Posts Last 30 Days",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": { "displayName": "TextT" }
+        },
+        "formulaType": "text",
+        "formulaText": "({{@Scrape Company Posts}}?.data || []).filter(p => moment().diff(moment(p?.created_at), \"days\") <= 30).map((p, i) => \"POST \" + (i+1) + \" [\" + moment(p?.created_at).format(\"YYYY-MM-DD\") + \"]: \" + (p?.title || \"\").slice(0, 500)).join(\"\\n---\\n\") || \"No recent posts\"",
+        "formulaPrompt": "Filter scraped posts to last 30 days using moment.js, format as readable text with date and content"
+      }
+    },
+    {
+      "index": 5,
+      "name": "Recent Post Count",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "number" },
+        "formulaType": "text",
+        "formulaText": "({{@Scrape Company Posts}}?.data || []).filter(p => moment().diff(moment(p?.created_at), \"days\") <= 30).length"
+      }
+    },
+    {
+      "index": 6,
+      "name": "Buying Trigger Analysis",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "json" },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Analyze these recent LinkedIn posts from \" + Clay.formatForAIPrompt({{@Company Name}}) + \" for buying triggers relevant to Mos Health, a B2B workplace wellness company selling clinical-grade supplements and AI health guidance at $95/employee/month to in-office US companies (50-500 employees).\\n\\n\" + Clay.formatForAIPrompt({{@Posts Last 30 Days}}) + \"\\n\\nBuying triggers to detect:\\n\\n1. **Major Product Release** — A significant new product launch, major platform overhaul, or game-changing feature. NOT minor patches, bug fixes, incremental updates, or routine feature announcements. Must be a big deal.\\n\\n2. **Company News** — Funding round, acquisition, office expansion, new office opening, new C-level or VP hire, major partnership, IPO signals, rapid headcount growth.\\n\\n3. **Culture & Wellness** — Employee wellness programs, office perks or benefits, team culture celebrations, return-to-office announcements, workplace health initiatives, employee engagement events, office redesigns, new office openings.\\n\\nRules:\\n- Be selective. Only flag genuine buying signals, not routine marketing or thought leadership content.\\n- Product releases must be MAJOR (new product line, v2 launch, platform pivot) to qualify.\\n- Company news must indicate growth or change that creates budget or attention for employee wellness.\\n- Culture posts must show the company actively invests in employee experience.\\n- If no posts match any trigger, set hasTrigger to false and triggerType to None.\""
+          },
+          { "name": "temperature" },
+          { "name": "reasoningLevel" },
+          { "name": "reasoningBudget" },
+          { "name": "claygentId" },
+          { "name": "claygentFieldMapping" },
+          { "name": "maxTokens" },
+          {
+            "name": "model",
+            "formulaText": "\"grok-4-1-fast-reasoning\""
+          },
+          { "name": "maxCostInCents" },
+          { "name": "jsonMode" },
+          { "name": "systemPrompt" },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"hasTrigger\\\": {\\n      \\\"type\\\": \\\"boolean\\\",\\n      \\\"description\\\": \\\"Whether any buying trigger was found\\\"\\n    },\\n    \\\"triggerType\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Primary trigger type\\\",\\n      \\\"enum\\\": [\\n        \\\"Major Product Release\\\",\\n        \\\"Company News\\\",\\n        \\\"Culture & Wellness\\\",\\n        \\\"None\\\"\\n      ]\\n    },\\n    \\\"summary\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"1-2 sentence summary of the buying trigger and why it matters for workplace wellness outreach. If none, explain briefly.\\\"\\n    },\\n    \\\"confidence\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"How confident this is a real buying trigger\\\",\\n      \\\"enum\\\": [\\n        \\\"High\\\",\\n        \\\"Medium\\\",\\n        \\\"Low\\\",\\n        \\\"N/A\\\"\\n      ]\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"hasTrigger\\\",\\n    \\\"triggerType\\\",\\n    \\\"summary\\\",\\n    \\\"confidence\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          { "name": "tableExamples" },
+          { "name": "stopSequence" },
+          {
+            "name": "runBudget",
+            "formulaText": "1"
+          },
+          { "name": "topP" },
+          { "name": "contextDocumentIds" },
+          { "name": "browserbaseContextId" },
+          { "name": "mcpSettings" },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Recent Post Count}} > 0",
+        "customRateLimitRules": {
+          "timeWindow": [
+            { "limit": 8, "bucket": ["PRIVATE_AUTH_KEY", "CUSTOM_KEY"], "durationMs": 1000 },
+            { "limit": 750, "bucket": ["GLOBAL"], "durationMs": 1000 }
+          ]
+        },
+        "authAccountId": "aa_0tachtr7MgX9QoKWWme"
+      }
+    },
+    {
+      "index": 7,
+      "name": "Has Buying Trigger?",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": { "displayName": "TextT" }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Buying Trigger Analysis}}?.hasTrigger ? \"Yes\" : \"No\""
+      }
+    },
+    {
+      "index": 8,
+      "name": "Trigger Type",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "text" },
+        "formulaType": "text",
+        "formulaText": "{{@Buying Trigger Analysis}}?.triggerType",
+        "mappedResultPath": ["triggerType"]
+      }
+    },
+    {
+      "index": 9,
+      "name": "Trigger Summary",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "text" },
+        "formulaType": "text",
+        "formulaText": "{{@Buying Trigger Analysis}}?.summary",
+        "mappedResultPath": ["summary"]
+      }
+    },
+    {
+      "index": 10,
+      "name": "Confidence",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "text" },
+        "formulaType": "text",
+        "formulaText": "{{@Buying Trigger Analysis}}?.confidence",
+        "mappedResultPath": ["confidence"]
+      }
+    },
+    {
+      "index": 11,
+      "name": "Search HubSpot Contacts",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "json" },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://api.hubapi.com/crm/v3/objects/contacts/search\""
+          },
+          { "name": "queryString" },
+          {
+            "name": "body",
+            "formulaText": "\"{\\\"filterGroups\\\":[{\\\"filters\\\":[{\\\"propertyName\\\":\\\"company\\\",\\\"operator\\\":\\\"CONTAINS_TOKEN\\\",\\\"value\\\":\\\"\" + Clay.formatForJSON({{@Company Name}}) + \"\\\"}]}],\\\"properties\\\":[\\\"firstname\\\",\\\"lastname\\\",\\\"email\\\",\\\"jobtitle\\\",\\\"phone\\\",\\\"hs_linkedin_url\\\",\\\"lifecyclestage\\\"],\\\"limit\\\":10}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\"",
+              "Authorization": "\"Bearer YOUR_HUBSPOT_PAT\""
+            }
+          },
+          { "name": "fieldPaths" },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          { "name": "returnResponseMetadata" },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          { "name": "followRedirectsOptions|maxRedirects" },
+          { "name": "responseTimeout" },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          { "name": "retryOptions|maxRetries" },
+          { "name": "retryOptions|statusCodesToRetry" },
+          { "name": "retryOptions|errorCodesToRetry" }
+        ],
+        "conditionalRunFormulaText": "{{@Has Buying Trigger?}} == \"Yes\"",
+        "customRateLimitRules": {
+          "timeWindow": [
+            { "limit": 5, "bucket": ["WORKSPACE_ID"], "durationMs": 1000 }
+          ]
+        }
+      }
+    },
+    {
+      "index": 12,
+      "name": "HubSpot Contact Count",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "number" },
+        "formulaType": "text",
+        "formulaText": "{{@Search HubSpot Contacts}}?.total || 0"
+      }
+    },
+    {
+      "index": 13,
+      "name": "HubSpot Contacts List",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": { "displayName": "TextT" }
+        },
+        "formulaType": "text",
+        "formulaText": "({{@Search HubSpot Contacts}}?.results || []).map((c, i) => (i+1) + \". \" + (c?.properties?.firstname || \"\") + \" \" + (c?.properties?.lastname || \"\") + \" | \" + (c?.properties?.jobtitle || \"N/A\") + \" | \" + (c?.properties?.email || \"no email\")).join(\"\\n\") || \"No contacts found\""
+      }
+    },
+    {
+      "index": 14,
+      "name": "Outreach Recommendation",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "json" },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Based on a buying trigger and HubSpot contacts, recommend who Mos Health should reach out to.\\n\\nCompany: \" + Clay.formatForAIPrompt({{@Company Name}}) + \"\\nBuying Trigger: \" + Clay.formatForAIPrompt({{@Trigger Type}}) + \" — \" + Clay.formatForAIPrompt({{@Trigger Summary}}) + \"\\n\\nHubSpot Contacts:\\n\" + Clay.formatForAIPrompt({{@HubSpot Contacts List}}) + \"\\n\\nAbout Mos Health:\\n- Clinical-grade workplace supplements + AI health guidance\\n- $95/employee/month, includes +1 family member\\n- ICP: In-office US companies, 50-500 employees, Series A-C\\n- Value prop: Reduce sick days, boost retention, measurable ROI on employee health\\n\\nTarget personas (priority order):\\n1. HR / People / Benefits leaders — own employee wellness budget\\n2. CEO / Founder / COO — at smaller companies, make benefits decisions directly\\n3. Office Manager / Workplace / Facilities — manage physical office experience\\n4. Chief of Staff / EA — gatekeepers, influence perks decisions\\n\\nPick the single best contact from the HubSpot list. Write a specific outreach angle that connects the buying trigger to why Mos Health matters for them RIGHT NOW.\\nIf no good contact exists, set noIdealContact to true and put the ideal role to find in recommendedContactTitle.\""
+          },
+          { "name": "temperature" },
+          { "name": "reasoningLevel" },
+          { "name": "reasoningBudget" },
+          { "name": "claygentId" },
+          { "name": "claygentFieldMapping" },
+          { "name": "maxTokens" },
+          {
+            "name": "model",
+            "formulaText": "\"grok-4-1-fast-reasoning\""
+          },
+          { "name": "maxCostInCents" },
+          { "name": "jsonMode" },
+          { "name": "systemPrompt" },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"recommendedContactName\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Full name of the recommended contact\\\"\\n    },\\n    \\\"recommendedContactEmail\\\": {\\n      \\\"type\\\": [\\n        \\\"string\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"Email if available, null otherwise\\\"\\n    },\\n    \\\"recommendedContactTitle\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Job title of recommended contact, or ideal role to find if none exist\\\"\\n    },\\n    \\\"whyThisContact\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"1 sentence on why this person is the best target for this trigger\\\"\\n    },\\n    \\\"outreachAngle\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"2-3 sentence outreach angle connecting the buying trigger to Mos Health value\\\"\\n    },\\n    \\\"noIdealContact\\\": {\\n      \\\"type\\\": \\\"boolean\\\",\\n      \\\"description\\\": \\\"True if no ideal contact exists in HubSpot for this trigger\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"recommendedContactName\\\",\\n    \\\"recommendedContactEmail\\\",\\n    \\\"recommendedContactTitle\\\",\\n    \\\"whyThisContact\\\",\\n    \\\"outreachAngle\\\",\\n    \\\"noIdealContact\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          { "name": "tableExamples" },
+          { "name": "stopSequence" },
+          {
+            "name": "runBudget",
+            "formulaText": "1"
+          },
+          { "name": "topP" },
+          { "name": "contextDocumentIds" },
+          { "name": "browserbaseContextId" },
+          { "name": "mcpSettings" },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Has Buying Trigger?}} == \"Yes\" && {{@HubSpot Contact Count}} > 0",
+        "customRateLimitRules": {
+          "timeWindow": [
+            { "limit": 8, "bucket": ["PRIVATE_AUTH_KEY", "CUSTOM_KEY"], "durationMs": 1000 },
+            { "limit": 750, "bucket": ["GLOBAL"], "durationMs": 1000 }
+          ]
+        },
+        "authAccountId": "aa_0tachtr7MgX9QoKWWme"
+      }
+    },
+    {
+      "index": 15,
+      "name": "Recommended Contact",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "text" },
+        "formulaType": "text",
+        "formulaText": "{{@Outreach Recommendation}}?.recommendedContactName",
+        "mappedResultPath": ["recommendedContactName"]
+      }
+    },
+    {
+      "index": 16,
+      "name": "Recommended Email",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "text" },
+        "formulaType": "text",
+        "formulaText": "{{@Outreach Recommendation}}?.recommendedContactEmail",
+        "mappedResultPath": ["recommendedContactEmail"]
+      }
+    },
+    {
+      "index": 17,
+      "name": "Outreach Angle",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": { "type": "text" },
+        "formulaType": "text",
+        "formulaText": "{{@Outreach Recommendation}}?.outreachAngle",
+        "mappedResultPath": ["outreachAngle"]
+      }
+    }
+  ]
+}

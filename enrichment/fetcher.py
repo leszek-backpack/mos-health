@@ -190,15 +190,24 @@ async def fetch_profile(client: httpx.AsyncClient, identifier: str) -> dict:
 
 
 async def fetch_posts_paginated(client: httpx.AsyncClient, identifier: str) -> list[dict]:
-    """Fetch posts with pagination and date cutoff."""
+    """Fetch posts with pagination and date cutoff.
+
+    SaleLeads API pagination requires BOTH `page` (1-based) AND `pagination_token`
+    (from previous response) for pages 2+. `page` alone restarts from page 1.
+    """
     headers = _build_headers()
     id_param = _identifier_param(identifier)
     cutoff = datetime.now(timezone.utc) - timedelta(days=LOOKBACK_DAYS)
 
     all_posts: list[dict] = []
+    pagination_token: str | None = None
 
     for page in range(1, MAX_POST_PAGES + 1):
-        url = _build_url("/api/v1/user/posts", {**id_param, "page": page})
+        params = {**id_param, "page": page}
+        if pagination_token:
+            params["pagination_token"] = pagination_token
+
+        url = _build_url("/api/v1/user/posts", params)
         result = await call_api_proxy(client, url, headers)
 
         if result.get("status") != 200:
@@ -227,6 +236,12 @@ async def fetch_posts_paginated(client: httpx.AsyncClient, identifier: str) -> l
                 return all_posts
 
         if not resp.get("has_more"):
+            break
+
+        # Extract pagination_token for next page
+        pagination_token = resp.get("pagination_token")
+        if not pagination_token:
+            log.debug(f"  [posts] No pagination_token on page {page}, stopping")
             break
 
     return all_posts

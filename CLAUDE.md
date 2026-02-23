@@ -221,7 +221,7 @@ mos-health/
 │
 ├── clay/                  # Clay table builder skill + examples
 │   ├── SKILL.md           # Full schema spec, action registry, validation rules
-│   └── clay-tables-examples/  # 15 production table examples
+│   └── clay-tables-examples/  # Mos Health production table examples
 │
 ├── campaign-context/      # PDFs (sales narrative, brand book, ICP, playbook, etc.)
 └── output/                # General output directory
