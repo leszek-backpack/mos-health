@@ -65,30 +65,25 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 ---
 
 ### STEP 5 — Set up your workspace
+> Leszek sent you two things: a **clone URL** and a file called `natalia.env`. Save the file somewhere you can find it (like your Desktop).
+>
 > Open **Cursor**, press `` Cmd + ` `` to open the terminal. Type:
 > ```
 > claude
 > ```
 >
-> Then paste this to Claude:
+> Then paste this to Claude (replace the URL with the one Leszek sent you):
 > ```
-> Set up my workspace from https://github.com/leszek-backpack/mos-health.git — clone it into ~/Documents/mos-health and install dependencies.
+> Set up my workspace: clone [PASTE THE URL LESZEK GAVE YOU] into ~/Documents/mos-health, run npm install, then copy the natalia.env file from my Desktop into the mos-health folder and rename it to .env
 > ```
 >
-> Claude handles everything. When done, type `/exit`.
+> Claude handles everything — downloading the project, installing dependencies, and setting up your keys. When done, type `/exit`.
 >
 > Then in Cursor: **File → Open Folder → Documents → mos-health**
 
 ---
 
-### STEP 6 — Drop in your API keys
-> Leszek sent you a `.env` file. Save it into the `mos-health` folder.
->
-> Easiest way: in Cursor, right-click the file list on the left → **Reveal in Finder**, then drag the `.env` file into that folder.
-
----
-
-### STEP 7 — Connect Notion
+### STEP 6 — Connect Notion
 > Open the terminal in Cursor (`` Cmd + ` ``), start Claude:
 > ```
 > claude
@@ -104,7 +99,7 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 
 ---
 
-### STEP 8 — Test everything
+### STEP 7 — Test everything
 > With Claude running in the mos-health folder:
 > ```
 > Run the RapidAPI smoke test and the Google Docs smoke test.
@@ -114,7 +109,7 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 
 ---
 
-### STEP 9 — First brief
+### STEP 8 — First brief
 > ```
 > Generate a brief for https://www.linkedin.com/in/[a-real-linkedin-url]
 > ```
