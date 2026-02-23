@@ -64,16 +64,7 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 
 ---
 
-### STEP 5 — Connect Clay
-> 1. Go to [claude.ai](https://claude.ai) in your browser
-> 2. Profile icon → **Settings** → **Connectors**
-> 3. Find **Clay** → **Connect** → authorize with your Clay account
-
-- If no Clay account → "We can set this up later, skipping."
-
----
-
-### STEP 6 — Set up your workspace
+### STEP 5 — Set up your workspace
 > Open **Cursor**, press `` Cmd + ` `` to open the terminal. Type:
 > ```
 > claude
@@ -90,54 +81,45 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 
 ---
 
-### STEP 7 — API keys
-> Leszek should have shared these keys with you. If not, ask him for: `RAPIDAPI_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_FOLDER_ID`, `TRIGGER_SECRET_KEY_PROD`, `GOOGLE_GENERATIVE_AI_API_KEY`.
+### STEP 6 — Drop in your API keys
+> Leszek sent you a `.env` file. Save it into the `mos-health` folder.
 >
-> Once you have them, open the terminal in Cursor (`` Cmd + ` ``), start `claude`, and tell it:
-> ```
-> Copy .env.example to .env and fill in these values: [paste the keys here]
-> ```
+> Easiest way: in Cursor, right-click the file list on the left → **Reveal in Finder**, then drag the `.env` file into that folder.
 
 ---
 
-### STEP 8 — Google Docs access
-> With Claude running in the mos-health folder:
+### STEP 7 — Connect Notion
+> Open the terminal in Cursor (`` Cmd + ` ``), start Claude:
 > ```
-> Run the Google auth setup script to get my refresh token and add it to .env
+> claude
 > ```
->
-> Browser opens — log in with your Google account, grant access. Claude saves the token.
-
----
-
-### STEP 9 — Connect Notion
-> With Claude running, type:
+> Then type:
 > ```
 > /mcp
 > ```
 >
 > Select "notion" from the list — browser opens to authorize your Notion workspace.
 
-- If no Notion → skip, can set up later.
+- If no Notion → skip, set up later.
 
 ---
 
-### STEP 10 — Test everything
-> Tell Claude:
+### STEP 8 — Test everything
+> With Claude running in the mos-health folder:
 > ```
 > Run the RapidAPI smoke test and the Google Docs smoke test.
 > ```
 >
-> Both should pass. If one fails, it's usually a wrong key in `.env` — tell Claude what the error says and it'll help fix it.
+> Both should pass. If one fails, tell Claude the error — it'll debug it.
 
 ---
 
-### STEP 11 — First brief
+### STEP 9 — First brief
 > ```
 > Generate a brief for https://www.linkedin.com/in/[a-real-linkedin-url]
 > ```
 >
-> Replace with someone you have a call with. Takes 2-3 minutes. You'll get a Google Doc link at the end.
+> Replace with someone you have a call with. Takes 2-3 minutes. You get a Google Doc link at the end.
 
 ---
 
@@ -154,4 +136,4 @@ Once the first brief is generated:
 >    - *"Find contacts at [company]"*
 >    - *"Check Notion for [topic]"*
 >
-> `/exit` to quit, `/clear` to start fresh. If something breaks, tell Claude — it'll fix it. For keys or setup issues, message Leszek.
+> `/exit` to quit, `/clear` to start fresh. If something breaks, tell Claude — it'll fix it. For setup issues, message Leszek.
