@@ -8,7 +8,10 @@
     "fetch": "tsx briefs/scripts/fetch-linkedin.ts",
     "create-doc": "tsx briefs/scripts/create-google-doc.ts",
     "test:rapidapi": "tsx briefs/scripts/test-rapidapi.ts",
-    "test:google": "tsx briefs/scripts/test-google-docs.ts"
+    "test:google": "tsx briefs/scripts/test-google-docs.ts",
+    "enrich": "python3 enrichment/main.py --input enrichment/input/prospects.csv",
+    "enrich:test": "python3 enrichment/main.py --input enrichment/input/prospects.csv --test-count 1",
+    "enrich:stats": "python3 enrichment/main.py --stats"
   },
   "dependencies": {
     "tsx": "^4.19.0",

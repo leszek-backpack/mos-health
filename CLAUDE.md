@@ -75,9 +75,9 @@ Return the Google Doc URL.
 
 ---
 
-## Feature 2: Clay Enrichment
+## Feature 2: Clay (Enrichment & Table Builder)
 
-Clay tools are available natively (connected via Claude.ai Settings → Connectors). Use them for:
+**Enrichment tools** are available natively (connected via Claude.ai Settings → Connectors):
 - **Company enrichment:** `find-and-enrich-company` — firmographics, funding, tech stack
 - **Contact search:** `find-and-enrich-contacts-at-company` — find decision makers
 - **Contact enrichment:** `find-and-enrich-list-of-contacts` — emails, titles, social profiles
@@ -85,6 +85,17 @@ Clay tools are available natively (connected via Claude.ai Settings → Connecto
 - **Subroutines:** `list_subroutines` / `run_subroutine` — run saved Clay workflows
 
 When asked to research a company or find contacts, use Clay tools first, then supplement with web search.
+
+**Table Builder** — full skill reference at `clay/SKILL.md` (1,700+ lines). Production table examples in `clay/clay-tables-examples/`.
+
+Use this when asked to build or modify Clay tables. The skill covers:
+- Valid Clay JSON table schemas, column types, action registry
+- AI prompts, HTTP API v2, enrichment, third-party integrations
+- Formula language (JavaScript-like with Clay helpers)
+- Patterns: email waterfalls, HubSpot check→create, cross-table pipelines
+- Auth accounts, rate limiting, conditional execution
+
+When asked about Clay tables, **read `clay/SKILL.md` first** — it has the full schema spec, action registry, and validation rules. Reference `clay/clay-tables-examples/` for production patterns.
 
 ---
 
@@ -208,6 +219,10 @@ mos-health/
 │   ├── hubspot.ts         # 18 functions — contacts, companies, deals, notes
 │   └── heyreach.ts        # 14 functions — campaigns, leads, conversations, stats
 │
+├── clay/                  # Clay table builder skill + examples
+│   ├── SKILL.md           # Full schema spec, action registry, validation rules
+│   └── clay-tables-examples/  # 15 production table examples
+│
 ├── campaign-context/      # PDFs (sales narrative, brand book, ICP, playbook, etc.)
 └── output/                # General output directory
 ```
@@ -244,5 +259,5 @@ GOOGLE_FOLDER_ID=                  # Google Drive folder for briefs
 HUBSPOT_ACCESS_TOKEN=              # HubSpot CRM API
 HEYREACH_API_KEY=                  # HeyReach LinkedIn outreach API
 TRIGGER_SECRET_KEY_PROD=           # Trigger.dev (enrichment pipeline)
-GOOGLE_GENERATIVE_AI_API_KEY=      # Gemini (enrichment AI analysis)
+OPENROUTER_API_KEY=                # OpenRouter (enrichment AI analysis via Gemini)
 ```

@@ -7,5 +7,12 @@ output/*.json
 briefs/output/*.html
 briefs/output/*.json
 !briefs/output/.gitkeep
+enrichment/input/*.csv
+enrichment/output/*.csv
+enrichment/output/*.json
+enrichment/output/*.tmp
+!enrichment/input/.gitkeep
+!enrichment/output/.gitkeep
 .claude/settings.local.json
 .DS_Store
+__pycache__/

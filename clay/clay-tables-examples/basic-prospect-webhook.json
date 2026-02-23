@@ -1,0 +1,312 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-22T17:00:00.000Z",
+  "columnCount": 10,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Webhook",
+      "type": "source",
+      "typeSettings": {
+        "sourceIds": [],
+        "canCreateRecords": true
+      },
+      "sourceDetails": [
+        {
+          "name": "Pull in data from a Webhook",
+          "type": "webhook",
+          "typeSettings": {
+            "hasAuth": false,
+            "name": "Webhook",
+            "stages": [],
+            "iconType": "Webhook",
+            "description": "Send any data to Clay",
+            "urlSlugText": "Pull in data from a Webhook"
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "name": "Prospect Li URL",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "url"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Webhook}}?.[\"prospect_li_url\"]",
+        "mappedResultPath": [
+          "prospect_li_url"
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "name": "Company Domain",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Webhook}}?.[\"company_domain\"]",
+        "mappedResultPath": [
+          "company_domain"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "name": "Valid Profile?",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Prospect Li URL}}?.toLowerCase()?.startsWith(\"https://www.linkedin.com/in/\") ? \"Yes\" : \"No\""
+      }
+    },
+    {
+      "index": 4,
+      "name": "Enrich Company",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "enrich-company-with-mixrank-v2",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "company_identifier",
+            "formulaText": "{{@Company Domain}}"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Valid Profile?}} == \"Yes\" && !!{{@Company Domain}}"
+      }
+    },
+    {
+      "index": 5,
+      "name": "Employee Count",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.employee_count",
+        "mappedResultPath": [
+          "employee_count"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "name": "Prospect Profile",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"From this LinkedIn profile: \" + Clay.formatForAIPrompt({{@Prospect Li URL}}) + \"\\n\\nFind:\\n1) Full name\\n2) Current job title\\n3) Location\\n4) A 1-sentence summary of their professional background\""
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"fullName\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The prospect's full name\\\"\\n    },\\n    \\\"currentJobTitle\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Current job title from their LinkedIn profile\\\"\\n    },\\n    \\\"location\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Location listed on their LinkedIn profile\\\"\\n    },\\n    \\\"backgroundSummary\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"One sentence summarizing their professional background\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"fullName\\\",\\n    \\\"currentJobTitle\\\",\\n    \\\"location\\\",\\n    \\\"backgroundSummary\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Valid Profile?}} == \"Yes\"",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_FfAwz41BuzME"
+      }
+    },
+    {
+      "index": 7,
+      "name": "Company Research",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Research the company \" + Clay.formatForAIPrompt({{@Enrich Company}}?.name) + \" (\" + Clay.formatForAIPrompt({{@Company Domain}}) + \")\\n\\nFind:\\n1) What the company does (1-2 sentences)\\n2) Their primary industry vertical\\n3) Whether they appear to be hiring (check their careers page)\\n4) Any recent news or funding announcements from the last 6 months\""
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"companyDescription\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"1-2 sentence description of what the company does\\\"\\n    },\\n    \\\"industryVertical\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Primary industry vertical\\\"\\n    },\\n    \\\"isHiring\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Whether the company appears to be actively hiring\\\",\\n      \\\"enum\\\": [\\n        \\\"Yes\\\",\\n        \\\"No\\\",\\n        \\\"Unknown\\\"\\n      ]\\n    },\\n    \\\"recentNews\\\": {\\n      \\\"type\\\": [\\n        \\\"string\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"Any recent news or funding from the last 6 months, or null if nothing found\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"companyDescription\\\",\\n    \\\"industryVertical\\\",\\n    \\\"isHiring\\\",\\n    \\\"recentNews\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Enrich Company}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_FfAwz41BuzME"
+      }
+    },
+    {
+      "index": 8,
+      "name": "Lead Score",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Score this prospect for B2B SaaS outreach relevance.\\n\\n**Prospect:**\\nName: \" + Clay.formatForAIPrompt({{@Prospect Profile}}?.fullName) + \"\\nTitle: \" + Clay.formatForAIPrompt({{@Prospect Profile}}?.currentJobTitle) + \"\\nLocation: \" + Clay.formatForAIPrompt({{@Prospect Profile}}?.location) + \"\\nBackground: \" + Clay.formatForAIPrompt({{@Prospect Profile}}?.backgroundSummary) + \"\\n\\n**Company:**\\nName: \" + Clay.formatForAIPrompt({{@Enrich Company}}?.name) + \"\\nEmployees: \" + Clay.formatForAIPrompt({{@Employee Count}}) + \"\\nIndustry: \" + Clay.formatForAIPrompt({{@Company Research}}?.industryVertical) + \"\\nDescription: \" + Clay.formatForAIPrompt({{@Company Research}}?.companyDescription) + \"\\nHiring: \" + Clay.formatForAIPrompt({{@Company Research}}?.isHiring) + \"\\n\\nScoring rules:\\n- Tier 1: Decision maker (VP+, C-level, Founder) at a company with 50-500 employees in the US\\n- Tier 2: Manager-level or relevant department head at qualifying company\\n- DQ: Outside US, company too small (<20) or too large (>1000), irrelevant role\""
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"tier\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The qualification tier for this prospect\\\",\\n      \\\"enum\\\": [\\n        \\\"1\\\",\\n        \\\"2\\\",\\n        \\\"DQ\\\"\\n      ]\\n    },\\n    \\\"reasoning\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"One sentence explaining the scoring decision\\\"\\n    },\\n    \\\"buyingPersona\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The buying persona category\\\",\\n      \\\"enum\\\": [\\n        \\\"Founder\\\",\\n        \\\"C-Level\\\",\\n        \\\"VP/Director\\\",\\n        \\\"Manager\\\",\\n        \\\"Other\\\"\\n      ]\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"tier\\\",\\n    \\\"reasoning\\\",\\n    \\\"buyingPersona\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Prospect Profile}} && {{@Company Research}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 9,
+      "name": "Tier",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lead Score}}?.tier",
+        "mappedResultPath": [
+          "tier"
+        ]
+      }
+    }
+  ]
+}

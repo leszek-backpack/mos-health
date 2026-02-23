@@ -1,0 +1,873 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-22T15:58:32.493Z",
+  "columnCount": 36,
+  "columns": [
+    {
+      "index": 0,
+      "name": "firstName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "name": "fullName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "name": "lastName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "name": "companyName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "name": "title",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "name": "regularCompanyUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "name": "Org Id",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "name": "summary",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "name": "titleDescription",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "name": "industry",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "name": "companyLocation",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "name": "location",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "name": "durationInRole",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "name": "vmid",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "name": "durationInCompany",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "name": "linkedInProfileUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "name": "isPremium",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 17,
+      "name": "query",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 18,
+      "name": "isOpenLink",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 19,
+      "name": "defaultProfileUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 20,
+      "name": "HR Keyword Match",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "[\"human\",\"hr\",\"people\",\"office\",\"employee\",\"benefits\",\"staff\",\"ceo\",\"founder\",\"coo\",\"operations\",\"admin\",\"workplace\",\"wellness\",\"facilities\",\"executive\",\"happiness\"].some(k=>({{@title}}||\"\")?.toLowerCase()?.includes(k))?\"Qualified\":\"DQ\"",
+        "formulaPrompt": "\"If \"+{{@title}}+\" contains any of these keywords: [\\\"human\\\", \\\"HR\\\", \\\"people\\\", \\\"office\\\", \\\"employee\\\", \\\"benefits\\\", \\\"staff\\\", \\\"ceo\\\", \\\"founder\\\", \\\"coo\\\", \\\"operations\\\", \\\"admin\\\", \\\"workplace\\\", \\\"wellness\\\", \\\"facilities\\\", \\\"executive\\\", \\\"happiness\\\"], output \\\"Qualified\\\"\\n\\nOtherwise, output \\\"DQ\\\"\""
+      }
+    },
+    {
+      "index": 21,
+      "name": "Lookup Single Row in Other Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t6c1idexEaVEHC22iS\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t6c1iiWYt4ES7r7pJ9\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Org Id}}"
+          }
+        ],
+        "authAccountId": "aa_KfM2Ys6wyDfC"
+      }
+    },
+    {
+      "index": 22,
+      "name": "Lead Scoring Decision",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Your task is to assign properties to a prospect based on this research: \\n\\n\"+{{@Lookup Single Row in Other Table}}+\"\\n\\nprospect to analyze:\\n\\n\"+{{@fullName}}+\"\\n\"+{{@companyName}}+\"\\n\"+{{@title}}+\"\\n\"+{{@summary}}+\"\\n\"+{{@titleDescription}}"
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-pro\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "fields": "{\"Qualified_\":{\"type\":\"string\",\"description\":\"The full name of the prospect\",\"id\":\"6c77f068-cd28-43c3-a251-114f0350fcdb\",\"options\":\"\"},\"Tier\":{\"type\":\"select\",\"description\":\"Tier of the prospect\",\"id\":\"f70aa3eb-9db7-4b25-be85-44b1536dd317\",\"options\":\"[{\\\"text\\\":\\\"1\\\",\\\"id\\\":\\\"24490897-2fda-455c-aafb-c4ebc28cc303\\\",\\\"color\\\":\\\"green\\\"},{\\\"text\\\":\\\"2\\\",\\\"id\\\":\\\"29a16250-c57f-411e-bd7b-cdb7f4ba352f\\\",\\\"color\\\":\\\"yellow\\\"},{\\\"text\\\":\\\"3\\\",\\\"id\\\":\\\"f63c610f-347c-4474-a5a1-7098b10a12e6\\\",\\\"color\\\":\\\"grey\\\"},{\\\"text\\\":\\\"DQ\\\",\\\"id\\\":\\\"f58534a4-400a-49e6-90e5-b6635891537f\\\",\\\"color\\\":\\\"red\\\"}]\"},\"Persona_Category\":{\"type\":\"string\",\"description\":\"The job title of the prospect\",\"id\":\"ea7f6e54-2558-40b1-a485-f5b6b7266a72\",\"options\":\"\"},\"Reasoning\":{\"type\":\"string\",\"description\":\"A summary of the prospect's background or role\",\"id\":\"822c482c-9862-4b76-be94-399e6e19bb9a\",\"options\":\"\"}}",
+              "jsonType": "\"Fields\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget",
+            "formulaText": "3"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "optionalPathsInInputs": {
+          "prompt": [
+            [
+              "f_0t6c2njuu3QsCTbospG"
+            ],
+            [
+              "f_0t6c2nkbo7CRQqUyYmz"
+            ],
+            [
+              "f_0t6c2nhna6zxXqNeRJo"
+            ],
+            [
+              "f_0t6c2ngeD2RVTHA9HiS"
+            ],
+            [
+              "f_0t6c2nfoMRMbS4NGo9K"
+            ]
+          ]
+        },
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 23,
+      "name": "# of connections",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{f_0t6cn12mguEUWoNAHDo}}?.Connections",
+        "mappedResultPath": [
+          "Connections"
+        ]
+      }
+    },
+    {
+      "index": 24,
+      "name": "Username",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@defaultProfileUrl}}?.toLowerCase()?.split(\"/\")?.filter(Boolean)?.slice(-1)?.[0]?.split(\"?\")?.[0] || \"\"",
+        "formulaPrompt": ""
+      }
+    },
+    {
+      "index": 25,
+      "name": "HTTP API",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://web-production-d0dc.up.railway.app/process\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"username\\\": \\\"\" + Clay.formatForJSON({{@Username}}) + \"\\\",\\n  \\\"api_key\\\": \\\"476820a5c7msh0326fc5d9cfd957p11723cjsn36b4d62297ad\\\",\\n  \\\"webhook_url\\\": \\\"https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-a003471f-f1ca-4b59-b645-7aa80b3e89d8\\\",\\n  \\\"posted_max_days_ago\\\": \\\"90\\\",\\n  \\\"full_name\\\": \\\"\" + Clay.formatForJSON({{@fullName}}) + \"\\\"\\n}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\""
+            }
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ],
+        "fromPresetId": "pre__0t62waj3VKUGDtUzJtf"
+      }
+    },
+    {
+      "index": 26,
+      "name": "Lookup Single Row in Other Table (3)",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t6cn8eb7HV6QWzainw\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t6dqciEuJf4GmJ5GEe\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Username}}"
+          }
+        ],
+        "authAccountId": "aa_KfM2Ys6wyDfC"
+      }
+    },
+    {
+      "index": 27,
+      "name": "Post Count",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table (3)}}?.record?.[\"Post Count\"]",
+        "mappedResultPath": [
+          "record",
+          "Post Count"
+        ]
+      }
+    },
+    {
+      "index": 28,
+      "name": "Tier",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lead Scoring Decision}}?.Tier",
+        "mappedResultPath": [
+          "Tier"
+        ]
+      }
+    },
+    {
+      "index": 29,
+      "name": "Reasoning",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lead Scoring Decision}}?.Reasoning",
+        "mappedResultPath": [
+          "Reasoning"
+        ]
+      }
+    },
+    {
+      "index": 30,
+      "name": "Batch",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 31,
+      "name": "Lookup Single Row in Other Table (2)",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t9txkpErpgj8XWeGzR\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t9n2t3ZeYRK7odVjVq\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Org Id}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 32,
+      "name": "Hub Spot Company ID",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table (2)}}?.record?.[\"HubSpot Company ID\"]",
+        "mappedResultPath": [
+          "record",
+          "HubSpot Company ID"
+        ]
+      }
+    },
+    {
+      "index": 33,
+      "name": "Create HS Contact",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://api.hubapi.com/crm/v3/objects/contacts\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"properties\\\": {\\n    \\\"firstname\\\": \\\"\" + Clay.formatForJSON({{@firstName}}) + \"\\\",\\n    \\\"lastname\\\": \\\"\" + Clay.formatForJSON({{@lastName}}) + \"\\\",\\n    \\\"role\\\": \\\"\" + Clay.formatForJSON({{@Role Category & Country}}?.category) + \"\\\",\\n    \\\"hs_linkedin_url\\\": \\\"\" + Clay.formatForJSON({{@linkedInProfileUrl}}) + \"\\\",\\n    \\\"hs_lead_status\\\": \\\"NEW\\\",\\n    \\\"source\\\": \\\"Outbound\\\",\\n    \\\"subsource\\\": \\\"Outbound\\\",\\n    \\\"sender_name_outbound\\\": \\\"Pati\\\",\\n    \\\"contact_channel\\\": \\\"Linkedin\\\",\\n    \\\"campaign_type\\\": null,\\n    \\\"hubspot_owner_id\\\": \\\"160116925\\\",\\n    \\\"company\\\": \\\"\" + Clay.formatForJSON({{@companyName}}) + \"\\\",\\n    \\\"jobtitle\\\": \\\"\" + Clay.formatForJSON({{@title}}) + \"\\\",\\n    \\\"country\\\": \\\"\" + Clay.formatForJSON({{@Role Category & Country}}?.country) + \"\\\",\\n    \\\"vmid\\\": \\\"\" + Clay.formatForJSON({{@vmid}}) + \"\\\"\\n  },\\n  \\\"associations\\\": [\\n    {\\n      \\\"to\\\": {\\n        \\\"id\\\": \\\"\" + Clay.formatForJSON({{@Hub Spot Company ID}}) + \"\\\"\\n      },\\n      \\\"types\\\": [\\n        {\\n          \\\"associationCategory\\\": \\\"HUBSPOT_DEFINED\\\",\\n          \\\"associationTypeId\\\": 1\\n        }\\n      ]\\n    }\\n  ]\\n}\""
+          },
+          {
+            "name": "headers"
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "WORKSPACE_ID"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0taaiu6eeucRiNV6fRY"
+      }
+    },
+    {
+      "index": 34,
+      "name": "Role Category & Country",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"based on job title, assign one of these categories:\\n[ Founder, C-lvl, People/HR Leader]: \" + Clay.formatForAIPrompt({{@title}}) + \"\\n\\nalso, based on location, output country name (US for USA): \" + Clay.formatForAIPrompt({{@location}}) + \"\\n\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"grok-4-1-fast-reasoning\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"category\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The assigned category based on the job title\\\",\\n      \\\"enum\\\": [\\n        \\\"Founder\\\",\\n        \\\"C-lvl\\\",\\n        \\\"People/HR Leader\\\"\\n      ]\\n    },\\n    \\\"country\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The country name corresponding to the location. Use 'US' for United States.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"category\\\",\\n    \\\"country\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 8,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0tachtr7MgX9QoKWWme"
+      }
+    },
+    {
+      "index": 35,
+      "name": "Add Lead to Campaign",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "heyreach-add-lead-to-campaign",
+        "actionVersion": 1,
+        "actionPackageId": "38c1e626-7785-4d36-a993-301bd302aebf",
+        "inputsBinding": [
+          {
+            "name": "campaignId",
+            "formulaText": "\"331930\""
+          },
+          {
+            "name": "linkedInAccount"
+          },
+          {
+            "name": "firstName",
+            "formulaText": "{{@firstName}}"
+          },
+          {
+            "name": "lastName",
+            "formulaText": "{{@lastName}}"
+          },
+          {
+            "name": "profileUrl",
+            "formulaText": "{{@defaultProfileUrl}}"
+          },
+          {
+            "name": "location"
+          },
+          {
+            "name": "summary"
+          },
+          {
+            "name": "companyName"
+          },
+          {
+            "name": "position",
+            "formulaText": "{{@title}}"
+          },
+          {
+            "name": "about"
+          },
+          {
+            "name": "emailAddress"
+          },
+          {
+            "name": "customUserFields",
+            "formulaMap": {
+              "vmid": "{{@vmid}}",
+              "campaign": "\"nyc-tam-12.02\"",
+              "hubspot_company_id": "{{@Hub Spot Company ID}}",
+              "hubspot_contact_id": "{{@Create HS Contact}}?.id",
+              "linkedin_company_id": "{{@Org Id}}"
+            }
+          }
+        ],
+        "authAccountId": "aa_0t6li3sjytiU4pgRKs4"
+      }
+    }
+  ]
+}

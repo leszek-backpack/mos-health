@@ -1,0 +1,884 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-22T18:00:00.000Z",
+  "columnCount": 30,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Webhook",
+      "type": "source",
+      "typeSettings": {
+        "sourceIds": [],
+        "canCreateRecords": true
+      },
+      "sourceDetails": [
+        {
+          "name": "Pull in data from a Webhook",
+          "type": "webhook",
+          "typeSettings": {
+            "hasAuth": false,
+            "name": "Webhook",
+            "stages": [],
+            "iconType": "Webhook",
+            "description": "Send any data to Clay",
+            "urlSlugText": "Pull in data from a Webhook"
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "name": "Prospect Li URL",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "url"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Webhook}}?.[\"prospect_li_url\"]",
+        "mappedResultPath": [
+          "prospect_li_url"
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "name": "Company Domain",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Webhook}}?.[\"company_domain\"]",
+        "mappedResultPath": [
+          "company_domain"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "name": "Valid Profile?",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Prospect Li URL}}?.toLowerCase()?.startsWith(\"https://www.linkedin.com/in/\") ? \"Yes\" : \"No\""
+      }
+    },
+    {
+      "index": 4,
+      "name": "Enrich Person",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "enrich-person-with-mixrank-v2",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "person_identifier",
+            "formulaText": "{{@Prospect Li URL}}"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Valid Profile?}} == \"Yes\""
+      }
+    },
+    {
+      "index": 5,
+      "name": "Enrich Company",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "enrich-company-with-mixrank-v2",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "company_identifier",
+            "formulaText": "{{@Company Domain}}"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Valid Profile?}} == \"Yes\" && !!{{@Company Domain}}"
+      }
+    },
+    {
+      "index": 6,
+      "name": "Full Name",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "({{@Enrich Person}}?.first_name || \"\") + \" \" + ({{@Enrich Person}}?.last_name || \"\")"
+      }
+    },
+    {
+      "index": 7,
+      "name": "Employee Count",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.employee_count",
+        "mappedResultPath": [
+          "employee_count"
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "name": "Find MarTech Jobs",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "find-lists-of-jobs-with-mixrank",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "company_identifier",
+            "formulaText": "{{@Company Domain}}"
+          },
+          {
+            "name": "title_keywords",
+            "formulaText": "\"marketing, growth, demand gen, digital\""
+          },
+          {
+            "name": "negative_title_keywords",
+            "formulaText": "\"intern, junior, assistant\""
+          },
+          {
+            "name": "description_keywords",
+            "formulaText": "\"HubSpot, Marketo, Salesforce, CRM, marketing automation\""
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Enrich Company}}"
+      }
+    },
+    {
+      "index": 9,
+      "name": "LinkedIn Location Check",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"From this Li profile: \" + Clay.formatForAIPrompt({{@Prospect Li URL}}) + \", find:\\n\\n1) the profile's location\\n\""
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gpt-4.1-nano\""
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"location\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The location listed on the LinkedIn profile\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"location\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Valid Profile?}} == \"Yes\"",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 17,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t3rf2hsVda3cBShEr6"
+      }
+    },
+    {
+      "index": 10,
+      "name": "Location Classification",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@LinkedIn Location Check}}?.location?.toLowerCase()?.split(/[\\s,]+/)?.some(w => [\"california\",\"san\",\"francisco\",\"los\",\"angeles\",\"ca\"]?.includes(w)) ? \"California\" : \n{{@LinkedIn Location Check}}?.location?.toLowerCase()?.split(/[\\s,]+/)?.some(w => [\"new york\",\"ny\"]?.includes(w)) ? \"New York\" : \n{{@LinkedIn Location Check}}?.location?.toLowerCase()?.includes(\"united states\") || {{@LinkedIn Location Check}}?.location?.toLowerCase()?.split(/[\\s,]+/)?.some(w => [\"usa\",\"us\"]?.includes(w)) ? \"USA\" : \"\""
+      }
+    },
+    {
+      "index": 11,
+      "name": "Role Category",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "[\"human\",\"hr\",\"people\",\"office\",\"employee\",\"benefits\",\"chief of staff\",\"ceo\",\"founder\",\"coo\",\"admin\",\"workplace\",\"wellness\",\"facilities\",\"executive assistant\",\"happiness\",\"owner\"].some(k=>({{@Enrich Person}}?.current_title||\"\")?.toLowerCase()?.includes(k)) ? \"Qualified\" : \"DQ\""
+      }
+    },
+    {
+      "index": 12,
+      "name": "Lead Score",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Score this prospect for B2B SaaS outreach relevance.\\n\\n**Prospect:**\\nName: \" + Clay.formatForAIPrompt({{@Full Name}}) + \"\\nTitle: \" + Clay.formatForAIPrompt({{@Enrich Person}}?.current_title) + \"\\nLocation: \" + Clay.formatForAIPrompt({{@LinkedIn Location Check}}?.location) + \"\\n\\n**Company:**\\nName: \" + Clay.formatForAIPrompt({{@Enrich Company}}?.name) + \"\\nEmployees: \" + Clay.formatForAIPrompt({{@Employee Count}}) + \"\\nDomain: \" + Clay.formatForAIPrompt({{@Company Domain}}) + \"\\n\\nScoring rules:\\n- Tier 1: Decision maker (VP+, C-level, Founder) at a company with 50-500 employees in the US\\n- Tier 2: Manager-level or relevant department head at qualifying company\\n- DQ: Outside US, company too small (<20) or too large (>1000), irrelevant role\""
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"tier\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Qualification tier\\\",\\n      \\\"enum\\\": [\\n        \\\"1\\\",\\n        \\\"2\\\",\\n        \\\"DQ\\\"\\n      ]\\n    },\\n    \\\"reasoning\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"One sentence explaining the scoring decision\\\"\\n    },\\n    \\\"buyingPersona\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Buying persona category\\\",\\n      \\\"enum\\\": [\\n        \\\"Founder\\\",\\n        \\\"C-Level\\\",\\n        \\\"VP/Director\\\",\\n        \\\"Manager\\\",\\n        \\\"Other\\\"\\n      ]\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"tier\\\",\\n    \\\"reasoning\\\",\\n    \\\"buyingPersona\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Location Classification}} && {{@Role Category}} == \"Qualified\"",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 13,
+      "name": "Tier",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lead Score}}?.tier",
+        "mappedResultPath": [
+          "tier"
+        ]
+      }
+    },
+    {
+      "index": 14,
+      "name": "Company Research",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Research \" + Clay.formatForAIPrompt({{@Enrich Company}}?.name) + \" (\" + Clay.formatForAIPrompt({{@Company Domain}}) + \")\\n\\nFind:\\n1) What the company does (1-2 sentences)\\n2) Work model (Hybrid / In-Office / Fully Remote / Unknown)\\n3) Any recent funding or news from the last 6 months\\n4) Key physical office perks if any (free lunch, gym, commuter benefits)\""
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"companyDescription\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"1-2 sentence description of what the company does\\\"\\n    },\\n    \\\"workModel\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Observed work model\\\",\\n      \\\"enum\\\": [\\n        \\\"Hybrid\\\",\\n        \\\"In-Office\\\",\\n        \\\"Fully Remote\\\",\\n        \\\"Unknown\\\"\\n      ]\\n    },\\n    \\\"recentNews\\\": {\\n      \\\"type\\\": [\\n        \\\"string\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"Recent news or funding, or null if nothing found\\\"\\n    },\\n    \\\"officePerks\\\": {\\n      \\\"type\\\": \\\"array\\\",\\n      \\\"description\\\": \\\"Physical office perks detected\\\",\\n      \\\"items\\\": {\\n        \\\"type\\\": \\\"string\\\"\\n      }\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"companyDescription\\\",\\n    \\\"workModel\\\",\\n    \\\"recentNews\\\",\\n    \\\"officePerks\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Enrich Company}} && [\"1\",\"2\"].includes({{@Tier}})",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_FfAwz41BuzME"
+      }
+    },
+    {
+      "index": 15,
+      "name": "Step X | Check if Company Exists in HubSpot | HubSpot",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://api.hubapi.com/crm/v3/objects/companies/search\""
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"filterGroups\\\": [\\n    {\\n      \\\"filters\\\": [\\n        {\\n          \\\"propertyName\\\": \\\"domain\\\",\\n          \\\"operator\\\": \\\"EQ\\\",\\n          \\\"value\\\": \\\"\" + Clay.formatForJSON({{@Company Domain}}) + \"\\\"\\n        }\\n      ]\\n    }\\n  ],\\n  \\\"properties\\\": [\\n    \\\"name\\\",\\n    \\\"domain\\\",\\n    \\\"industry\\\",\\n    \\\"numberofemployees\\\",\\n    \\\"lifecyclestage\\\"\\n  ],\\n  \\\"limit\\\": 1\\n}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\"",
+              "Authorization": "\"Bearer \" + Clay.formatForJSON({{@Lookup Config}}?.[\"hubspot_token\"])"
+            }
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          }
+        ],
+        "conditionalRunFormulaText": "!!{{@Company Domain}} && [\"1\",\"2\"].includes({{@Tier}})",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "WORKSPACE_ID"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 16,
+      "name": "Check if Company Exists in HubSpot",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "!{{@Step X | Check if Company Exists in HubSpot | HubSpot}} ? \"\" : {{@Step X | Check if Company Exists in HubSpot | HubSpot}}?.total===0 ? \"No company found in HS\" : {{@Step X | Check if Company Exists in HubSpot | HubSpot}}?.total>0 ? \"Company found in HS\" : \"\""
+      }
+    },
+    {
+      "index": 17,
+      "name": "HubSpot Company Id",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Step X | Check if Company Exists in HubSpot | HubSpot}}?.results?.[0]?.id",
+        "mappedResultPath": [
+          "results",
+          0,
+          "id"
+        ]
+      }
+    },
+    {
+      "index": 18,
+      "name": "Lookup Company Data",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_placeholder_company_table\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_placeholder_domain_field\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Company Domain}}"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Enrich Company}}"
+      }
+    },
+    {
+      "index": 19,
+      "name": "Lookup All Prospects at Company",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-multiple-rows-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_placeholder_prospects_table\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_placeholder_org_id_field\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Enrich Company}}?.org_id"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Enrich Company}}?.org_id"
+      }
+    },
+    {
+      "index": 20,
+      "name": "Lookup Config",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "google-sheets-lookup-row-v2",
+        "actionVersion": 1,
+        "actionPackageId": "b52dbb55-6b36-4b63-9f8c-21d923353045",
+        "inputsBinding": [
+          {
+            "name": "id",
+            "formulaText": "\"1yerj2-fs6fLSBNoKev_fXTMY2zvN5bwy_P-tFYeWjn0\""
+          },
+          {
+            "name": "lookupColumn",
+            "formulaText": "\"ID\""
+          },
+          {
+            "name": "lookupValue",
+            "formulaText": "\"config_row_1\""
+          },
+          {
+            "name": "returnFields",
+            "formulaText": "\"hubspot_token,heyreach_campaign_id,target_region\""
+          }
+        ],
+        "authAccountId": "aa_0t9iv44JsRr3mYDkoJX"
+      }
+    },
+    {
+      "index": 21,
+      "name": "LeadMagic Find Email",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "leadmagic-find-work-email",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "first_name",
+            "formulaText": "{{@Enrich Person}}?.first_name"
+          },
+          {
+            "name": "last_name",
+            "formulaText": "{{@Enrich Person}}?.last_name"
+          },
+          {
+            "name": "domain",
+            "formulaText": "{{@Company Domain}}"
+          }
+        ],
+        "conditionalRunFormulaText": "[\"1\",\"2\"].includes({{@Tier}}) && !!{{@Enrich Person}}?.first_name && !!{{@Company Domain}}"
+      }
+    },
+    {
+      "index": 22,
+      "name": "FindyMail Find Email",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "findymail-find-work-email",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "full_name",
+            "formulaText": "{{@Full Name}}"
+          },
+          {
+            "name": "company_domain",
+            "formulaText": "{{@Company Domain}}"
+          }
+        ],
+        "conditionalRunFormulaText": "[\"1\",\"2\"].includes({{@Tier}}) && !!{{@Full Name}} && !!{{@Company Domain}}"
+      }
+    },
+    {
+      "index": 23,
+      "name": "Prospeo Find Email",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "prospeo-find-work-email-v2",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "full_name",
+            "formulaText": "{{@Full Name}}"
+          },
+          {
+            "name": "company_domain",
+            "formulaText": "{{@Company Domain}}"
+          }
+        ],
+        "conditionalRunFormulaText": "[\"1\",\"2\"].includes({{@Tier}}) && !!{{@Full Name}} && !!{{@Company Domain}}"
+      }
+    },
+    {
+      "index": 24,
+      "name": "Work Email",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@LeadMagic Find Email}}?.email || {{@FindyMail Find Email}}?.email || {{@Prospeo Find Email}}?.email || \"\""
+      }
+    },
+    {
+      "index": 25,
+      "name": "Step X | Create Contact in HubSpot | HubSpot",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://api.hubapi.com/crm/v3/objects/contacts\""
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"properties\\\": {\\n    \\\"firstname\\\": \\\"\" + Clay.formatForJSON({{@Enrich Person}}?.first_name) + \"\\\",\\n    \\\"lastname\\\": \\\"\" + Clay.formatForJSON({{@Enrich Person}}?.last_name) + \"\\\",\\n    \\\"email\\\": \\\"\" + Clay.formatForJSON({{@Work Email}}) + \"\\\",\\n    \\\"jobtitle\\\": \\\"\" + Clay.formatForJSON({{@Enrich Person}}?.current_title) + \"\\\",\\n    \\\"company\\\": \\\"\" + Clay.formatForJSON({{@Enrich Company}}?.name) + \"\\\",\\n    \\\"hs_linkedin_url\\\": \\\"\" + Clay.formatForJSON({{@Prospect Li URL}}) + \"\\\",\\n    \\\"hs_lead_status\\\": \\\"NEW\\\",\\n    \\\"hubspot_owner_id\\\": \\\"160116925\\\"\\n  },\\n  \\\"associations\\\": [\\n    {\\n      \\\"to\\\": {\\n        \\\"id\\\": \\\"\" + Clay.formatForJSON({{@HubSpot Company Id}}) + \"\\\"\\n      },\\n      \\\"types\\\": [\\n        {\\n          \\\"associationCategory\\\": \\\"HUBSPOT_DEFINED\\\",\\n          \\\"associationTypeId\\\": 1\\n        }\\n      ]\\n    }\\n  ]\\n}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\"",
+              "Authorization": "\"Bearer \" + Clay.formatForJSON({{@Lookup Config}}?.[\"hubspot_token\"])"
+            }
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@HubSpot Company Id}} && {{@Check if Company Exists in HubSpot}} == \"Company found in HS\" && !!{{@Work Email}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "WORKSPACE_ID"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 26,
+      "name": "HeyReach Add to Campaign",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "heyreach-add-lead-to-campaign",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "campaignId",
+            "formulaText": "\"335983\""
+          },
+          {
+            "name": "linkedinUrl",
+            "formulaText": "{{@Prospect Li URL}}"
+          },
+          {
+            "name": "firstName",
+            "formulaText": "{{@Enrich Person}}?.first_name"
+          },
+          {
+            "name": "lastName",
+            "formulaText": "{{@Enrich Person}}?.last_name || \".\""
+          }
+        ],
+        "conditionalRunFormulaText": "[\"1\",\"2\"].includes({{@Tier}}) && !!{{@Prospect Li URL}}",
+        "runAsButton": true
+      }
+    },
+    {
+      "index": 27,
+      "name": "Add Row",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "google-sheets-add-row-v2",
+        "actionVersion": 1,
+        "actionPackageId": "b52dbb55-6b36-4b63-9f8c-21d923353045",
+        "inputsBinding": [
+          {
+            "name": "id",
+            "formulaText": "\"1yerj2-fs6fLSBNoKev_fXTMY2zvN5bwy_P-tFYeWjn0\""
+          },
+          {
+            "name": "columnMapping|Full Name",
+            "formulaText": "{{@Full Name}}"
+          },
+          {
+            "name": "columnMapping|Job Title",
+            "formulaText": "{{@Enrich Person}}?.current_title"
+          },
+          {
+            "name": "columnMapping|Company",
+            "formulaText": "{{@Enrich Company}}?.name"
+          },
+          {
+            "name": "columnMapping|Li URL",
+            "formulaText": "{{@Prospect Li URL}}"
+          },
+          {
+            "name": "columnMapping|Domain",
+            "formulaText": "{{@Company Domain}}"
+          },
+          {
+            "name": "columnMapping|Employees",
+            "formulaText": "{{@Employee Count}}"
+          },
+          {
+            "name": "columnMapping|Tier",
+            "formulaText": "{{@Tier}}"
+          },
+          {
+            "name": "columnMapping|Work Email",
+            "formulaText": "{{@Work Email}}"
+          },
+          {
+            "name": "columnMapping|Location",
+            "formulaText": "{{@Location Classification}}"
+          }
+        ],
+        "conditionalRunFormulaText": "[\"1\",\"2\"].includes({{@Tier}})",
+        "authAccountId": "aa_0t9iv44JsRr3mYDkoJX"
+      }
+    },
+    {
+      "index": 28,
+      "name": "Send to Outreach Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "route-row",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_placeholder_outreach_table\""
+          },
+          {
+            "name": "fields",
+            "formulaMap": {
+              "full_name": "{{@Full Name}}",
+              "job_title": "{{@Enrich Person}}?.current_title",
+              "company_name": "{{@Enrich Company}}?.name",
+              "company_domain": "{{@Company Domain}}",
+              "linkedin_url": "{{@Prospect Li URL}}",
+              "work_email": "{{@Work Email}}",
+              "employee_count": "{{@Employee Count}}",
+              "tier": "{{@Tier}}",
+              "location": "{{@Location Classification}}",
+              "work_model": "{{@Company Research}}?.workModel",
+              "company_description": "{{@Company Research}}?.companyDescription",
+              "hubspot_company_id": "{{@HubSpot Company Id}}"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "[\"1\",\"2\"].includes({{@Tier}}) && !!{{@Work Email}}"
+      }
+    },
+    {
+      "index": 29,
+      "name": "Pipeline Status",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Valid Profile?}} == \"No\" ? \"Invalid URL\" : {{@Tier}} == \"DQ\" ? \"Disqualified\" : !{{@Work Email}} && [\"1\",\"2\"].includes({{@Tier}}) ? \"No Email Found\" : {{@Step X | Create Contact in HubSpot | HubSpot}}?.id ? \"Pushed to HubSpot\" : [\"1\",\"2\"].includes({{@Tier}}) ? \"Qualified - Pending Push\" : \"\""
+      }
+    }
+  ]
+}

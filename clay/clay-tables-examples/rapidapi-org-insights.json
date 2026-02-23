@@ -1,0 +1,463 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-22T15:58:21.122Z",
+  "columnCount": 15,
+  "columns": [
+    {
+      "index": 0,
+      "name": "User Input [if-known] | Org Id",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "name": "Step 0 | Get Distribution Count | RapidAPI",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://web-production-39565.up.railway.app/process\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"target_api_url\\\": \\\"https://fresh-linkedin-scraper-api.p.rapidapi.com/api/v1/company/associated-member-insights?company_id=\" + Clay.formatForJSON({{@Org Id (2)}}) + \"\\\",\\n  \\\"org_id\\\": \\\"\" + Clay.formatForJSON({{@Org Id (2)}}) + \"\\\",\\n  \\\"callback_webhook\\\": \\\"https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-c5d2f669-7084-4261-848c-c651b2e7bd6a\\\"\\n}\""
+          },
+          {
+            "name": "headers"
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Org Id (2)}} && {{@Batch}} && {{@Target Region}}"
+      }
+    },
+    {
+      "index": 2,
+      "name": "Batch",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "name": "User Input [if-known] | Last Funding Round",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "name": "User Input [if-known] | Last Funding Date",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "name": "[Optional] Find Funding Data | Gemini 2.5 Flash",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"#CONTEXT#\\nYou are an AI-powered web researcher and data extractor. Your task is to find reliable, up-to-date information about a company's most recent funding round as of 29-Jan-2026. You will use the provided company identifier/value: \\\"\\\"\\\" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Company Name}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Domain}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | LinkedIn URL}}) + \" \\\"\\\"\\\" to search public web sources and extract the last funding type, amount, and date. Return structured outputs and \\\"No data\\\" only when nothing credible is found.\\n\\n#OBJECTIVE#\\nIdentify and extract the company’s last funding round details for \\\"\\\"\\\" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Company Name}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Domain}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | LinkedIn URL}}) + \" \\\"\\\"\\\" and return the results in a clean, structured format.\\n\\n#INSTRUCTIONS#\\n1) Primary search targets\\n   - Use the value in \\\"\\\"\\\" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Company Name}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Domain}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | LinkedIn URL}}) + \" \\\"\\\"\\\" to query reputable sources: the company’s website press/news page, trusted business media (e.g., TechCrunch, VentureBeat), and funding databases/announcements accessible on the open web (e.g., Crunchbase profile pages if publicly visible, PitchBook public profiles, company blog posts, newsroom, PR Newswire, Business Wire).\\n   - If the company name is ambiguous, prioritize results that clearly match the correct company (matching domain, location, product/industry descriptors from the source pages). Avoid results for different companies with the same or similar names.\\n\\n2) What to extract\\n   - lastFundingType: The most recent round label (e.g., Seed, Series A, Series B, Series C, Series D, Growth, Venture Round, Angel, Convertible Note, Debt, Grant). Prefer the company’s press release or a consensus across multiple reputable sources.\\n   - lastFundingAmount: Total amount raised in the most recent round. Normalize to a US dollar string like \\\"$123,000,000\\\". If a range is given, use the specific figure cited most often by reputable sources. If only currency in non-USD is available and USD is not provided, convert to USD only if a reliable explicit USD figure is stated on the same page; otherwise keep the original currency symbol and number.\\n   - lastFundingDate: Month-year of the round announcement, formatted as mm-yyyy (e.g., 01-2026). If only a full date is given, use the announcement month and year. If only the year is given, and month is not stated, output mm as 01 with a note step internally to reflect unknown month; but in the final output, still format as 01-yyyy.\\n\\n3) Disambiguation and recency rules\\n   - Consider “last funding round” as the chronologically latest announced equity/venture round prior to or on 29-Jan-2026. Include bridge/extension notes only if clearly labeled (e.g., “Series A extension”); in such cases, treat the extension as the last round if it is later than the main round.\\n   - Ignore secondary market transactions, insider sales, or rumors. Use only confirmed announcements or reputable coverage.\\n   - If multiple articles conflict, prefer the official company press release; otherwise, prefer the most reputable and recent publication. Cross-check at least two independent sources when possible.\\n\\n4) Extraction precision\\n   - Extract numbers exactly as written with thousands separators (e.g., $12,500,000). If the source provides an exact figure and another provides an approximate (e.g., “about $12M”), favor the exact figure. If only approximations exist, use the most commonly cited approximation (e.g., “$12M”).\\n   - For date, ensure the format is mm-yyyy (e.g., 03-2024). Convert month names to two-digit month numbers.\\n\\n5) Output and fallback\\n   - If you can confidently identify all three fields, output them exactly as specified below.\\n   - If you can find the latest round type but not the amount or date, output the known fields and set missing fields to \\\"No data\\\".\\n   - If nothing credible is found for the company, output exactly: No data\\n\\n6) Limitations and compliance\\n   - Do not access paywalled or authenticated pages. Use only publicly accessible sources.\\n   - Do not infer or hallucinate data. Only output information present in sources.\\n   - Do not perform interactive actions like logging in or submitting forms.\\n\\n#EXAMPLES#\\nInput company value:\\n\\\"\\\"\\\" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Company Name}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Domain}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | LinkedIn URL}}) + \" \\\"\\\"\\\" = \\\"Acme Robotics\\\"\\n\\nExpected output format (JSON lines acceptable or plain text key-value):\\nlastFundingType: Series B\\nlastFundingAmount: $45,000,000\\nlastFundingDate: 11-2025\\n\\nIf insufficient information is available:\\nNo data\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"lastFundingType\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The most recent funding round label, such as Seed, Series A, Series B, Series C, Series D, Growth, Venture Round, Angel, Convertible Note, Debt, or Grant. If not available, use 'No data'.\\\"\\n    },\\n    \\\"lastFundingAmount\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Total amount raised in the most recent round as a currency string with symbol, e.g., $45,000,000. Report as given in source, or 'No data' if not available.\\\"\\n    },\\n    \\\"lastFundingDate\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The month and year of funding announcement in mm-yyyy format. Example: 11-2025. If not available, use 'No data'.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"lastFundingType\\\",\\n    \\\"lastFundingAmount\\\",\\n    \\\"lastFundingDate\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "!{{@User Input [if-known] | Last Funding Round}}",
+        "optionalPathsInInputs": {
+          "prompt": [
+            [
+              "f_0t9u1cavHvVchhN7RME"
+            ],
+            [
+              "f_0t9u1csVqftMNyhatVc"
+            ],
+            [
+              "f_0t9u1cnMv8hXutHm5wJ"
+            ]
+          ]
+        },
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 6,
+      "name": "User Input [if-known] | Company Name",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "name": "User Input [if-known] | Domain",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "name": "User Input [if-known] | LinkedIn URL",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "name": "[Optional] Find Org ID | Gemini 2.5 Flash",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Find the LinkedIn Org Id of \" + Clay.formatForAIPrompt({{@User Input [if-known] | Company Name}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Domain}}) + \"\\n\\nOrg Id is not the same as Company Id. Org Id is a numerical value like 35575530 or 11741116, etc\\n\\nEnsure the LinkedIn page is the correct LinkedIn page of \" + Clay.formatForAIPrompt({{@User Input [if-known] | Company Name}}) + \" \" + Clay.formatForAIPrompt({{@User Input [if-known] | Domain}})"
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"OrgId\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The LinkedIn Org Id, which is a unique numerical value associated with the company's LinkedIn organization page.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"OrgId\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "!{{@User Input [if-known] | Org Id}}",
+        "optionalPathsInInputs": {
+          "prompt": [
+            [
+              "f_0t9u1cavHvVchhN7RME"
+            ],
+            [
+              "f_0t9u1cnMv8hXutHm5wJ"
+            ]
+          ]
+        },
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 10,
+      "name": "Last Funding Date",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@User Input [if-known] | Last Funding Date}} || {{@[Optional] Find Funding Data | Gemini 2.5 Flash}}?.lastFundingDate",
+        "formulaPrompt": ""
+      }
+    },
+    {
+      "index": 11,
+      "name": "Last Funding Type",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@User Input [if-known] | Last Funding Round}} || {{@[Optional] Find Funding Data | Gemini 2.5 Flash}}?.lastFundingType",
+        "formulaPrompt": ""
+      }
+    },
+    {
+      "index": 12,
+      "name": "Org Id",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@[Optional] Find Org ID | Gemini 2.5 Flash}}?.orgId",
+        "formulaPrompt": "\"{{User Input [if-known] | Org Id}} || {{[Optional] Find Org ID | Gemini 2.5 Flash}}?.orgId\""
+      }
+    },
+    {
+      "index": 13,
+      "name": "Target Region",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "name": "Org Id (2)",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@[Optional] Find Org ID | Gemini 2.5 Flash}}?.OrgId",
+        "mappedResultPath": [
+          "OrgId"
+        ]
+      }
+    }
+  ]
+}

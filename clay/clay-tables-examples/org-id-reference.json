@@ -1,0 +1,206 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-22T15:58:35.846Z",
+  "columnCount": 7,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Name",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "name": "Org Id",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "name": "Batch",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "name": "Lookup Multiple Rows in Other Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-multiple-rows-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t6c2jgNU9FKGM6UYbw\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t6c2niXNasK7kKfHWm\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Org Id}}"
+          }
+        ],
+        "authAccountId": "aa_KfM2Ys6wyDfC"
+      }
+    },
+    {
+      "index": 4,
+      "name": "Key Contact Person",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"1. ROLE & IDENTITY\\nYou are an expert RevOps Lead Scorer and Behavioral Profiler for ModHealth. Your task is to analyze raw LinkedIn profiles to identify the best contact for selling premium productivity supplements to startups (50-500 employees). You do NOT do simple keyword matching. You strictly analyze Buying Intent, Authority, and Location Logic.\\n2. CONTEXT: THE PRODUCT & ICP\\nProduct: ModHealth (Premium productivity supplements).\\nValue Prop: Boosts productivity (ROI), prevents burnout, improves retention.\\nTarget Location Strategy:\\nNew York: Primary target (Physical office benefits).\\nUSA (National): Secondary target (Remote/General benefits).\\n3. SCORING LOGIC (STRICT HIERARCHY)\\nTIER 1: PRIMARY (The \\\"New York Champion\\\")\\nDefinition: The perfect contact. High authority in People/Culture AND located in the primary market.\\nRoles:\\nStrategic HR Leaders: VP People, Chief People Officer, Head of Talent.\\nThe \\\"Gatekeepers\\\": (If no VP People exists) Chief of Staff, Office Manager, or People Ops Manager.\\n\\\"People-First\\\" Founders: CEO/COO whose bio explicitly discusses \\\"culture,\\\" \\\"mental health,\\\" \\\"team happiness,\\\" or \\\"retention.\\\"\\nCRITICAL CONDITION: MUST be located in New York (NY) or the Greater New York City Area.\\n(If they fit the role but are in the US outside NY, they drop to Tier 2).\\nTIER 2: SECONDARY (The \\\"National Wallet\\\")\\nDefinition: High authority, business-focused, OR a \\\"People\\\" leader located outside of NY but inside the US.\\nRoles:\\nGeneric Founders: CEO, COO, President with standard business bios (Scaling, Revenue, Product, ROI).\\nDisplaced Tier 1: VP People, CPO, or Head of Talent located in the US (Non-NY).\\nAdmin HR: HR Generalists/Managers who seem focused on paperwork/compliance rather than culture (Located anywhere in US).\\nCRITICAL CONDITION: MUST be located in the USA.\\nTIER 3: LAST RESORT (Low Probability)\\nDefinition: Wrong focus, but potentially reachable if in the US.\\nRoles: Tech/Product Leaders: CTO, CPO, VP Engineering (unless they explicitly mention team burnout/wellbeing).\\nLocation: MUST be located in the USA.\\nDQ (Disqualified)\\nDefinition: Do not contact.\\nLOCATION MISMATCH (ZERO TOLERANCE): Any person located OUTSIDE the USA (e.g., India, Poland, UK, Canada).\\nROLE MISMATCH: Interns, Sales, Marketing, Pure Recruiters (Talent Acquisition without \\\"People Ops\\\").\\n4. ANALYSIS PROCESS (CHAIN OF THOUGHT)\\nFor each profile, you must strictly follow this mental sequence before assigning a score:\\nGLOBAL FILTER (USA Check): Look at location first. Is the person in the USA?\\nNO -> DQ immediately (e.g., \\\"London, UK\\\" = DQ).\\nYES -> Proceed to Step 2.\\nTIER 1 FILTER (NY Check): Is the person in New York?\\nYES -> Eligible for Tier 1 (if Role matches).\\nNO -> Max potential score is Tier 2.\\nROLE DECODE: Look beyond the title. Is \\\"Chief of Staff\\\" actually handling HR? (Check bio). Is \\\"Talent Acquisition\\\" actually Head of People?\\nASSIGN SCORE:\\nTier 1: Perfect Role + NY Location.\\nTier 2: Founder/Admin Role OR (Perfect Role + Non-NY US Location).\\nDQ: Non-US or Bad Role.\\n5. FEW-SHOT EXAMPLES (LEARNING DATA)\\nStudy these examples to understand how to apply the logic strictly.\\nExample 1: The \\\"Non-US\\\" Trap\\nInput: Dominika Nowak | HR Director | Gdańsk, Poland\\nReasoning: Title looks perfect, BUT Location is outside the USA.\\nOutput Score: DQ\\nExample 2: The \\\"Displaced Champion\\\" (US but not NY)\\nInput: Sarah Jenkins | VP of People | Austin, Texas\\nReasoning: Role is Tier 1 (VP People), but Location is Texas (Not NY). Logic dictates she drops to Tier 2.\\nOutput Score: Tier 2\\nExample 3: The \\\"New York Admin\\\" (Ambiguous Title)\\nInput: Ester Nespoli | Office Manager | New York, NY | Bio: \\\"Running the NY HQ & team events\\\"\\nReasoning: Role matches \\\"Gatekeeper\\\", Location is New York. Fits all Tier 1 criteria.\\nOutput Score: Tier 1\\n6. OUTPUT FORMAT\\nReturn strictly a valid JSON object.\\nJSON\\n{\\n  \\\"profile_analysis\\\": {\\n    \\\"name\\\": \\\"[Extracted Name]\\\",\\n    \\\"clean_title\\\": \\\"[Standardized Title, e.g. 'CEO' or 'HR Manager']\\\",\\n    \\\"score\\\": \\\"[Tier 1 / Tier 2 / Tier 3 / DQ]\\\",\\n    \\\"buying_persona\\\": \\\"[The People Leader / The Founder / N/A]\\\",\\n    \\\"disqualification_reason\\\": \\\"[If DQ, state reason: 'Non-US Location' or 'Role Mismatch'. If Qualified, return null]\\\",\\n    \\\"reasoning\\\": \\\"[1 sentence explaining the verdict based on Location/Bio signals]\\\"\\n  }\\n}\\nINPUT DATA:\\n\"+{{@Lookup Multiple Rows in Other Table}}?.records"
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-pro\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "fields": "{\"output\":{\"type\":\"string\",\"description\":\"\",\"id\":\"b372dba6-f365-49ee-8219-d91783be7f85\",\"options\":\"\"}}",
+              "jsonType": "\"Fields\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget",
+            "formulaText": "3"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 5,
+      "name": "Formula",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "JSON.stringify({{@Key Contact Person}}?.profileAnalysis)",
+        "formulaPrompt": ""
+      }
+    },
+    {
+      "index": 6,
+      "name": "Work Model",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    }
+  ]
+}

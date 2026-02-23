@@ -9,6 +9,6 @@
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["briefs/scripts/**/*.ts", "scripts/**/*.ts"],
+  "include": ["briefs/scripts/**/*.ts", "scripts/**/*.ts", "enrichment/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

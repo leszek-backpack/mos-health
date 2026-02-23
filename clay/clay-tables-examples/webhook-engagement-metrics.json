@@ -1,0 +1,1250 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-18T11:38:05.173Z",
+  "columnCount": 28,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Webhook",
+      "type": "source",
+      "typeSettings": {
+        "sourceIds": [
+          "s_0t9u70ehAzArJgTiA6g"
+        ],
+        "canCreateRecords": true
+      },
+      "sourceDetails": [
+        {
+          "name": "Pull in data from a Webhook",
+          "type": "webhook",
+          "typeSettings": {
+            "hasAuth": false,
+            "name": "Webhook",
+            "stages": [],
+            "iconType": "Webhook",
+            "description": "Send any data to Clay",
+            "urlSlugText": "Pull in data from a Webhook",
+            "createdFromWorkbookId": "wb_0t9obhpsP7B5ucgHTAy"
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "name": "Employee Count by Location",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Is USA the primary location & at least 50 people in USA?\\n\\n\" + Clay.formatForAIPrompt({{@Webhook}}?.api_response?.data?.[\"0\"])"
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"isUsPrimaryLocation\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Indicates if USA is the primary location of the company\\\",\\n      \\\"enum\\\": [\\n        \\\"YES\\\",\\n        \\\"NO\\\",\\n        \\\"N/A\\\"\\n      ]\\n    },\\n    \\\"atLeast50PeopleInUsa\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Indicates if there are at least 50 people in the USA\\\",\\n      \\\"enum\\\": [\\n        \\\"YES\\\",\\n        \\\"NO\\\",\\n        \\\"N/A\\\"\\n      ]\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"isUsPrimaryLocation\\\",\\n    \\\"atLeast50PeopleInUsa\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 2,
+      "name": "Lookup Single Row in Other Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t9obi1boTMBayyVht5\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t9u6d2Emf3sgYEmA8c\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Webhook}}?.org_id"
+          }
+        ],
+        "conditionalRunFormulaText": "({{@Employee Count by Location}}?.isUsPrimaryLocation?.toLowerCase?.()||\"\")===\"yes\" && ({{@Employee Count by Location}}?.[\"atLeast50PeopleInUsa\"]?.toLowerCase?.()||\"\")===\"yes\"",
+        "conditionalRunFormulaPrompt": "\"Run only if \"+{{@Employee Count by Location}}?.isUsPrimaryLocation+\" & \"+{{@Employee Count by Location}}?.[\"atLeast50PeopleInUsa\"]+\" equal YES\""
+      }
+    },
+    {
+      "index": 3,
+      "name": "Name",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.name",
+        "mappedResultPath": [
+          "name"
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "name": "Enrich Company",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "enrich-company-with-mixrank-v2",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "company_identifier",
+            "formulaText": "{{@Webhook}}?.org_id"
+          }
+        ],
+        "conditionalRunFormulaText": "({{@Employee Count by Location}}?.isUsPrimaryLocation?.toLowerCase?.()||\"\")===\"yes\" && ({{@Employee Count by Location}}?.[\"atLeast50PeopleInUsa\"]?.toLowerCase?.()||\"\")===\"yes\"",
+        "conditionalRunFormulaPrompt": "\"run only if \"+{{f_0t9u7904iQb3reNiBQi}}+\" equals Employee prequalified\""
+      }
+    },
+    {
+      "index": 5,
+      "name": "Website",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.website",
+        "mappedResultPath": [
+          "website"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "name": "Employee Count",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.employee_count",
+        "mappedResultPath": [
+          "employee_count"
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "name": "Name (2)",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.Name",
+        "mappedResultPath": [
+          "record",
+          "Name"
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "name": "Reaction Type",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"Reaction Type\"]",
+        "mappedResultPath": [
+          "record",
+          "Reaction Type"
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "name": "Location Check",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"Location Check\"]",
+        "mappedResultPath": [
+          "record",
+          "Location Check"
+        ]
+      }
+    },
+    {
+      "index": 10,
+      "name": "Current Job Title",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"Current Job Title\"]",
+        "mappedResultPath": [
+          "record",
+          "Current Job Title"
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "name": "Operational Footprint",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"# SYSTEM ROLE\\nYou are a Forensic Data Collector for Venture Capital due diligence. Your role is to navigate a target company's digital footprint to harvest raw text artifacts regarding their operational model and employee benefits stack.\\n# PROTOCOL: EXECUTION FLOW\\nYou must strictly follow this search order. Do not skip steps.\\n**STEP 1: OFFICIAL CAREERS SCAN (The List)**\\n- **Action:** Google search `\\\"{\" + Clay.formatForAIPrompt({{@Name}}) + \"}\\\" careers page`.\\n- **Goal:** Find the company's *primary* domain (e.g., `careers.company.com` or `ashbyhq.com/{company}`).\\n- **Extraction:** Look for \\\"Remote\\\" vs \\\"Location\\\" tags in the job list headers. Note if jobs are listed specifically in \\\"New York\\\" or \\\"San Francisco/Bay Area\\\".\\n**STEP 2: JOB DESCRIPTION DEEP DIVE (The Benefits)**\\n- **Action:** Open 1-2 specific technical or sales job postings (e.g., \\\"Software Engineer\\\" or \\\"Account Executive\\\").\\n- **Goal:** Find the section titled \\\"Benefits\\\", \\\"Perks\\\", \\\"Why Join Us\\\", or \\\"What We Offer\\\".\\n- **Extraction:** Copy the full list of benefits. Specifically look for **Physical Presence Perks** (Lunch, Gym) and **Wellness Tools** (Mental health apps).\\n**STEP 3: THE \\\"BUILTIN\\\" DIRECTORY CHECK (Crucial)**\\n- **Action:** Google search `site:builtin.com \\\"{Company Name}\\\"`.\\n- **Goal:** BuiltIn is the \\\"Gold Standard\\\" for structured office data. Find their profile.\\n- **Extraction:**\\n  1.  **Office Status:** Look for tags like \\\"Hybrid\\\", \\\"Office-First\\\", or \\\"Remote-First\\\".\\n  2.  **Perks Section:** Extract the text listed under their \\\"Perks & Benefits\\\" (e.g., \\\"Daily Meals\\\", \\\"Onsite Gym\\\").\\n  3.  **Address:** Extract specific street addresses listed in the footer/sidebar. **Explicitly check for addresses in both NY and CA.**\\n**STEP 4: CULTURE & GENERAL HQ SCAN (Context)**\\n- **Action:** Google search `\\\"{Company Name}\\\" about us` AND `\\\"{Company Name}\\\" office location` (excluding builtin).\\n- **Goal:** Identify the \\\"Vibe\\\" (Culture) and confirm HQ address if Step 3 failed.\\n# CONTEXT & OBJECTIVE\\nWe are profiling a startup's operational footprint to determine if they are **Remote-First** (Disqualify) or **In-Office/Hybrid** (Target), and if they invest in **Wellness**.\\n**Target Regions:** New York City Metro AND San Francisco Bay Area (We need to confirm presence in either or both).\\n**Target Company:** {{\" + Clay.formatForAIPrompt({{@Name}}) + \"}}\\n# INPUT DATA\\nYou will be processing text from the search results and pages visited in the steps above.\\n# KNOWLEDGE BASE (Search Vectors)\\n* **Work Model:** \\\"Remote-first\\\", \\\"Hybrid\\\", \\\"In-office\\\", \\\"Flexible\\\", \\\"Distributed\\\", \\\"RTO\\\", \\\"3 days a week\\\".\\n* **Office Indicators (Critical):** \\\"Commuter benefits\\\", \\\"Catered lunch\\\", \\\"Stocked kitchen\\\", \\\"On-site gym\\\", \\\"Bike storage\\\", \\\"Parking\\\", \\\"Ping pong\\\", \\\"Happy Hours\\\".\\n* **Wellness Competitors (Budget Signals):** \\\"Lyra\\\", \\\"Spring Health\\\", \\\"Modern Health\\\", \\\"Headspace\\\", \\\"BetterHelp\\\", \\\"Gympass\\\", \\\"ClassPass\\\".\\n* **Standard Benefits:** \\\"401k\\\", \\\"Medical\\\", \\\"Dental\\\", \\\"Vision\\\", \\\"Unlimited PTO\\\", \\\"Parental Leave\\\".\\n# INSTRUCTIONS\\nUse a <scratchpad> to log your findings from each STEP before constructing the JSON.\\n**1. Work Model & Job Ratio**\\n   - Scan job headers (Step 1) and BuiltIn tags (Step 3).\\n   - **Crucial:** If you see \\\"Remote\\\" AND a major hub (e.g., \\\"San Francisco\\\" or \\\"New York\\\"), record *both*. Do not infer \\\"Hybrid\\\" yet.\\n**2. Benefits Extraction (The Deep Dive)**\\n   - From the JD (Step 2) AND BuiltIn Perks (Step 3), extract the raw list.\\n   - **Flag Competitors:** If they mention \\\"Mental Health Support\\\" or specific apps (Lyra/Modern Health), flag this as a \\\"Wellness Signal\\\".\\n   - **Flag Office Perks:** If they mention \\\"Free Lunch\\\" or \\\"Snacks\\\", flag this as an \\\"In-Office Signal\\\".\\n**3. Location Forensics**\\n   - **The \\\"Hub\\\" Check:** List every city mentioned as an office.\\n   - **Address Hunt:** Find specific street addresses, prioritizing identifying footprints in **NYC** and **SFBA**.\\n# OUTPUT SCHEMA\\nReturn a SINGLE JSON object.\\n{\\n  \\\"scraped_at\\\": \\\"YYYY-MM-DD\\\",\\n  \\\"culture_artifacts\\\": [\\n    \\\"Raw snippet about values...\\\",\\n    \\\"Raw snippet about team vibe...\\\"\\n  ],\\n  \\\"location_data\\\": {\\n    \\\"cities_mentioned_raw\\\": [\\\"City1\\\", \\\"City2\\\"],\\n    \\\"hub_evidence\\\": {\\n        \\\"nyc_mentions\\\": [\\\"Address in Manhattan...\\\", \\\"Snippet about NY Hub...\\\"],\\n        \\\"sfba_mentions\\\": [\\\"Address in Palo Alto...\\\", \\\"Snippet about SF HQ...\\\"]\\n    }\\n  },\\n  \\\"work_model_raw\\\": [\\n    \\\"BuiltIn Tag: [Hybrid/Remote/Office]\\\",\\n    \\\"Text mentioning remote policy...\\\",\\n    \\\"Job title examples: 'Engineer - SF', 'Sales - Remote'\\\"\\n  ],\\n  \\\"benefits_data\\\": {\\n    \\\"raw_benefits_list\\\": [\\n      \\\"Medical/Dental/Vision\\\",\\n      \\\"BuiltIn: Daily Meals\\\",\\n      \\\"Raw text found in JD...\\\"\\n    ],\\n    \\\"wellness_competitors_detected\\\": [\\n      \\\"Name of competitor found (e.g. Lyra) or null\\\"\\n    ],\\n    \\\"physical_amenities_detected\\\": [\\n      \\\"List of perks that imply an office (e.g. 'Catered Lunch', 'On-site Gym')\\\"\\n    ]\\n  },\\n  \\\"job_location_ratio\\\": {\\n    \\\"remote_jobs_count\\\": 0,\\n    \\\"office_jobs_count\\\": 0,\\n    \\\"locations_mentioned\\\": [\\\"City1\\\", \\\"City2\\\"]\\n  }\\n}\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"scrapedAt\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The date when the data was scraped, in YYYY-MM-DD format\\\"\\n    },\\n    \\\"cultureArtifacts\\\": {\\n      \\\"type\\\": \\\"array\\\",\\n      \\\"description\\\": \\\"Raw snippets about company values and team vibe\\\",\\n      \\\"items\\\": {\\n        \\\"type\\\": \\\"string\\\"\\n      }\\n    },\\n    \\\"locationData\\\": {\\n      \\\"type\\\": \\\"object\\\",\\n      \\\"properties\\\": {\\n        \\\"citiesMentionedRaw\\\": {\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"description\\\": \\\"List of cities mentioned as office locations in raw text\\\",\\n          \\\"items\\\": {\\n            \\\"type\\\": \\\"string\\\"\\n          }\\n        },\\n        \\\"hubEvidence\\\": {\\n          \\\"type\\\": \\\"object\\\",\\n          \\\"properties\\\": {\\n            \\\"nycMentions\\\": {\\n              \\\"type\\\": \\\"array\\\",\\n              \\\"description\\\": \\\"List of addresses or snippets about the company's presence or hub in New York City\\\",\\n              \\\"items\\\": {\\n                \\\"type\\\": \\\"string\\\"\\n              }\\n            },\\n            \\\"sfbaMentions\\\": {\\n              \\\"type\\\": \\\"array\\\",\\n              \\\"description\\\": \\\"List of addresses or snippets about the company's presence or hub in San Francisco Bay Area\\\",\\n              \\\"items\\\": {\\n                \\\"type\\\": \\\"string\\\"\\n              }\\n            }\\n          },\\n          \\\"required\\\": [\\n            \\\"nycMentions\\\",\\n            \\\"sfbaMentions\\\"\\n          ],\\n          \\\"additionalProperties\\\": false\\n        }\\n      },\\n      \\\"required\\\": [\\n        \\\"citiesMentionedRaw\\\",\\n        \\\"hubEvidence\\\"\\n      ],\\n      \\\"additionalProperties\\\": false\\n    },\\n    \\\"workModelRaw\\\": {\\n      \\\"type\\\": \\\"array\\\",\\n      \\\"description\\\": \\\"Raw snippets, tags, and job title examples that reference the work model\\\",\\n      \\\"items\\\": {\\n        \\\"type\\\": \\\"string\\\"\\n      }\\n    },\\n    \\\"benefitsData\\\": {\\n      \\\"type\\\": \\\"object\\\",\\n      \\\"properties\\\": {\\n        \\\"rawBenefitsList\\\": {\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"description\\\": \\\"Raw text lines or items listing employee benefits\\\",\\n          \\\"items\\\": {\\n            \\\"type\\\": \\\"string\\\"\\n          }\\n        },\\n        \\\"wellnessCompetitorsDetected\\\": {\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"description\\\": \\\"Names of wellness competitors detected in benefits or null if none\\\",\\n          \\\"items\\\": {\\n            \\\"type\\\": \\\"string\\\"\\n          }\\n        },\\n        \\\"physicalAmenitiesDetected\\\": {\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"description\\\": \\\"Perks that imply a physical office, such as lunch, gym, stocked kitchen, etc.\\\",\\n          \\\"items\\\": {\\n            \\\"type\\\": \\\"string\\\"\\n          }\\n        }\\n      },\\n      \\\"required\\\": [\\n        \\\"rawBenefitsList\\\",\\n        \\\"wellnessCompetitorsDetected\\\",\\n        \\\"physicalAmenitiesDetected\\\"\\n      ],\\n      \\\"additionalProperties\\\": false\\n    },\\n    \\\"jobLocationRatio\\\": {\\n      \\\"type\\\": \\\"object\\\",\\n      \\\"properties\\\": {\\n        \\\"remoteJobsCount\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Count of jobs listed as remote\\\"\\n        },\\n        \\\"officeJobsCount\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Count of jobs listed as based in an office or specific location\\\"\\n        },\\n        \\\"locationsMentioned\\\": {\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"description\\\": \\\"List of all city/location names mentioned in job postings\\\",\\n          \\\"items\\\": {\\n            \\\"type\\\": \\\"string\\\"\\n          }\\n        }\\n      },\\n      \\\"required\\\": [\\n        \\\"remoteJobsCount\\\",\\n        \\\"officeJobsCount\\\",\\n        \\\"locationsMentioned\\\"\\n      ],\\n      \\\"additionalProperties\\\": false\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"scrapedAt\\\",\\n    \\\"cultureArtifacts\\\",\\n    \\\"locationData\\\",\\n    \\\"workModelRaw\\\",\\n    \\\"benefitsData\\\",\\n    \\\"jobLocationRatio\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "parseFloat((!{{@Enrich Company}}?\"\":{{@Enrich Company}}?.employee_count)||(!{{@Enrich Company}}?\"\":{{@Enrich Company}}?.derived_datapoints?.employee_count)||(!{{@Enrich Company}}?\"\":{{@Enrich Company}}?.size))>50",
+        "conditionalRunFormulaPrompt": "\"Employee count between 50 and 1000: \"+{{@Employee Count}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 12,
+      "name": "LinkedIn Benefits Extract",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"# SYSTEM ROLE\\nToday is February 2026.\\nYou are a Benefits Intelligence Agent. Your sole purpose is to find an active job description on LinkedIn for a specific company and extract the \\\"Benefits\\\" text to prove they have an office and a wellness budget.\\n# TARGET\\n**Company:** {{\" + Clay.formatForAIPrompt({{@Name}}) + \"}}\\n**Target Location:** USA\\n# EXECUTION PROTOCOL\\n**STEP 1: GOOGLE SEARCH (The Specific Query)**\\nExecute this exact search to find LinkedIn job posts indexed by Google (bypassing LinkedIn's login wall often):\\n*   **Query:** `site:linkedin.com/jobs \\\"{Company Name}\\\" \\\"benefits\\\" \\\"San Francisco\\\"`\\n*   **Fallback (if no results):** `site:linkedin.com/jobs \\\"{Company Name}\\\" \\\"benefits\\\"`\\n**STEP 2: SELECTION**\\nClick the first available link that looks like a full-time corporate role (e.g., \\\"Manager\\\", \\\"Engineer\\\", \\\"Associate\\\").\\n*   *Ignore \\\"Intern\\\" or \\\"Contractor\\\" roles if possible, as they often lack full benefits.*\\n**STEP 3: EXTRACTION**\\nScan the \\\"About the job\\\" section. Locate the header titled **\\\"Benefits\\\"**, **\\\"Perks\\\"**, **\\\"What We Offer\\\"**, or **\\\"Compensation\\\"**.\\n*   **Action:** Copy the bullet points found in this section.\\n# DATA FORENSICS (What to look for)\\n**1. The \\\"Free Lunch\\\" Test (Physical Office Proof)**\\nWe need to know if they have a *real* office. Look for:\\n*   \\\"Catered lunch\\\", \\\"Free food\\\", \\\"Stocked kitchen\\\", \\\"Snacks\\\".\\n*   \\\"Commuter benefits\\\", \\\"Clipper card\\\", \\\"Parking\\\", \\\"On-site gym\\\".\\n*   \\\"Dog friendly office\\\", \\\"Team happy hours\\\".\\n**2. The \\\"Wellness\\\" Test (Budget Proof)**\\nWe need to know if they spend money on employee health. Look for:\\n*   \\\"Lyra\\\", \\\"Modern Health\\\", \\\"Spring Health\\\", \\\"Headspace\\\", \\\"Gympass\\\".\\n*   \\\"Wellness stipend\\\", \\\"Fitness reimbursement\\\", \\\"Mental health benefits\\\".\\n# OUTPUT SCHEMA\\nReturn a SINGLE JSON object.\\n{\\n  \\\"scraped_at\\\": \\\"YYYY-MM-DD\\\",\\n  \\\"source_url\\\": \\\"URL of the LinkedIn Job Post\\\",\\n  \\\"job_title_found\\\": \\\"Title (e.g. Senior Software Engineer)\\\",\\n  \\\"location_tag\\\": \\\"Location found in header (e.g. San Francisco, CA or Remote)\\\",\\n  \\\"raw_benefits_text\\\": \\\"Full extracted text of the benefits section...\\\",\\n  \\\"signals_detected\\\": {\\n    \\\"physical_office_perks\\\": [\\n      \\\"List any found keywords (e.g. 'Catered Lunch', 'Commuter Stipend')\\\"\\n    ],\\n    \\\"wellness_investment\\\": [\\n      \\\"List any found keywords (e.g. 'Lyra', '$100 Wellness Stipend')\\\"\\n    ],\\n    \\\"work_model_policy\\\": \\\"Any sentence defining attendance (e.g. '3 days in office')\\\"\\n  }\\n}\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "fields": "{\"response\":{\"type\":\"string\"}}"
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Operational Footprint}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 13,
+      "name": "Qualification Tier",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"You are the Lead RevOps & HR Intelligence Officer for ModHealth. You combine forensic data collection with psychographic HR profiling to qualify B2B prospects.\\nYOUR BIAS:\\nInnocent until Proven Guilty: \\\"Unknown\\\" work model data results in a lower Tier, not Disqualification.\\nZero Tolerance for Zombies: A legal address with 0 employees/jobs is strictly DISQUALIFIED.\\nButt-in-Seat Verification: You prioritize physical benefits (Free Lunch, Gym) as the ultimate proof of an in-office culture.\\nCONTEXT & OBJECTIVE\\nWe are profiling startups (50-500 employees) to sell workplace supplementation (ModHealth).\\nGoal: Assign a Qualification Tier (1, 2, 3, or DQ) and an HR Investment Score (0-10) based on physical presence, work model, and benefits investment.\\nINPUT DATA MAP (Hierarchy of Evidence)\\nTreat sources in this strict priority order:\\n<job_listings_raw> (The Truth Layer): Active job descriptions (LinkedIn/ATS). GOLD STANDARD for Benefits & Work Model.\\n<geo_analysis_json> (The Validation Layer): Hard numbers on employee density.\\n<careers_page> (The Policy Layer): Company \\\"About\\\" text and high-level perks.\\n<web_crawler> (The Weakest Layer): External news/directories.\\nKNOWLEDGE BASE\\n1. BENEFITS & WELLNESS DICTIONARY\\n**Basic Benefits:** 401k, Medical Insurance, Dental Insurance, Vision Insurance, Unlimited PTO, Flexible Hours, Sick Days, Equity, Competitive Salary. * **Premium Benefits:** LSA (Lifestyle Spending Account), Wellness Stipend, Mental Health Benefits, Computer Benefit, Gym (or Stipend), Fitness Stipend, Free Lunch, Catered Meals, Snacks, Commuter Benefits, Paid Parental Leave, L&D Stipend, HSA, FSA, Company Offsites, Retreats. * **Ultra-Premium Benefits:** Sabbaticals, Fertility, Student Loan Repayment, 100% Paid Family Healthcare, Pet Insurance. * **Validation Signals (+1 Bonus):** Lyra, Spring Health, One Medical.\\n2. SCORING LOGIC (HR Investment Score - Part 1)\\nScore the benefits stack on a 0-5 scale:\\n0 points: No benefits found / Empty (CRITICAL FLAG).\\n1 point: Basic benefits only.\\n3 points: Solid (Basic + 2-3 Premium/In-Office perks).\\n5 points: Extensive (Basic + 5+ Premium perks OR any \\\"Ultra-Premium\\\" like Sabbaticals/Fertility).\\nBonus: Add +1 point if a Validation Signal (e.g., Lyra) is found (Max 5 total).\\nAlso, classify whether the company offers Basic Benefits, Premium Benefits, Ultra-premium Benefits or Unknown.\\n\\nBasic Benefits = only basic benefits exists\\nPremium Benefits = At least 2 premium benefits\\nUltra-premium Benefits = At least 1 ultra-premium benefit\\n\\n3. TIER DEFINITIONS\\nTier 1 (Top 20): USA presence + Hybrid/In-Office + Benefits Score >= 5.\\nTier 2 (Qualified): USA Presence + Hybrid/In-Office + Benefits Score < 5.\\nDisqualified: Remote-First OR \\\"Zombie Office\\\" (0 active jobs/employees in region).\\nINSTRUCTIONS (EXECUTION FLOW)\\nSTEP 1: KILL SWITCH & ZOMBIE CHECK\\nScan all inputs for Explicit Remote Keywords: \\\"Remote-First\\\", \\\"Virtual-First\\\", \\\"No physical office\\\".\\nZombie Detection: IF target_region_count < 5 AND active_jobs == 0 → DISQUALIFY.\\nSTEP 2: BENEFITS EXTRACTION & SCORING\\nScan <job_listings_raw> for the \\\"Benefits/Perks\\\" section.\\nExtract ALL items into a comma-separated list.\\nCheck for Competitors (Lyra, Gympass, etc.).\\nCalculate Score (0-5) based on the \\\"Scoring Logic\\\" above.\\nSTEP 3: WORK MODEL CONFIRMATION\\nStandard Detection: Look for \\\"Hybrid\\\", \\\"3 days in office\\\", \\\"Tuesday-Thursday\\\".\\nSignal Override: IF work_model is \\\"Unknown\\\" BUT you found In-Office Signals (e.g., \\\"Catered Lunch\\\", \\\"On-site Gym\\\") → FORCE \\\"HYBRID\\\".\\nDensity Override: IF sf_percentage > 30% AND Physical Address exists → FORCE \\\"HYBRID\\\".\\nSTEP 4: CULTURE PROFILING\\nGoal-Oriented: Focus on \\\"Speed\\\", \\\"Disruption\\\", \\\"High Performance\\\". Implied Contract: \\\"High Effort = High Reward\\\".\\nPeople-Oriented: Focus on \\\"Belonging\\\", \\\"Safety\\\", \\\"Inclusivity\\\". Implied Contract: \\\"Human first, employee second\\\".\\nMix: Explicit balance of both.\\nSTEP 5: TIER ASSIGNMENT\\nApply the Tier Definitions using the calculated Benefits Score and confirmed Work Model.\\n{\\n\\\"executive_summary\\\": {\\n\\\"Tier\\\": \\\"[Tier 1 / Tier 2 / Tier 3 / Disqualified]\\\",\\n\\\"Tier Reasoning\\\": \\\"[Strict 1-sentence verdict]\\\"\\n\\\"Benefits Score\\\": [Integer 0-5],\\n\\\"Benefits Score Reasoning\\\": \\\"[Explanation of points assigned]\\\",\\n\\\"Benefits Extracted Raw List\\\": \\\"String (comma-separated list of all benefits found)\\\",\\n\\\"Benefits Signalling In-Office Model\\\": [\\\"List of physical perks (e.g. 'Free Lunch')\\\"],\\n\\\"Wellness Competitors\\\": \\\"[e.g. Gympass OR null]\\\",\\n\\\"Wellness Validation Signals\\\": \\\"[e.g. Lyra OR null]\\\"\\n\\\"Culture Type\\\": \\\"[Goal-Oriented / People-Oriented / Mix / Unknown]\\\",\\n\\\"Culture Reasoning\\\": \\\"[1 sentence explaining the vibe]\\\",\\n\\\"Work Model\\\": \\\"[Hybrid / In-Office / Fully Remote / Unknown]\\\",\\n\\\"Work Model Reasoning: \\\"[Stated Policy / Inferred from Perks / Inferred from Density]\\\",\\n\\\"Office Locations\\\": [\\\"City, State\\\", \\\"City, State\\\"],\\n}\\nINPUT DATA\\n<geo_analysis_json>[\" + Clay.formatForAIPrompt({{@Employee Count by Location}}) + \"]</geo_analysis_json>\\n<job_listings_raw>[\" + Clay.formatForAIPrompt({{@LinkedIn Benefits Extract}}) + \"]</job_listings_raw>\\n<careers_page>[\" + Clay.formatForAIPrompt({{@Operational Footprint}}) + \"]</careers_page>\\n\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-3-pro\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"Tier\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Qualification Tier assigned to the company based on ModHealth profiling.\\\",\\n      \\\"enum\\\": [\\n        \\\"Tier 1\\\",\\n        \\\"Tier 2\\\",\\n        \\\"Tier 3\\\",\\n        \\\"Disqualified\\\"\\n      ]\\n    },\\n    \\\"tierReasoning\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Strict 1-sentence verdict explaining the reason for the assigned Tier.\\\"\\n    },\\n    \\\"executiveSummary\\\": {\\n      \\\"type\\\": \\\"object\\\",\\n      \\\"properties\\\": {\\n        \\\"benefitsScore\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Score (0-5) indicating the depth and quality of employee benefits offered.\\\"\\n        },\\n        \\\"benefitsScoreReasoning\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Explanation of why the given benefits score was assigned.\\\"\\n        },\\n        \\\"benefitsClassification\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Benefits Classification - either Basic Benefits, Premium Benefits, Ultra-premium Benefits, or Unknown\\\"\\n        },\\n        \\\"benefitsExtractedRawList\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Comma-separated list of all benefits and perks found in job descriptions and company materials.\\\"\\n        },\\n        \\\"wellnessCompetitors\\\": {\\n          \\\"type\\\": [\\n            \\\"string\\\",\\n            \\\"null\\\"\\n          ],\\n          \\\"description\\\": \\\"Comma-separated list of wellness competitors mentioned, or null if none found.\\\"\\n        },\\n        \\\"wellnessValidationSignals\\\": {\\n          \\\"type\\\": [\\n            \\\"string\\\",\\n            \\\"null\\\"\\n          ],\\n          \\\"description\\\": \\\"Comma-separated list of validation signals (e.g. Lyra, Spring Health) found in company materials, or null.\\\"\\n        },\\n        \\\"cultureType\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Type of corporate culture detected at the company.\\\",\\n          \\\"enum\\\": [\\n            \\\"Goal-Oriented\\\",\\n            \\\"People-Oriented\\\",\\n            \\\"Mix\\\",\\n            \\\"Unknown\\\"\\n          ]\\n        },\\n        \\\"cultureReasoning\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"One sentence explaining the reasoning for assigning the culture type.\\\"\\n        },\\n        \\\"workModel\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Observed or inferred work model based on company disclosures and in-office perk signals.\\\",\\n          \\\"enum\\\": [\\n            \\\"Hybrid\\\",\\n            \\\"In-Office\\\",\\n            \\\"Fully Remote\\\",\\n            \\\"Unknown\\\"\\n          ]\\n        },\\n        \\\"workModelReasoning\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Explanation of how the work model was assigned or inferred.\\\"\\n        },\\n        \\\"officeLocations\\\": {\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"description\\\": \\\"List of city and state pairs where the company operates physical offices.\\\",\\n          \\\"items\\\": {\\n            \\\"type\\\": \\\"string\\\"\\n          }\\n        }\\n      },\\n      \\\"required\\\": [\\n        \\\"benefitsScore\\\",\\n        \\\"benefitsScoreReasoning\\\",\\n        \\\"benefitsExtractedRawList\\\",\\n        \\\"wellnessCompetitors\\\",\\n        \\\"wellnessValidationSignals\\\",\\n        \\\"cultureType\\\",\\n        \\\"cultureReasoning\\\",\\n        \\\"workModel\\\",\\n        \\\"workModelReasoning\\\",\\n        \\\"officeLocations\\\"\\n      ],\\n      \\\"additionalProperties\\\": false\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"Tier\\\",\\n    \\\"tierReasoning\\\",\\n    \\\"executiveSummary\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget",
+            "formulaText": "3"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@LinkedIn Benefits Extract}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 14,
+      "name": "Prospect Li URL",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "url"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"Prospect Li URL\"]",
+        "mappedResultPath": [
+          "record",
+          "Prospect Li URL"
+        ]
+      }
+    },
+    {
+      "index": 15,
+      "name": "Add row",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "google-sheets-add-row-v2",
+        "actionVersion": 1,
+        "actionPackageId": "b52dbb55-6b36-4b63-9f8c-21d923353045",
+        "inputsBinding": [
+          {
+            "name": "id",
+            "formulaText": "\"1yerj2-fs6fLSBNoKev_fXTMY2zvN5bwy_P-tFYeWjn0\""
+          },
+          {
+            "name": "columnMapping|ClaySheetId",
+            "formulaText": "\"364940644\""
+          },
+          {
+            "name": "columnMapping|Full Name",
+            "formulaText": "{{@Name (2)}}"
+          },
+          {
+            "name": "columnMapping|Job title",
+            "formulaText": "{{@Current Job Title}}"
+          },
+          {
+            "name": "columnMapping|Company",
+            "formulaText": "{{@Enrich Company}}?.name"
+          },
+          {
+            "name": "columnMapping|Li URL",
+            "formulaText": "{{@Prospect Li URL}}"
+          },
+          {
+            "name": "columnMapping|Domain",
+            "formulaText": "{{@Enrich Company}}?.domain"
+          },
+          {
+            "name": "columnMapping|Employees",
+            "formulaText": "{{@Enrich Company}}?.employee_count"
+          },
+          {
+            "name": "columnMapping|Work Model",
+            "formulaText": "{{@Work Model}}"
+          },
+          {
+            "name": "columnMapping|Culture Type",
+            "formulaText": "{{@Culture Type}}"
+          },
+          {
+            "name": "columnMapping|Benefits Classification",
+            "formulaText": "{{@Benefits Classification}}"
+          },
+          {
+            "name": "columnMapping|Benefits Raw",
+            "formulaText": "{{@Benefits Extracted Raw List}}"
+          },
+          {
+            "name": "columnMapping|Contact Priority",
+            "formulaText": "{{@Lead Score}}?.profileAnalysis?.score"
+          },
+          {
+            "name": "columnMapping|Reaction Type",
+            "formulaText": "{{@Reaction Type}}"
+          },
+          {
+            "name": "columnMapping|Reacted to Post",
+            "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"Post URL\"]"
+          },
+          {
+            "name": "columnMapping|Message sent"
+          },
+          {
+            "name": "columnMapping|Company Tier",
+            "formulaText": "{{@Qualification Tier}}?.Tier"
+          }
+        ],
+        "runAsButton": true,
+        "authAccountId": "aa_0t9iv44JsRr3mYDkoJX"
+      }
+    },
+    {
+      "index": 16,
+      "name": "Culture Type",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.executiveSummary?.cultureType",
+        "mappedResultPath": [
+          "executiveSummary",
+          "cultureType"
+        ]
+      }
+    },
+    {
+      "index": 17,
+      "name": "Work Model",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.executiveSummary?.workModel",
+        "mappedResultPath": [
+          "executiveSummary",
+          "workModel"
+        ]
+      }
+    },
+    {
+      "index": 18,
+      "name": "Culture Reasoning",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.executiveSummary?.cultureReasoning",
+        "mappedResultPath": [
+          "executiveSummary",
+          "cultureReasoning"
+        ]
+      }
+    },
+    {
+      "index": 19,
+      "name": "Work Model Reasoning",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.executiveSummary?.workModelReasoning",
+        "mappedResultPath": [
+          "executiveSummary",
+          "workModelReasoning"
+        ]
+      }
+    },
+    {
+      "index": 20,
+      "name": "Benefits Score Reasoning",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.executiveSummary?.benefitsScoreReasoning",
+        "mappedResultPath": [
+          "executiveSummary",
+          "benefitsScoreReasoning"
+        ]
+      }
+    },
+    {
+      "index": 21,
+      "name": "Benefits Extracted Raw List",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.executiveSummary?.benefitsExtractedRawList",
+        "mappedResultPath": [
+          "executiveSummary",
+          "benefitsExtractedRawList"
+        ]
+      }
+    },
+    {
+      "index": 22,
+      "name": "Benefits Classification",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.executiveSummary?.benefitsClassification",
+        "mappedResultPath": [
+          "executiveSummary",
+          "benefitsClassification"
+        ]
+      }
+    },
+    {
+      "index": 23,
+      "name": "Tier",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Tier}}?.Tier",
+        "mappedResultPath": [
+          "Tier"
+        ]
+      }
+    },
+    {
+      "index": 24,
+      "name": "HS Properties",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"# SYSTEM ROLE\\nYou are a CRM Data Enrichment Specialist. Your task is to generate and format specific HubSpot properties based on the input data.\\n**CONSTRAINT:** Do NOT output fields for Tier, Work Model, or Benefits Score (these are already calculated). Focus on Enrichment, Formatting, and Summaries.\\n# HUBSPOT PROPERTIES SCHEMA\\n{\\n  \\\"properties\\\": {\\n    \\\"company_vertical\\\": \\\"Tech Startups / Enterprise / Healthcare/Wellness / Hotels & Hospitality / Shared Working Spaces / VC/Investment Firms / Retail / Professional Services / Other\\\",\\n    \\\"country\\\": \\\"TEXT\\\",\\n    \\\"city\\\": \\\"TEXT\\\",\\n    \\\"state\\\": \\\"TEXT\\\",\\n    \\\"industry\\\": \\\"ACCOUNTING / AIRLINES_AVIATION / ALTERNATIVE_DISPUTE_RESOLUTION / ALTERNATIVE_MEDICINE / ANIMATION / APPAREL_FASHION / ARCHITECTURE_PLANNING / ARTS_AND_CRAFTS / AUTOMOTIVE / AVIATION_AEROSPACE / BANKING / BIOTECHNOLOGY / BROADCAST_MEDIA / BUILDING_MATERIALS / BUSINESS_SUPPLIES_AND_EQUIPMENT / CAPITAL_MARKETS / CHEMICALS / CIVIC_SOCIAL_ORGANIZATION / CIVIL_ENGINEERING / COMMERCIAL_REAL_ESTATE / COMPUTER_NETWORK_SECURITY / COMPUTER_GAMES / COMPUTER_HARDWARE / COMPUTER_NETWORKING / COMPUTER_SOFTWARE / INTERNET / CONSTRUCTION / CONSUMER_ELECTRONICS / CONSUMER_GOODS / CONSUMER_SERVICES / COSMETICS / DAIRY / DEFENSE_SPACE / DESIGN / EDUCATION_MANAGEMENT / E_LEARNING / ELECTRICAL_ELECTRONIC_MANUFACTURING / ENTERTAINMENT / ENVIRONMENTAL_SERVICES / EVENTS_SERVICES / EXECUTIVE_OFFICE / FACILITIES_SERVICES / FARMING / FINANCIAL_SERVICES / FINE_ART / FISHERY / FOOD_BEVERAGES / FOOD_PRODUCTION / FUND_RAISING / FURNITURE / GAMBLING_CASINOS / GLASS_CERAMICS_CONCRETE / GOVERNMENT_ADMINISTRATION / GOVERNMENT_RELATIONS / GRAPHIC_DESIGN / HEALTH_WELLNESS_AND_FITNESS / HIGHER_EDUCATION / HOSPITAL_HEALTH_CARE / HOSPITALITY / HUMAN_RESOURCES / IMPORT_AND_EXPORT / INDIVIDUAL_FAMILY_SERVICES / INDUSTRIAL_AUTOMATION / INFORMATION_SERVICES / INFORMATION_TECHNOLOGY_AND_SERVICES / INSURANCE / INTERNATIONAL_AFFAIRS / INTERNATIONAL_TRADE_AND_DEVELOPMENT / INVESTMENT_BANKING / INVESTMENT_MANAGEMENT / JUDICIARY / LAW_ENFORCEMENT / LAW_PRACTICE / LEGAL_SERVICES / LEGISLATIVE_OFFICE / LEISURE_TRAVEL_TOURISM / LIBRARIES / LOGISTICS_AND_SUPPLY_CHAIN / LUXURY_GOODS_JEWELRY / MACHINERY / MANAGEMENT_CONSULTING / MARITIME / MARKET_RESEARCH / MARKETING_AND_ADVERTISING / MECHANICAL_OR_INDUSTRIAL_ENGINEERING / MEDIA_PRODUCTION / MEDICAL_DEVICES / MEDICAL_PRACTICE / MENTAL_HEALTH_CARE / MILITARY / MINING_METALS / MOTION_PICTURES_AND_FILM / MUSEUMS_AND_INSTITUTIONS / MUSIC / NANOTECHNOLOGY / NEWSPAPERS / NON_PROFIT_ORGANIZATION_MANAGEMENT / OIL_ENERGY / ONLINE_MEDIA / OUTSOURCING_OFFSHORING / PACKAGE_FREIGHT_DELIVERY / PACKAGING_AND_CONTAINERS / PAPER_FOREST_PRODUCTS / PERFORMING_ARTS / PHARMACEUTICALS / PHILANTHROPY / PHOTOGRAPHY / PLASTICS / POLITICAL_ORGANIZATION / PRIMARY_SECONDARY_EDUCATION / PRINTING / PROFESSIONAL_TRAINING_COACHING / PROGRAM_DEVELOPMENT / PUBLIC_POLICY / PUBLIC_RELATIONS_AND_COMMUNICATIONS / PUBLIC_SAFETY / PUBLISHING / RAILROAD_MANUFACTURE / RANCHING / REAL_ESTATE / RECREATIONAL_FACILITIES_AND_SERVICES / RELIGIOUS_INSTITUTIONS / RENEWABLES_ENVIRONMENT / RESEARCH / RESTAURANTS / RETAIL / SECURITY_AND_INVESTIGATIONS / SEMICONDUCTORS / SHIPBUILDING / SPORTING_GOODS / SPORTS / STAFFING_AND_RECRUITING / SUPERMARKETS / TELECOMMUNICATIONS / TEXTILES / THINK_TANKS / TOBACCO / TRANSLATION_AND_LOCALIZATION / TRANSPORTATION_TRUCKING_RAILROAD / UTILITIES / VENTURE_CAPITAL_PRIVATE_EQUITY / VETERINARY / WAREHOUSING / WHOLESALE / WINE_AND_SPIRITS / WIRELESS / WRITING_AND_EDITING / MOBILE_GAMES\\\",\\n    \\\"office_location\\\": \\\"[MULTI PICKER SEPARATED WITH ;] San Francisco, CA, Palo Alto, CA, San Jose, CA, New York, NY, Austin, TX, Seattle, WA, Boston, MA, Los Angeles, CA, Denver, CO, Chicago, IL, Miami, FL, Other location in US, Outside US\\\",\\n    \\\"last_funding_type\\\": \\\"Pre-seed / Seed / Series A / Series B / Series B+ / Unknown\\\",\\n    \\\"founding_date\\\": \\\"YYYY-MM-DD\\\",\\n    \\\"sf_employee_count\\\": \\\"INTEGER - Employees in San Francisco Bay Area\\\",\\n    \\\"ny_employee_count\\\": \\\"INTEGER - Employees in New York City Metropolitan Area\\\",\\n    \\\"culture_research_summary\\\": \\\"TEXT - Brief summary of company culture for personalization\\\",\\n    \\\"culture_news_links\\\": \\\"TEXT - URLs separated by ; for reference\\\",\\n    \\\"notable_benefits\\\": \\\"TEXT - Premium/ultra-premium benefits found, for personalization\\\"\\n  }\\n}\\n# INSTRUCTIONS\\n1. **Map `office_location`:** Check `<officeLocations>` from the input JSON. Map them to the specific HubSpot picker values above. Join with `;`.\\n   - Example: Input [\\\"SF\\\", \\\"NYC\\\"] → Output \\\"San Francisco, CA; New York, NY\\\"\\n2. **Map Employee Counts:**\\n   - Extract `sf_employee_count` from `<geo_analysis>` (Look for \\\"San Francisco Bay Area\\\").\\n   - Extract `ny_employee_count` from `<geo_analysis>` (Look for \\\"New York City Metropolitan Area\\\").\\n3. **Generate `culture_research_summary`:**\\n   - Use the `<cultureType>` and `<cultureReasoning>` from the input JSON.\\n   - Write 1-2 sentences summarizing the vibe (e.g., \\\"Goal-oriented culture focused on shipping velocity...\\\").\\n4. **Extract `notable_benefits`:**\\n   - Look at the `<benefitsExtractedRawList>`. Extract ONLY Premium/Ultra-Premium items (e.g., Fertility, Sabbaticals, Pet Insurance). Ignore \\\"401k/Medical\\\".\\n5. **Classify Industry/Vertical:**\\n   - Use `<company_info>` to select the best `company_vertical` and specific `industry` ENUM.\\n# OUTPUT SCHEMA\\nReturn ONLY a valid JSON object.\\n{\\n  \\\"properties\\\": {\\n    \\\"company_vertical\\\": \\\"[Selected value]\\\",\\n    \\\"country\\\": \\\"[Country name]\\\",\\n    \\\"city\\\": \\\"[City name]\\\",\\n    \\\"state\\\": \\\"[State name]\\\",\\n    \\\"industry\\\": \\\"[Selected ENUM value]\\\",\\n    \\\"office_location\\\": \\\"[Value1 ; Value2]\\\",\\n    \\\"last_funding_type\\\": \\\"[Selected value]\\\",\\n    \\\"\\\"last_funding_date\\\": { \\\"type\\\": [\\\"integer\\\", \\\"null\\\"], \\\"description\\\": \\\"The last funding date of the company as a Unix timestamp in milliseconds (e.g. 1672531200000). Return null if the date is not found.\\\" }\\\",\\n    \\\"sf_employee_count\\\": [Integer or null],\\n    \\\"ny_employee_count\\\": [Integer or null],\\n    \\\"culture_research_summary\\\": \\\"[1-2 sentences for personalization]\\\",\\n    \\\"culture_news_links\\\": \\\"[URL1 ; URL2]\\\",\\n    \\\"notable_benefits\\\": \\\"[String of premium benefits or 'None']\\\"\\n  }\\n}\\n# INPUT DATA\\n<executive_summary_json>\\n{{\" + Clay.formatForAIPrompt({{@Qualification Tier}}) + \"}}\\n</executive_summary_json>\\n<geo_analysis>\\n{{\" + Clay.formatForAIPrompt({{@Employee Count by Location}}) + \"}}\\n</geo_analysis>\\n<company_info>\\n{{\" + Clay.formatForAIPrompt({{@Enrich Company}}?.description) + \"}}\\n</company_info>\\n<funding_data>\\n{{NOT FOUND }}\\n</funding_data>\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"companyVertical\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Selected company vertical according to the HubSpot picker values\\\"\\n    },\\n    \\\"country\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Country name of the primary company location\\\"\\n    },\\n    \\\"city\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"City name of the primary company location\\\"\\n    },\\n    \\\"state\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"State name of the primary company location\\\"\\n    },\\n    \\\"industry\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Selected industry according to the HubSpot ENUM values\\\"\\n    },\\n    \\\"officeLocation\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Semi-colon separated list of mapped office locations per HubSpot picker options\\\"\\n    },\\n    \\\"lastFundingType\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Most recent funding type: Pre-seed, Seed, Series A, Series B, Series B+, or Unknown\\\"\\n    },\\n    \\\"lastFundingDate\\\": {\\n      \\\"type\\\": [\\n        \\\"integer\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"The last funding date of the company as a Unix timestamp in milliseconds. Return null if the date is not found.\\\"\\n    },\\n    \\\"sfEmployeeCount\\\": {\\n      \\\"type\\\": [\\n        \\\"integer\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"Number of employees in the San Francisco Bay Area, or null if not found\\\"\\n    },\\n    \\\"nyEmployeeCount\\\": {\\n      \\\"type\\\": [\\n        \\\"integer\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"Number of employees in the New York City Metropolitan Area, or null if not found\\\"\\n    },\\n    \\\"cultureResearchSummary\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Brief 1-2 sentence summary for personalization based on company culture research\\\"\\n    },\\n    \\\"cultureNewsLinks\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Semicolon-separated URLs to relevant culture news or articles\\\"\\n    },\\n    \\\"notableBenefits\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Comma or semicolon separated list of premium or ultra-premium employee benefits, or 'None' if not found\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"companyVertical\\\",\\n    \\\"country\\\",\\n    \\\"city\\\",\\n    \\\"state\\\",\\n    \\\"industry\\\",\\n    \\\"officeLocation\\\",\\n    \\\"lastFundingType\\\",\\n    \\\"lastFundingDate\\\",\\n    \\\"sfEmployeeCount\\\",\\n    \\\"nyEmployeeCount\\\",\\n    \\\"cultureResearchSummary\\\",\\n    \\\"cultureNewsLinks\\\",\\n    \\\"notableBenefits\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Qualification Tier}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    },
+    {
+      "index": 25,
+      "name": "Create Company in HS",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://api.hubapi.com/crm/v3/objects/companies\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"properties\\\": {\\n    \\\"company_vertical\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.companyVertical) + \"\\\",\\n    \\\"country\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.country) + \"\\\",\\n    \\\"city\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.city) + \"\\\",\\n    \\\"state\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.state) + \"\\\",\\n    \\\"industry\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.industry) + \"\\\",\\n    \\\"lifecyclestage\\\": \\\"marketingqualifiedlead\\\",\\n    \\\"domain\\\": \\\"\" + Clay.formatForJSON({{@Website}}) + \"\\\",\\n    \\\"linkedin_company_page\\\": \\\"\" + Clay.formatForJSON({{@Enrich Company}}?.url) + \"\\\",\\n    \\\"name\\\": \\\"\" + Clay.formatForJSON({{@Enrich Company}}?.name) + \"\\\",\\n    \\\"numberofemployees\\\": \\\"\" + Clay.formatForJSON({{@Enrich Company}}?.employee_count) + \"\\\",\\n    \\\"office_location\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.officeLocation) + \"\\\",\\n    \\\"source\\\": \\\"Social Monitoring\\\",\\n    \\\"subsource\\\": \\\"Outbound\\\",\\n    \\\"unqualified_reason\\\": \\\"\\\",\\n    \\\"work_model\\\": \\\"\" + Clay.formatForJSON({{@Work Model}}) + \"\\\",\\n    \\\"workplace_culture\\\": \\\"\" + Clay.formatForJSON({{@Culture Type}}) + \"\\\",\\n    \\\"last_funding_type\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.lastFundingType) + \"\\\",\\n    \\\"founding_date\\\": \\\"\" + Clay.formatForJSON({{@HS Properties}}?.lastFundingDate) + \"\\\",\\n    \\\"hubspot_owner_id\\\": \\\"160116925\\\",\\n    \\\"linkedin_org_id\\\": \\\"\" + Clay.formatForJSON({{@Enrich Company}}?.org_id) + \"\\\",\\n    \\\"founded_year\\\": \\\"\" + Clay.formatForJSON({{@Enrich Company}}?.founded) + \"\\\",\\n    \\\"current_benefits\\\": \\\"\" + Clay.formatForJSON({{@Benefits Extracted Raw List}}) + \"\\\",\\n    \\\"benefits_classification\\\": \\\"\" + Clay.formatForJSON({{@Benefits Classification}}) + \"\\\"\\n  }\\n}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\"",
+              "Authorization": "\"Bearer YOUR_HUBSPOT_ACCESS_TOKEN\""
+            }
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@HS Properties}}",
+        "optionalPathsInInputs": {
+          "body": [
+            [
+              "f_0t9xqmvfarWNJKiZpd5",
+              "lastFundingDate"
+            ],
+            [
+              "f_0t9xqmvfarWNJKiZpd5",
+              "lastFundingType"
+            ]
+          ]
+        },
+        "fromPresetId": "pre__0t9xqoe4ciwPBW8XBzp"
+      }
+    },
+    {
+      "index": 26,
+      "name": "Create Contact in HS",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://api.hubapi.com/crm/v3/objects/contacts\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"properties\\\": {\\n    \\\"firstname\\\": \\\"\" + Clay.formatForJSON({{@Lead Score}}?.profileAnalysis?.firstName) + \"\\\",\\n    \\\"lastname\\\": \\\"\" + Clay.formatForJSON({{@Lead Score}}?.profileAnalysis?.lastName) + \"\\\",\\n    \\\"role\\\": \\\"\" + Clay.formatForJSON({{@Lead Score}}?.profileAnalysis?.buyingPersona) + \"\\\",\\n    \\\"hs_linkedin_url\\\": \\\"\" + Clay.formatForJSON({{@Prospect Li URL}}) + \"\\\",\\n    \\\"hs_lead_status\\\": \\\"NEW\\\",\\n    \\\"source\\\": \\\"Outbound\\\",\\n    \\\"subsource\\\": \\\"Outbound\\\",\\n    \\\"sender_name_outbound\\\": \\\"Pati\\\",\\n    \\\"contact_channel\\\": \\\"Linkedin\\\",\\n    \\\"campaign_type\\\": \\\"Pati content reactions\\\",\\n    \\\"hubspot_owner_id\\\": \\\"160116925\\\",\\n    \\\"company\\\": \\\"\" + Clay.formatForJSON({{@Name}}) + \"\\\",\\n    \\\"jobtitle\\\": \\\"\" + Clay.formatForJSON({{@Lookup Single Row in Other Table}}?.record?.[\"Current Job Title\"]) + \"\\\",\\n    \\\"country\\\": \\\"\" + Clay.formatForJSON({{@Lead Score}}?.profileAnalysis?.country) + \"\\n\\\",\\n    \\\"vmid\\\": \\\"\" + Clay.formatForJSON({{@Lookup Single Row in Other Table}}?.record?.VMID) + \"\\\"\\n  },\\n  \\\"associations\\\": [\\n    {\\n      \\\"to\\\": {\\n        \\\"id\\\": \\\"\" + Clay.formatForJSON({{@Create Company in HS}}?.id) + \"\\\"\\n      },\\n      \\\"types\\\": [\\n        {\\n          \\\"associationCategory\\\": \\\"HUBSPOT_DEFINED\\\",\\n          \\\"associationTypeId\\\": 1\\n        }\\n      ]\\n    }\\n  ]\\n}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\"",
+              "Authorization": "\"Bearer YOUR_HUBSPOT_ACCESS_TOKEN\""
+            }
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ],
+        "conditionalRunFormulaText": "{{@HS Properties}}",
+        "optionalPathsInInputs": {
+          "body": [
+            [
+              "f_0t9xqmvfarWNJKiZpd5",
+              "lastFundingDate"
+            ],
+            [
+              "f_0t9xqmvfarWNJKiZpd5",
+              "lastFundingType"
+            ]
+          ]
+        },
+        "fromPresetId": "pre__0t9xqoe4ciwPBW8XBzp"
+      }
+    },
+    {
+      "index": 27,
+      "name": "Lead Score",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"# 1. ROLE & IDENTITY\\nYou are an expert **RevOps Lead Scorer and Behavioral Profiler** for ModHealth.\\nYour task is to analyze raw LinkedIn profiles to identify the best contact for selling premium productivity supplements to startups (50-500 employees).\\n**You do NOT do simple keyword matching.** You strictly analyze Buying Intent, Authority, and Location Logic.\\n# 2. CONTEXT: THE PRODUCT & ICP\\n* **Product:** ModHealth (Premium productivity supplements).\\n* **Value Prop:** Boosts productivity (ROI), prevents burnout, improves retention.\\n* **Target Location:** San Francisco Bay Area (Physical office benefits).\\n# 3. SCORING LOGIC (STRICT HIERARCHY)\\n### **PRIMARY (The \\\"Champion\\\")**\\n*Definition:* The person most likely to care about employee wellbeing, culture, and office experience.\\n* **Strategic HR Leaders:** VP People, Chief People Officer, Head of Talent.\\n    * **CRITICAL CONDITION:** MUST be located in **SF Bay Area**.\\n* **The \\\"Gatekeepers\\\":** (If no VP People exists) Chief of Staff, Office Manager, or People Ops Manager.\\n    * **CRITICAL CONDITION:** MUST be located in **SF Bay Area**.\\n* **\\\"People-First\\\" Founders:** CEO/COO whose bio explicitly discusses \\\"culture,\\\" \\\"mental health,\\\" \\\"team happiness,\\\" or \\\"retention.\\\"\\n### **SECONDARY (The \\\"Wallet\\\")**\\n*Definition:* High authority, but business/tech focused. They pay the bills but don't research benefits.\\n* **Generic Founders:** CEO, COO, President with standard business bios (Scaling, Revenue, Product, ROI).\\n* **Admin HR:** HR Generalists/Managers who seem focused on paperwork/compliance rather than culture.\\n### **LAST RESORT (Low Probability)**\\n*Definition:* Wrong focus. Only contact if Primary & Secondary are unreachable.\\n* **Tech/Product Leaders:** CTO, CPO, VP Engineering (unless they explicitly mention team burnout/wellbeing).\\n### **DQ (Disqualified)**\\n*Definition:* Do not contact.\\n* **LOCATION MISMATCH (ZERO TOLERANCE):** Any HR, Office, or Admin role located **OUTSIDE** the USA\\n# 4. ANALYSIS PROCESS (CHAIN OF THOUGHT)\\nFor each profile, you must strictly follow this mental sequence before assigning a score:\\n1.  **LOCATION CHECK:** Look at location first. If they are HR/Office staff but NOT in SF/California -> **DQ immediately**. (e.g., \\\"Gdańsk, Poland\\\" = DQ).\\n2.  **ROLE DECODE:** Look beyond the title. Is \\\"Chief of Staff\\\" actually handling HR? (Check bio). Is \\\"Talent Acquisition\\\" actually Head of People?\\n3.  **PSYCHOGRAPHIC CHECK:** Read the summary and description.\\n    * *Primary Signals:* \\\"Passion for culture\\\", \\\"preventing burnout\\\", \\\"employee experience\\\".\\n    * *Secondary Signals:* \\\"Scaling infrastructure\\\", \\\"zero trust security\\\", \\\"market fit\\\".\\n4.  **ASSIGN SCORE:** Tier 1 / Tier 2 / Tier 3 / DQ.\\n# 5. FEW-SHOT EXAMPLES (LEARNING DATA)\\n*Study these examples to understand how to apply the logic strictly.*\\n**Example 1: The \\\"False Positive\\\" Location Trap**\\n* **Input:** Dominika Nowak | HR Director | Gdańsk, Poland\\n* **Reasoning:** Title looks perfect, BUT Location is Poland. ModHealth is a physical benefit for the SF office.\\n* **Output Score:** DQ\\n**Example 2: The \\\"Hidden Champion\\\" (Ambiguous Title)**\\n* **Input:** Ester Nespoli | Chief of Staff | San Jose, California | Bio: \\\"HR admin & team motivation\\\"\\n* **Reasoning:** Title is generic, but Bio mentions HR/Admin. No VP People listed, so she is the decision maker.\\n* **Output Score:** Tier 1 (Primary)\\n# 6. OUTPUT FORMAT\\nReturn strictly a valid **JSON object**.\\n```json\\n{\\n  \\\"profile_analysis\\\": {\\n    \\\"score\\\": \\\"[1 / 2 / 3 / DQ]\\\",\\n    \\\"buying_persona\\\": \\\"[Founder / C-Level / People/HR Leader / Other]\\\",\\n    \\\"disqualification_reason\\\": \\\"[If DQ, state reason: 'Location Mismatch' or 'Role Mismatch'. If Qualified, return null]\\\",\\n    \\\"reasoning\\\": \\\"[1 sentence explaining the verdict based on Location/Bio signals]\\\"\\n\\\"city\\\": \\\"prospects_city\\\",\\n\\\"country\\\": \\\"prospects_country\\\",\\n\\\"first_name\\\": \\\"first_name\\\",\\n\\\"last_name\\\": \\\"last_name\\\"\\n  }\\n}\\nINPUT DATA: \\n**INPUT DATA:**\\n\" + Clay.formatForAIPrompt({{@Lookup Single Row in Other Table}}?.record?.Name) + \"\\n\" + Clay.formatForAIPrompt({{@Lookup Single Row in Other Table}}?.record?.[\"Current Job Title\"]) + \"\\n\" + Clay.formatForAIPrompt({{@Lookup Single Row in Other Table}}?.record?.[\"Location Check\"]) + \"\\n\\n\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"profileAnalysis\\\": {\\n      \\\"type\\\": \\\"object\\\",\\n      \\\"properties\\\": {\\n        \\\"score\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"The assigned score for the prospect based on the scoring logic: 1 for Primary, 2 for Secondary, 3 for Last Resort, DQ for Disqualified.\\\",\\n          \\\"enum\\\": [\\n            \\\"1\\\",\\n            \\\"2\\\",\\n            \\\"3\\\",\\n            \\\"DQ\\\"\\n          ]\\n        },\\n        \\\"buyingPersona\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"The categorized buying persona of the prospect.\\\",\\n          \\\"enum\\\": [\\n            \\\"Founder\\\",\\n            \\\"C-Level\\\",\\n            \\\"People/HR Leader\\\",\\n            \\\"Other\\\"\\n          ]\\n        },\\n        \\\"disqualificationReason\\\": {\\n          \\\"type\\\": [\\n            \\\"string\\\",\\n            \\\"null\\\"\\n          ],\\n          \\\"description\\\": \\\"Reason for disqualification if score is DQ. Possible values are 'Location Mismatch' or 'Role Mismatch'. Null for qualified prospects.\\\"\\n        },\\n        \\\"reasoning\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"One sentence explaining the verdict based on Location or Bio signals.\\\"\\n        },\\n        \\\"city\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"prospects_city\\\"\\n        },\\n        \\\"country\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"prospects_country\\\"\\n        },\\n        \\\"firstName\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"first_name\\\"\\n        },\\n        \\\"lastName\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"last_name\\\"\\n        }\\n      },\\n      \\\"required\\\": [\\n        \\\"score\\\",\\n        \\\"buyingPersona\\\",\\n        \\\"disqualificationReason\\\",\\n        \\\"reasoning\\\",\\n        \\\"city\\\",\\n        \\\"country\\\",\\n        \\\"firstName\\\",\\n        \\\"lastName\\\"\\n      ],\\n      \\\"additionalProperties\\\": false\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"profileAnalysis\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ag73mPirNqpgrotf"
+      }
+    }
+  ]
+}
