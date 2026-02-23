@@ -65,19 +65,19 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 ---
 
 ### STEP 5 — Set up your workspace
-> Leszek sent you two things: a **clone URL** and a file called `natalia.env`. Save the file somewhere you can find it (like your Desktop).
+> Leszek sent you a file called `natalia.env`. Save it to your **Desktop**.
 >
 > Open **Cursor**, press `` Cmd + ` `` to open the terminal. Type:
 > ```
 > claude
 > ```
 >
-> Then paste this to Claude (replace the URL with the one Leszek sent you):
+> Then tell Claude:
 > ```
-> Set up my workspace: clone [PASTE THE URL LESZEK GAVE YOU] into ~/Documents/mos-health, run npm install, then copy the natalia.env file from my Desktop into the mos-health folder and rename it to .env
+> Read the file natalia.env on my Desktop. It has a GITHUB_TOKEN and GITHUB_REPO. Use those to clone the repo into ~/Documents/mos-health, run npm install, then copy natalia.env into the mos-health folder and rename it to .env
 > ```
 >
-> Claude handles everything — downloading the project, installing dependencies, and setting up your keys. When done, type `/exit`.
+> Claude handles everything. When done, type `/exit`.
 >
 > Then in Cursor: **File → Open Folder → Documents → mos-health**
 
