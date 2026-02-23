@@ -259,5 +259,4 @@ GOOGLE_FOLDER_ID=                  # Google Drive folder for briefs
 HUBSPOT_ACCESS_TOKEN=              # HubSpot CRM API
 HEYREACH_API_KEY=                  # HeyReach LinkedIn outreach API
 TRIGGER_SECRET_KEY_PROD=           # Trigger.dev (enrichment pipeline)
-OPENROUTER_API_KEY=                # OpenRouter (enrichment AI analysis via Gemini)
 ```
