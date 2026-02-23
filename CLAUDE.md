@@ -15,6 +15,12 @@ Natalia's AI-powered workspace for Mos Health GTM operations. Claude Code is the
 | "Find contacts at [company]" | Clay contact search + enrichment |
 | "Check my Notion for [topic]" | Search and read Notion workspace |
 | "Add notes to Notion about [meeting]" | Create/update Notion pages |
+| "Show me all deals in HubSpot" | Search and filter CRM records |
+| "Create a contact in HubSpot for [name]" | Create/update CRM objects |
+| "Show my HeyReach campaigns" | List campaigns, stats, leads |
+| "Add [LinkedIn URL] to [campaign]" | Add leads to HeyReach campaigns |
+| "Show conversations from [campaign]" | Read LinkedIn messages and replies |
+| "Pause [campaign name]" | Pause/resume HeyReach campaigns |
 
 ---
 
@@ -98,7 +104,72 @@ For ad-hoc LinkedIn queries beyond brief generation:
 
 ---
 
-## Feature 4: Notion Integration
+## Feature 4: HubSpot CRM
+
+Direct API integration via `integrations/hubspot.ts`. Auth: `HUBSPOT_ACCESS_TOKEN` from `.env`.
+
+To use: import functions from `integrations/hubspot.ts` in a script, or write inline. All functions take `apiKey?: string` as first param — pass `undefined` to use env var.
+
+**Contacts:**
+- `findContactByEmail(apiKey?, email)` → contact ID or null
+- `searchContacts(apiKey?, filters, properties?, limit?)` → contacts array
+- `getContactTouchpoints(apiKey?, contactId)` → full contact details + notes
+- `batchCheckContacts(apiKey?, [{email, vmid?}])` → batch lookup (100 at a time)
+- `importContacts(apiKey?, contacts[])` → upsert one-by-one (create or update)
+- `batchUpsertContacts(apiKey?, contacts[])` → batch upsert (faster, up to 100)
+
+**Companies:**
+- `searchCompanyByDomain(apiKey?, domain)` → company or null
+- `createCompany(apiKey?, {name, domain, industry, ...})` → company ID
+- `associateContactToCompany(apiKey?, contactId, companyId)`
+
+**Deals:**
+- `createDeal(apiKey?, {dealname, amount, dealstage, ...})` → deal ID
+- `updateDeal(apiKey?, dealId, properties)`
+- `associateDealToContact(apiKey?, dealId, contactId)`
+- `associateDealToCompany(apiKey?, dealId, companyId)`
+
+**Notes & Emails:**
+- `createNote(apiKey?, contactId, body, timestamp?)` → note ID (supports HTML)
+- `logEmail(apiKey?, contactId, subject, body, timestamp?)` → email ID
+
+**Properties:**
+- `getContactProperties(apiKey?)` → all writable property definitions (cached 5min)
+
+---
+
+## Feature 5: HeyReach (LinkedIn Outreach)
+
+Direct API integration via `integrations/heyreach.ts`. Auth: `HEYREACH_API_KEY` from `.env`.
+
+To use: import functions from `integrations/heyreach.ts` in a script, or write inline. All functions take `apiKey` as first param.
+
+**Campaigns:**
+- `getAllCampaigns(apiKey, {offset?, limit?})` → list campaigns
+- `getCampaignById(apiKey, campaignId)` → single campaign details
+- `pauseCampaign(apiKey, campaignId)` → pause a running campaign
+- `resumeCampaign(apiKey, campaignId)` → resume a paused campaign
+
+**Leads:**
+- `addLeadsToCampaignV2(apiKey, campaignId, accountLeadPairs[])` → add leads (auto-batches in 100s)
+  - **Quirk:** `firstName` + `lastName` both required (use `"."` for missing lastName)
+  - **Quirk:** Cannot add to DRAFT campaigns
+
+**LinkedIn Accounts:**
+- `getLinkedInAccounts(apiKey, {offset?, limit?, keyword?})` → connected accounts
+
+**Conversations:**
+- `getConversationsV2(apiKey, linkedInAccountIds[], {offset?, limit?, searchString?})` → inbox messages
+- `sendMessage(apiKey, linkedInAccountId, conversationId, message)` → send reply
+
+**Stats:**
+- `getOverallStats(apiKey, {accountIds?, campaignIds?, startDate?, endDate?})` → campaign performance (connections, replies, acceptance rates)
+
+**Campaign Statuses:** `DRAFT | IN_PROGRESS | PAUSED | FINISHED | CANCELED | FAILED | STARTING | SCHEDULED`
+
+---
+
+## Feature 6: Notion Integration
 
 Notion MCP is connected via `.mcp.json`. Use it to:
 - **Search** pages and databases in the Mos Health workspace
@@ -131,6 +202,10 @@ mos-health/
 │   ├── scripts/           # fetch-linkedin.ts, create-google-doc.ts, smoke tests
 │   └── output/            # Generated HTML briefs
 │
+├── integrations/          # API clients (HubSpot, HeyReach)
+│   ├── hubspot.ts         # 18 functions — contacts, companies, deals, notes
+│   └── heyreach.ts        # 14 functions — campaigns, leads, conversations, stats
+│
 ├── campaign-context/      # PDFs (sales narrative, brand book, ICP, playbook, etc.)
 └── output/                # General output directory
 ```
@@ -152,6 +227,8 @@ mos-health/
 - If company data is missing → generate brief with available data
 - If `create-google-doc.ts` fails → HTML file is still in `output/`
 - If a Clay tool fails → fall back to web search
+- If HubSpot call fails → check `HUBSPOT_ACCESS_TOKEN` in `.env`
+- If HeyReach call fails → check `HEYREACH_API_KEY` in `.env`
 - If Notion is disconnected → tell user to run `/mcp` to reconnect
 
 ## Environment Variables
@@ -162,6 +239,8 @@ GOOGLE_CLIENT_ID=                  # Google OAuth2 (Doc creation)
 GOOGLE_CLIENT_SECRET=              # Google OAuth2
 GOOGLE_REFRESH_TOKEN=              # From: npx tsx briefs/scripts/google-auth-setup.ts
 GOOGLE_FOLDER_ID=                  # Google Drive folder for briefs
+HUBSPOT_ACCESS_TOKEN=              # HubSpot CRM API
+HEYREACH_API_KEY=                  # HeyReach LinkedIn outreach API
 TRIGGER_SECRET_KEY_PROD=           # Trigger.dev (enrichment pipeline)
 GOOGLE_GENERATIVE_AI_API_KEY=      # Gemini (enrichment AI analysis)
 ```
