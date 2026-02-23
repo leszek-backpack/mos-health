@@ -1,12 +1,12 @@
 # Getting Started — Mos Health OS
 
-Hi Natalia! This guide gets you from zero to running your AI-powered workspace. ~30 minutes total.
+Hi Natalia! This guide gets you from zero to running your AI-powered workspace. ~20 minutes.
 
 ---
 
 ## What You're Setting Up
 
-**Mos Health OS** is your AI workspace. You talk to Claude Code in a terminal and it does things for you:
+**Mos Health OS** is your AI workspace. You talk to Claude in a terminal and it does things for you:
 - Generate pre-call intelligence briefs from a LinkedIn URL
 - Research companies and contacts via Clay
 - Pull LinkedIn data via RapidAPI
@@ -100,116 +100,86 @@ Clay gives you company and contact enrichment data.
 
 ---
 
-## Step 7: Connect Notion
+## Step 7: Set Up Your Workspace
 
-Notion lets Claude read and write to your workspace.
-
-1. Open Cursor and press `` Cmd + ` `` to open the terminal
-2. Navigate to the project (you'll clone it in Step 8, so come back to this after):
-   ```bash
-   cd ~/Documents/mos-health
-   claude
-   ```
-3. Inside Claude Code, type:
-   ```
-   /mcp
-   ```
-4. You'll see "notion" listed — click or select it to authorize
-5. A browser window opens — log in to Notion and grant access to your workspace
-6. Return to Claude Code — Notion is now connected
-
-**Note:** If Notion isn't listed, the `.mcp.json` file in the project handles this automatically. Just make sure you're in the `mos-health` folder when you run `claude`.
-
----
-
-## Step 8: Clone the Project
-
-Open Cursor, press `` Cmd + ` `` for terminal:
-
-```bash
-cd ~/Documents
-git clone https://github.com/leszek-backpack/mos-health.git
-cd mos-health
-npm install
-```
-
-Open the folder in Cursor: **File → Open Folder → Documents → mos-health**
-
----
-
-## Step 9: Set Up Environment Variables
-
-In Cursor's terminal:
-
-```bash
-cp .env.example .env
-```
-
-Open `.env` in Cursor and fill in the values (Leszek will share these with you):
-
-```bash
-RAPIDAPI_KEY=_______________
-GOOGLE_CLIENT_ID=_______________
-GOOGLE_CLIENT_SECRET=_______________
-GOOGLE_REFRESH_TOKEN=_______________
-GOOGLE_FOLDER_ID=_______________
-```
-
-### Getting the Google Refresh Token
-
-If you don't have one yet:
-
-1. Make sure `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are filled in
-2. Run:
-   ```bash
-   npx tsx briefs/scripts/google-auth-setup.ts
-   ```
-3. Browser opens — log in with your Google account
-4. Copy the `GOOGLE_REFRESH_TOKEN` it prints → paste into `.env`
-
----
-
-## Step 10: Run Smoke Tests
-
-Verify everything works:
-
-```bash
-npx tsx briefs/scripts/test-rapidapi.ts
-```
-Should fetch Bill Gates' LinkedIn profile.
-
-```bash
-npx tsx briefs/scripts/test-google-docs.ts
-```
-Should create and delete a test Google Doc.
-
----
-
-## Step 11: Generate Your First Brief!
-
-1. In Cursor's terminal, make sure you're in `~/Documents/mos-health`
-2. Start Claude Code:
-   ```bash
-   claude
-   ```
-3. Type:
-   ```
-   Generate a brief for https://www.linkedin.com/in/some-prospect-url
-   ```
-4. Claude works through 7 steps automatically (~2-3 minutes)
-5. You get a Google Doc URL at the end
-
----
-
-## Daily Usage
-
-Open Cursor with the `mos-health` folder, then in terminal:
+This is where the magic happens. Open **Cursor**, press `` Cmd + ` `` to open the terminal, and type:
 
 ```bash
 claude
 ```
 
-Now just talk to it:
+Then paste this message to Claude:
+
+```
+Set up my workspace from https://github.com/leszek-backpack/mos-health.git — clone it into ~/Documents/mos-health and install dependencies.
+```
+
+Claude will download the project and install everything. No GitHub account needed — the project is public.
+
+Once it's done, **close Claude** (`/exit`), then open the folder in Cursor: **File → Open Folder → Documents → mos-health**
+
+From now on, always open this folder in Cursor before starting Claude.
+
+---
+
+## Step 8: Set Up Environment Variables
+
+Open Cursor with the `mos-health` folder. Open terminal (`` Cmd + ` ``), start Claude:
+
+```bash
+claude
+```
+
+Tell Claude:
+
+```
+Set up my .env file. Copy .env.example to .env and help me fill it in. Leszek gave me these keys: [paste the keys Leszek shared with you]
+```
+
+Claude will create the `.env` file and fill in the values.
+
+### Google Refresh Token
+
+If you don't have a Google refresh token yet, tell Claude:
+
+```
+Run the Google auth setup script to get my refresh token.
+```
+
+A browser will open — log in with your Google account. Claude will capture the token and add it to `.env`.
+
+---
+
+## Step 9: Connect Notion
+
+With Claude still running in the `mos-health` folder, type:
+
+```
+/mcp
+```
+
+You'll see "notion" listed. Select it to authorize — a browser window opens, log in to Notion and grant access. Return to Claude — Notion is now connected.
+
+---
+
+## Step 10: Generate Your First Brief!
+
+Still in Claude, type:
+
+```
+Generate a brief for https://www.linkedin.com/in/some-prospect-url
+```
+
+Claude works through 7 steps automatically (~2-3 minutes). You get a Google Doc URL at the end.
+
+---
+
+## Daily Usage
+
+1. Open Cursor with the `mos-health` folder
+2. Open terminal (`` Cmd + ` ``)
+3. Type `claude`
+4. Talk to it:
 
 | What you say | What happens |
 |---|---|
@@ -220,7 +190,7 @@ Now just talk to it:
 | "Check Notion for [topic]" | Search your Notion workspace |
 | "Add meeting notes for [person]" | Create a Notion page |
 
-Type `/exit` when done. Start a new session anytime with `claude`.
+Type `/exit` when done.
 
 ---
 
@@ -241,10 +211,10 @@ Type `/exit` when done. Start a new session anytime with `claude`.
 |---------|-----|
 | "command not found: claude" | Close and reopen Terminal |
 | "command not found: node" | Install Node.js (Step 2) |
-| RapidAPI test fails | Check `RAPIDAPI_KEY` in `.env` — ask Leszek |
-| Google Doc test fails | Re-run `npx tsx briefs/scripts/google-auth-setup.ts` |
+| RapidAPI test fails | Tell Claude: "the RapidAPI test failed" — it will debug |
+| Google Doc test fails | Tell Claude: "run the Google auth setup again" |
 | Claude says "not authenticated" | Run `claude` in terminal and log in again |
-| Notion not connecting | Run `/mcp` inside Claude Code to re-authorize |
+| Notion not connecting | Type `/mcp` inside Claude to re-authorize |
 | Clay tools not available | Check Claude.ai → Settings → Connectors → Clay |
 | Brief stops midway | Say "continue" or "please finish the brief" |
 
@@ -252,6 +222,6 @@ Type `/exit` when done. Start a new session anytime with `claude`.
 
 ## Need Help?
 
-- Ask Claude Code itself — type your question in plain English
+- Ask Claude itself — type your question in plain English
 - Message Leszek for API keys or setup issues
 - [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code)
