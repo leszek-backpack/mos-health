@@ -106,7 +106,8 @@ For ad-hoc LinkedIn queries beyond brief generation:
 
 ## Feature 4: HubSpot CRM
 
-Direct API integration via `integrations/hubspot.ts`. Auth: `HUBSPOT_ACCESS_TOKEN` from `.env`.
+**Primary:** MCP connector (configured in `.mcp.json`, authenticates via `/mcp` → OAuth). Use this for everyday queries.
+**Fallback:** Direct API via `integrations/hubspot.ts` using `HUBSPOT_ACCESS_TOKEN` from `.env`. Use for batch operations or anything the MCP connector can't do.
 
 To use: import functions from `integrations/hubspot.ts` in a script, or write inline. All functions take `apiKey?: string` as first param — pass `undefined` to use env var.
 
@@ -140,7 +141,8 @@ To use: import functions from `integrations/hubspot.ts` in a script, or write in
 
 ## Feature 5: HeyReach (LinkedIn Outreach)
 
-Direct API integration via `integrations/heyreach.ts`. Auth: `HEYREACH_API_KEY` from `.env`.
+**Primary:** MCP connector (configured in `.mcp.json`, authenticates via `/mcp` → OAuth). Use this for everyday queries.
+**Fallback:** Direct API via `integrations/heyreach.ts` using `HEYREACH_API_KEY` from `.env`. Use for batch operations or anything the MCP connector can't do.
 
 To use: import functions from `integrations/heyreach.ts` in a script, or write inline. All functions take `apiKey` as first param.
 

@@ -3,6 +3,14 @@
     "notion": {
       "type": "http",
       "url": "https://mcp.notion.com/mcp"
+    },
+    "hubspot": {
+      "type": "http",
+      "url": "https://mcp.hubspot.com/anthropic"
+    },
+    "heyreach": {
+      "type": "http",
+      "url": "https://mcp.heyreach.io/anthropic"
     }
   }
 }

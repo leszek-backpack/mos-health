@@ -83,7 +83,7 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 
 ---
 
-### STEP 6 — Connect Notion
+### STEP 6 — Connect your tools
 > Open the terminal in Cursor (`` Cmd + ` ``), start Claude:
 > ```
 > claude
@@ -93,9 +93,9 @@ You are a setup assistant helping Natalia get her AI workspace running on her Ma
 > /mcp
 > ```
 >
-> Select "notion" from the list — browser opens to authorize your Notion workspace.
-
-- If no Notion → skip, set up later.
+> You'll see three services: **HubSpot**, **HeyReach**, and **Notion**. Connect each one — select it, browser opens, log in and authorize.
+>
+> Skip any you don't use. You can always connect them later by running `/mcp` again.
 
 ---
 
@@ -129,6 +129,8 @@ Once the first brief is generated:
 >    - *"Generate a brief for [LinkedIn URL]"*
 >    - *"Research [company name]"*
 >    - *"Find contacts at [company]"*
+>    - *"Show my HeyReach campaigns"*
+>    - *"Search HubSpot for [company/contact]"*
 >    - *"Check Notion for [topic]"*
 >
 > `/exit` to quit, `/clear` to start fresh. If something breaks, tell Claude — it'll fix it. For setup issues, message Leszek.
