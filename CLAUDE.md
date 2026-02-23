@@ -157,9 +157,11 @@ mos-health/
 ## Environment Variables
 
 ```bash
-RAPIDAPI_KEY=              # LinkedIn scraping (RapidAPI)
-GOOGLE_CLIENT_ID=          # Google OAuth2 (Doc creation)
-GOOGLE_CLIENT_SECRET=      # Google OAuth2
-GOOGLE_REFRESH_TOKEN=      # From: npx tsx briefs/scripts/google-auth-setup.ts
-GOOGLE_FOLDER_ID=          # Google Drive folder for briefs
+RAPIDAPI_KEY=                      # LinkedIn scraping (RapidAPI)
+GOOGLE_CLIENT_ID=                  # Google OAuth2 (Doc creation)
+GOOGLE_CLIENT_SECRET=              # Google OAuth2
+GOOGLE_REFRESH_TOKEN=              # From: npx tsx briefs/scripts/google-auth-setup.ts
+GOOGLE_FOLDER_ID=                  # Google Drive folder for briefs
+TRIGGER_SECRET_KEY_PROD=           # Trigger.dev (enrichment pipeline)
+GOOGLE_GENERATIVE_AI_API_KEY=      # Gemini (enrichment AI analysis)
 ```
