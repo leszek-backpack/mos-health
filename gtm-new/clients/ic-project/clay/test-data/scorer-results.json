@@ -1,0 +1,103 @@
+{
+  "timestamp": "2026-02-24T12:45:10Z",
+  "model": "anthropic/claude-sonnet-4-6",
+  "schema_version": "v5",
+  "tier_match": "3/5",
+  "segment_match": "5/5",
+  "total_prompt_tokens": 10260,
+  "total_completion_tokens": 1175,
+  "total_cost": "$0.0484",
+  "cost_per_company": "$0.009681",
+  "results": [
+    {
+      "company": "Mostostal Zabrze Konstrukcje Przemysłowe S.A.",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "hiring",
+        "personalization_hook": "rekrutacji Specjalisty ds. Planowania Produkcji z wymogiem biegłości w Excelu",
+        "poke_question": "Przy produkcji konstrukcji na zamówienie — harmonogramowanie zleceń to jedno narzędzie dla całego zespołu, czy każdy planista prowadzi to w swoich arkuszach?",
+        "reasoning": "60-person engineer-to-order steel structure manufacturer with a clear execution gap: IFS ERP in place but production planning still runs on Excel (evidenced by job posting requiring Excel proficiency over ERP knowledge). Custom crane and rail vehicle structures require multi-department coordination across engineering, production and logistics. Strong P1 signal due to 50+ headcount combined with explicit pain signal around planning chaos.",
+        "_tokens": 2278,
+        "_prompt_tokens": 2034,
+        "_completion_tokens": 244
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rekrutacji Specjalisty ds. Planowania Produkcji z wymogiem biegłości w Excelu — sporo się u Was dzieje.\n\nPrzy produkcji konstrukcji na zamówienie — harmonogramowanie zleceń to jedno narzędzie dla całego zespołu, czy każdy planista prowadzi to w swoich arkuszach?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy to coś, z czym się u Was mierzycie? Pozdrawiam"
+    },
+    {
+      "company": "FOGO",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "rozbudowie hali produkcyjno-magazynowej w Wilkowicach",
+        "poke_question": "Przy takiej rozbudowie — koordynacja między produkcją a logistyką to jedno narzędzie, czy raczej Excel i spotkania statusowe?",
+        "reasoning": "60-person manufacturer of power generators with a confirmed physical expansion (8-37M PLN investment) and active new product launches. Clear pain signals: scaling production requires cross-department coordination (R&D, procurement, logistics). Qualifies as P1 due to 50+ employees and strong event signal.",
+        "_tokens": 2241,
+        "_prompt_tokens": 2034,
+        "_completion_tokens": 207
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rozbudowie hali produkcyjno-magazynowej w Wilkowicach — dużo się u Was dzieje.\n\nPrzy takiej rozbudowie — koordynacja między produkcją a logistyką to jedno narzędzie, czy raczej Excel i spotkania statusowe?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "Saferoad Production",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "budowie nowej, zautomatyzowanej hali produkcyjno-magazynowej w Inowrocławiu",
+        "poke_question": "Przy takiej rozbudowie zakładu — koordynacja między produkcją a logistyką to jedno narzędzie, czy raczej Excel i maile?",
+        "reasoning": "58-person fabricated metal manufacturer building a new automated production hall in Inowrocław (June 2025), with a clear systemic gap: SAP for finance but Excel still required for operational planning. Strong P1 signal — physical expansion combined with a known coordination bottleneck in a multi-department production environment.",
+        "_tokens": 2304,
+        "_prompt_tokens": 2085,
+        "_completion_tokens": 219
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie nowej, zautomatyzowanej hali produkcyjno-magazynowej w Inowrocławiu — dużo się u Was dzieje.\n\nPrzy takiej rozbudowie zakładu — koordynacja między produkcją a logistyką to jedno narzędzie, czy raczej Excel i maile?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "RF MAH®",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "budowie piątej hali produkcyjnej w Wołowie i wsparciu inwestycyjnym z Legnickiej Strefy Ekonomicznej",
+        "poke_question": "Przy piątej hali w budowie — koordynacja projektów między produkcją a logistyką to jedno narzędzie, czy każdy dział prowadzi to osobno?",
+        "reasoning": "67-person custom machinery manufacturer (food, pharma, chemical industries) actively expanding with a fifth production hall under construction and LSSE investment support. Uses SAP Business One but simultaneously recruiting an ERP Technologist, signaling gaps in project-level coordination that SAP B1 doesn't cover. Custom machine production inherently requires multi-department project coordination (design, production, logistics, R&D). Strong P1 fit.",
+        "_tokens": 2270,
+        "_prompt_tokens": 2013,
+        "_completion_tokens": 257
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie piątej hali produkcyjnej w Wołowie i wsparciu inwestycyjnym z Legnickiej Strefy Ekonomicznej — dużo się u Was dzieje.\n\nPrzy piątej hali w budowie — koordynacja projektów między produkcją a logistyką to jedno narzędzie, czy każdy dział prowadzi to osobno?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "Benalu-Legras Polska",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "budowie nowej hali pod automatyczną śrutownię w Nysie i planach modernizacji linii na lata 2025–2027",
+        "poke_question": "Przy rozbudowie zakładu w Nysie — harmonogramy modernizacji prowadzicie w jednym miejscu, czy każdy dział śledzi to osobno w Excelu?",
+        "reasoning": "Polish trailer manufacturer (63 employees) with active factory expansion in Nysa and a multi-year modernization roadmap through 2027. Job posting requiring both ERP and Excel proficiency signals a hybrid, manual-heavy coordination environment. Physical capacity growth without digital project oversight is a clear pain trigger. Qualifies as P1 due to 50+ headcount combined with strong, concrete investment signals.",
+        "_tokens": 2342,
+        "_prompt_tokens": 2094,
+        "_completion_tokens": 248
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie nowej hali pod automatyczną śrutownię w Nysie i planach modernizacji linii na lata 2025–2027 — dużo się u Was dzieje.\n\nPrzy rozbudowie zakładu w Nysie — harmonogramy modernizacji prowadzicie w jednym miejscu, czy każdy dział śledzi to osobno w Excelu?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    }
+  ]
+}

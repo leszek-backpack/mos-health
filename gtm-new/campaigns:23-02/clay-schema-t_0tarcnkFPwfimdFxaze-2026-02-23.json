@@ -1,0 +1,392 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-23T15:40:57.741Z",
+  "columnCount": 17,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Rows from: Webhook / LinkedIn Activity Enrichment",
+      "type": "source",
+      "typeSettings": {
+        "sourceIds": [
+          "s_0tarcorVZnWc3A6fjJ6"
+        ],
+        "canCreateRecords": true,
+        "deleteSourceLinkOnTableRecordDelete": true,
+        "recreateTableRecordOnSourceRecordNoop": true,
+        "destroySourceRecordOnTableRecordDelete": true
+      },
+      "sourceDetails": [
+        {
+          "name": "Rows from: Webhook / LinkedIn Activity Enrichment",
+          "type": "manual",
+          "typeSettings": {
+            "type": "routing"
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "name": "90 Days Ago",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "moment().subtract(90, \"days\").format(\"YYYY-MM-DD\")",
+        "formulaPrompt": ""
+      }
+    },
+    {
+      "index": 2,
+      "name": "Formula",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "new Date({{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.created_at) < new Date({{@90 Days Ago}}) ? \"Outdated\" : \"Valid \" + ({{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.id || \"\")",
+        "formulaPrompt": ""
+      }
+    },
+    {
+      "index": 3,
+      "name": "Row Id",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.parent?.[\"Row Id\"]"
+      }
+    },
+    {
+      "index": 4,
+      "name": "Text",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.text",
+        "mappedResultPath": [
+          "text"
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "name": "Lookup Single Row in Other Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0taclrtt72Zw3PAQaKF\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0tapi35TVoaS3dtyT7S\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Row Id}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "name": "Should Track",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"Should Track\"]",
+        "mappedResultPath": [
+          "record",
+          "Should Track"
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "name": "Comment Decision",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"You are deciding whether Leszek Lammel should comment on a specific LinkedIn post from a prospect, and if so, what type of comment to leave.\\nContext: Leszek runs Backpack AI, a company that builds AI-powered GTM automation systems for B2B SaaS companies. The goal of commenting is to warm up this specific prospect — making the author notice Leszek's name. The comment must feel natural and human, never like it came from a bot.\\n---\\n## STEP 1 — DECIDE WHETHER TO COMMENT\\nOutput should_comment: true if the post is:\\n- A milestone (funding, launch, award, new role, company anniversary) → always comment, warm touch\\n- A community or initiative announcement → always comment, warm touch\\n- An opinion piece, lesson, or industry take with a specific point Leszek can react to → comment with a genuine take\\n- A question or discussion prompt with real substance → comment with a genuine take\\nOutput should_comment: false if the post is:\\n- Engagement bait (\\\"comment X to get Y\\\") — look for this pattern explicitly\\n- A pure reshare with no author commentary\\n- A generic internal update with no substance\\n- A purely personal post (birthday, holiday) with no professional hook\\n- In a language where a natural English comment would feel forced\\n---\\n## STEP 2 — ASSIGN COMMENT TYPE\\n- `warm_touch`: milestone, launch, congrats, community post — brief and human\\n- `genuine_take`: opinion, lesson, question — react to the specific point made\\n---\\n## STEP 3 — FLAG RESEARCH NEED\\nSet needs_research: true ONLY when:\\n- A specific statistic or data point would meaningfully strengthen the comment AND\\n- That data is not common knowledge (i.e. you'd actually need to look it up)\\nExamples that SHOULD trigger research:\\n- Post makes a claim about industry benchmarks → \\\"find current SDR quota attainment benchmarks 2025\\\"\\n- Post is about a company's specific recent move → \\\"find what [company] recently announced about [topic]\\\"\\n- Post references a trend that a real case study would strengthen → \\\"find a recent example of [X] in B2B SaaS\\\"\\nExamples that should NOT trigger research:\\n- General GTM opinion where Leszek can respond from experience\\n- Common knowledge industry takes\\n- Milestone posts — no research needed for a congrats\\nIf needs_research is true, write research_instruction as a plain English instruction for a web search agent. Be specific enough that the agent knows exactly what to find.\\n---\\n## OUTPUT\\nReturn valid JSON only. No prose outside the JSON.\\n{\\n  \\\"should_comment\\\": true | false,\\n  \\\"comment_type\\\": \\\"warm_touch | genuine_take | skip\\\",\\n  \\\"skip_reason\\\": \\\"string if should_comment is false, otherwise null\\\",\\n  \\\"needs_research\\\": true | false,\\n  \\\"research_instruction\\\": \\\"string if needs_research is true, otherwise null\\\"\\n}\\n---\\n## INPUT\\n<post>\\n[\" + Clay.formatForAIPrompt({{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.text) + \" \" + Clay.formatForAIPrompt({{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.activity) + \"]\\n</post>\\nPost object contains: text, content_type, activity (likes, comments), created_at.\\n\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"grok-4-1-fast-reasoning\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"shouldComment\\\": {\\n      \\\"type\\\": \\\"boolean\\\",\\n      \\\"description\\\": \\\"Whether Leszek should comment on the post based on the guidelines.\\\"\\n    },\\n    \\\"commentType\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Type of comment to leave. Use 'warm_touch' for congratulatory or community posts, 'genuine_take' for opinion or question posts, and 'skip' if should_comment is false.\\\",\\n      \\\"enum\\\": [\\n        \\\"warm_touch\\\",\\n        \\\"genuine_take\\\",\\n        \\\"skip\\\"\\n      ]\\n    },\\n    \\\"skipReason\\\": {\\n      \\\"type\\\": [\\n        \\\"string\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"Reason for skipping the comment if should_comment is false, otherwise null.\\\"\\n    },\\n    \\\"needsResearch\\\": {\\n      \\\"type\\\": \\\"boolean\\\",\\n      \\\"description\\\": \\\"Set to true if external research is needed to meaningfully strengthen the comment.\\\"\\n    },\\n    \\\"researchInstruction\\\": {\\n      \\\"type\\\": [\\n        \\\"string\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"If needs_research is true, a specific instruction for a web search agent. Otherwise, null.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"shouldComment\\\",\\n    \\\"commentType\\\",\\n    \\\"skipReason\\\",\\n    \\\"needsResearch\\\",\\n    \\\"researchInstruction\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Should Track}}?.toString()?.toLowerCase()==\"true\" && {{@Urn Equals Row Id}}?.toString()?.toLowerCase()==\"no\"",
+        "conditionalRunFormulaPrompt": "\"only run if \"+{{@Should Track}}+\" equals true and \"+{{@Urn Equals Row Id}}+\" equals No\"",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 8,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 1000,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0tachtr7MgX9QoKWWme"
+      }
+    },
+    {
+      "index": 8,
+      "name": "Full Name",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.author?.full_name",
+        "mappedResultPath": [
+          "author",
+          "full_name"
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "name": "Post Type",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.post_type",
+        "mappedResultPath": [
+          "post_type"
+        ]
+      }
+    },
+    {
+      "index": 10,
+      "name": "Share Urn",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.share_urn",
+        "mappedResultPath": [
+          "share_urn"
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "name": "Urn",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.author?.urn",
+        "mappedResultPath": [
+          "author",
+          "urn"
+        ]
+      }
+    },
+    {
+      "index": 12,
+      "name": "Urn Equals Row Id",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "{{@URN / ident}}?.toString()?.toLowerCase()=={{@Id / ident}}?.toString()?.toLowerCase()?\"Yes\":\"No\"",
+        "formulaPrompt": "\"Is \"+{{@Urn}}+\" equal to \"+{{@Row Id}}+\"? Output Yes / No\""
+      }
+    },
+    {
+      "index": 13,
+      "name": "URN / ident",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "({{@Urn}} || \"\").slice(0,8).replace(/aco/i,\"ACw\")",
+        "formulaPrompt": "\"Extract the first 8 characters from \"+{{@Urn}}+\", then replace ACo with ACw\""
+      }
+    },
+    {
+      "index": 14,
+      "name": "Id / ident",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "({{@Row Id}} || \"\").slice(0,8).replace(/aco/i,\"ACw\")",
+        "formulaPrompt": ""
+      }
+    },
+    {
+      "index": 15,
+      "name": "Url",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "url"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Rows from: Webhook / LinkedIn Activity Enrichment}}?.url",
+        "mappedResultPath": [
+          "url"
+        ]
+      }
+    },
+    {
+      "index": 16,
+      "name": "Should Comment",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "boolean"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Comment Decision}}?.shouldComment",
+        "mappedResultPath": [
+          "shouldComment"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "version": "5.0",
+  "name": "IC Project — Poke The Bear Copy System (Natural Polish)",
+  "framework": "Josh Braun's Poke The Bear + 4T (Trigger → Think → Third-party → Talk)",
+  "philosophy": "Ask questions that make prospects discover their own pain. Never tell them they have a problem. Use formal Polish (Pan/Pani, Dzień dobry) — these are manufacturing directors, not startup bros.",
+
+  "cost_per_prospect": "$0.00 (templates + Clay fields from scorer)",
+
+  "changelog": {
+    "v3→v4": [
+      "Switched from 'Cześć' + Ty to 'Dzień dobry' + Pan/Pani/Was (formal Polish for manufacturing directors)",
+      "Replaced 'Skąd Pan wie, że...' (passive-aggressive interrogation) with curious peer-level questions",
+      "Replaced 'Zauważyłem, że...' (surveillance opener) with natural observation phrasing",
+      "AI-generated poke_question from scorer is now the core of Message 1 — each message is company-specific",
+      "Added 'Pozdrawiam' closing to all messages",
+      "Fixed social proof to include specific numbers (Wawel 200+ projektów rocznie)",
+      "CTA in M1 is now 'Czy u Was wygląda to podobnie?' — seeks response, not a meeting",
+      "Avoided vocative case (no 'Panie Tomaszu') by using 'Dzień dobry,' without name — simpler, still formal"
+    ]
+  },
+
+  "polish_copy_rules": {
+    "formality": "Dzień dobry (NOT Cześć). Pan/Pani or u Was when addressing. These are 45-60yr old directors in manufacturing. Cześć is for peers you already know.",
+    "never_say": [
+      "Domyślam się, że... — assumes they have a problem → triggers defensiveness",
+      "Skąd Pan wie, że... — interrogation tone, passive-aggressive",
+      "Zauważyłem, że... — sounds like surveillance/stalking, classic AI opener",
+      "Chciałbym Panu zaproponować... — instant sales pitch detection",
+      "Nasz program / nasze narzędzie — in M1, never name the product",
+      "Pozwolę sobie... — outdated formal filler, screams mass outreach"
+    ],
+    "do_say": [
+      "Przeczytałem o... / Widzę, że... — natural observation, not surveillance",
+      "Ciekawi mnie, jak... / Jak to u Was wygląda? — curious, peer-level",
+      "Czy zdarza się u Was, że... — soft, assumes competence",
+      "Jedno narzędzie, czy raczej Excel + spotkania? — binary choice = easy answer",
+      "Pozdrawiam — always close messages, it signals human writing"
+    ],
+    "message_length": "60-90 words for M1/M2. M3 can be shorter (30-40 words). Short sentences. 4-5 paragraphs max.",
+    "gender": "Default to masculine forms (Pan, u Was). For female prospects, swap to Pani. Clay can detect gender from first name (-a ending ≈ female in Polish)."
+  },
+
+  "personalization": {
+    "description": "Each M1 has ONE AI-generated poke_question specific to the company. This is the real personalization — not a variable in a template, but a genuinely different question per prospect. The template provides structure (greeting, social proof, CTA); the AI provides content (hook + question).",
+    "fields": {
+      "personalization_hook": "From Scorer: 1 sentence fact about the company. E.g. 'budowie nowej hali w Inowrocławiu' or 'eksporcie do 16 krajów'. Used as the trigger in the opening sentence.",
+      "poke_question": "From Scorer: 1-2 sentence question specific to this company. E.g. 'Przy dwóch zakładach w różnych krajach — macie jedno źródło prawdy o postępach, czy zbieracie z kilku miejsc?' Used as the core of M1.",
+      "signal_bucket": "From Clay formula: A (event/expansion), B (hiring), D (generic). Determines the opening sentence style.",
+      "industry_label": "From Clay formula: Polish instrumental case of industry. E.g. 'branży maszynowej'. Used in social proof line.",
+      "first_name": "From Clay: for M3 fallback only.",
+      "fallback_1": "From Clay: alternate contact name (genitive case).",
+      "fallback_2": "From Clay: second alternate contact name (genitive case)."
+    }
+  },
+
+  "message_1": {
+    "name": "POKE THE BEAR",
+    "goal": "Make them think. Get ANY response. Don't pitch. Don't name IC Project.",
+    "structure": "Signal opener → AI poke question → Social proof → CTA + Pozdrawiam",
+    "word_count": "60-90 words",
+    "framework_mapping": "T1 (Trigger = signal opener) → T2 (Think = poke question) → T3 (Third-party = social proof) → T4 (Talk = CTA)",
+
+    "templates": {
+      "A_event_or_expansion": {
+        "Produkcja Projektowa i Ciężka": "Dzień dobry, przeczytałem o {{personalization_hook}} — dużo się u Was dzieje.\n\n{{poke_question}}\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam",
+        "Produkcja Montażowa": "Dzień dobry, przeczytałem o {{personalization_hook}} — sporo się u Was zmienia.\n\n{{poke_question}}\n\nFirmy produkcyjne, z którymi współpracujemy — jak Wawel czy VOX Meble — mierzyły się z tym samym pytaniem.\n\nCiekaw jestem, jak to wygląda u Was. Pozdrawiam",
+        "Produkcja Dóbr Konsumpcyjnych": "Dzień dobry, przeczytałem o {{personalization_hook}}.\n\n{{poke_question}}\n\nPracujemy m.in. z Wawelem, który koordynuje setki wdrożeń produktowych rocznie — to ich stały temat.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+      },
+      "B_hiring": {
+        "Produkcja Projektowa i Ciężka": "Dzień dobry, przeczytałem o {{personalization_hook}} — sporo się u Was dzieje.\n\n{{poke_question}}\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy to coś, z czym się u Was mierzycie? Pozdrawiam",
+        "Produkcja Montażowa": "Dzień dobry, przeczytałem o {{personalization_hook}} — sporo się u Was dzieje.\n\n{{poke_question}}\n\nFirmy produkcyjne, z którymi współpracujemy — jak Wawel czy VOX Meble — mierzyły się z tym samym pytaniem.\n\nCzy u Was wygląda to podobnie? Pozdrawiam",
+        "Produkcja Dóbr Konsumpcyjnych": "Dzień dobry, przeczytałem o {{personalization_hook}} — sporo się u Was dzieje.\n\n{{poke_question}}\n\nPracujemy m.in. z Wawelem, który koordynuje setki wdrożeń produktowych rocznie — to ich stały temat.\n\nByłbym ciekaw, jak to wygląda u Was. Pozdrawiam"
+      },
+      "D_generic": {
+        "Produkcja Projektowa i Ciężka": "Dzień dobry, przeczytałem o {{personalization_hook}} — to zwróciło moją uwagę.\n\n{{poke_question}}\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nJak to wygląda u Was? Pozdrawiam",
+        "Produkcja Montażowa": "Dzień dobry, przeczytałem o {{personalization_hook}} — to zwróciło moją uwagę.\n\n{{poke_question}}\n\nFirmy produkcyjne, z którymi współpracujemy — jak Wawel czy VOX Meble — mierzą się z tym samym pytaniem.\n\nJak to wygląda u Was? Pozdrawiam",
+        "Produkcja Dóbr Konsumpcyjnych": "Dzień dobry, przeczytałem o {{personalization_hook}} — to zwróciło moją uwagę.\n\n{{poke_question}}\n\nPracujemy m.in. z Wawelem — koordynują setki wdrożeń rocznie i to ich stały temat.\n\nCiekaw jestem, jak to wygląda u Was. Pozdrawiam"
+      }
+    },
+
+    "rules": [
+      "NEVER use 'Domyślam się', 'Skąd Pan wie', 'Zauważyłem że' — see polish_copy_rules.never_say",
+      "NEVER name IC Project in Message 1",
+      "ALWAYS end with 'Pozdrawiam'",
+      "ALWAYS include social proof with specific names (Wawel, VOX Meble) + numbers where possible",
+      "CTA is always a response-seeking question, NOT a meeting request. Goal = any reply.",
+      "poke_question from scorer provides the company-specific core. Template wraps it in structure.",
+      "Use 'u Was' (company-level plural) to avoid gender-specific Pan/Pani in templates",
+      "One signal per message. Don't stack multiple observations."
+    ],
+
+    "sample_assembled_message": {
+      "company": "Saferoad Production",
+      "signal_bucket": "A",
+      "segment": "Produkcja Projektowa i Ciężka",
+      "personalization_hook": "budowie nowej, zautomatyzowanej hali w Inowrocławiu",
+      "poke_question": "Przy takiej inwestycji — macie jedno narzędzie do budżetów i harmonogramów, czy zbieracie to z kilku miejsc?",
+      "industry_label": "branży produkcyjnej",
+      "assembled": "Dzień dobry, przeczytałem o budowie nowej, zautomatyzowanej hali w Inowrocławiu — dużo się u Was dzieje.\n\nPrzy takiej inwestycji — macie jedno narzędzie do budżetów i harmonogramów, czy zbieracie to z kilku miejsc?\n\nWspółpracujemy z firmami z branży produkcyjnej, m.in. Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam",
+      "word_count": 56,
+      "vs_old_pipeline": "Cześć [Imię], domyślam się, że przy nowej inwestycji w Inowrocławiu pojawia się potrzeba kontroli nad terminami i kosztami. Nasz program IC Project spina koszty z harmonogramem w czasie rzeczywistym. Znajdziesz 10 minut?"
+    }
+  },
+
+  "message_2": {
+    "name": "THE REVEAL + SECOND POKE",
+    "goal": "Different angle from M1. Name IC Project (once). Ask for 15 minutes.",
+    "structure": "Re-opener → New question (by segment) → IC Project value prop → CTA + Pozdrawiam",
+    "word_count": "60-80 words",
+
+    "templates": {
+      "Produkcja Projektowa i Ciężka": "Dzień dobry, wracam z innym wątkiem.\n\nIle czasu w tygodniu Wasz zespół spędza na zbieraniu statusów projektów? Od firm tej wielkości słyszę: za dużo.\n\nIC Project pokazuje budżety, harmonogramy i statusy na żywo — bez ręcznego raportowania. Np. Wawel zarządza tak ponad 200 projektami.\n\nByłoby 15 minut w przyszłym tygodniu na krótki pokaz? Pozdrawiam",
+      "Produkcja Montażowa": "Dzień dobry, wracam z innym wątkiem.\n\nJak u Was wygląda planowanie obłożenia zespołu na kolejne tygodnie? Jeden system, czy ręczne zbieranie z kilku źródeł?\n\nIC Project daje jeden widok na alokację, statusy zleceń i raporty — bez Excela i ręcznego przepisywania.\n\nByłoby 15 minut w przyszłym tygodniu na krótki pokaz? Pozdrawiam",
+      "Produkcja Dóbr Konsumpcyjnych": "Dzień dobry, wracam z innym wątkiem.\n\nCzy marketing, R&D i produkcja u Was mają jedno miejsce, gdzie widzą status każdego wdrożenia? Czy składacie to z różnych narzędzi?\n\nIC Project łączy te działy w jednym widoku — Wawel np. koordynuje tak setki projektów wdrożeniowych.\n\nByłoby 15 minut w przyszłym tygodniu na krótki pokaz? Pozdrawiam"
+    },
+
+    "rules": [
+      "IC Project MUST appear exactly once",
+      "Open with a NEW question — different angle than M1",
+      "CTA: 'Byłoby 15 minut?' — impersonal form avoids gender, specific ask",
+      "ALWAYS end with 'Pozdrawiam'",
+      "Use 'u Was' / 'Wasz' for gender-neutral addressing"
+    ]
+  },
+
+  "message_3": {
+    "name": "THE GRACEFUL EXIT",
+    "goal": "Respect their inbox. Ask for referral. Keep it short.",
+    "structure": "Single short message. Polite. Offers fallback names if available.",
+    "word_count": "25-40 words",
+
+    "templates": {
+      "both_fallbacks": "Dzień dobry, nie chcę zapychać skrzynki. Jeśli jestem pod złym adresem — może powinienem napisać do {{fallback_1}} albo {{fallback_2}}? Będę wdzięczny za nakierowanie. Pozdrawiam",
+      "one_fallback": "Dzień dobry, nie chcę zapychać skrzynki. Jeśli jestem pod złym adresem — może {{fallback_1}} jest lepszą osobą do rozmowy? Będę wdzięczny za podpowiedź. Pozdrawiam",
+      "no_fallbacks": "Dzień dobry, nie chcę zapychać skrzynki. Jeśli jestem pod złym adresem — kto u Was koordynuje projekty? Będę wdzięczny za nakierowanie. Pozdrawiam"
+    },
+
+    "rules": [
+      "Short. No pitch. No second ask for a meeting.",
+      "'Jestem pod złym adresem' is gender-neutral and non-presumptuous",
+      "ALWAYS end with 'Pozdrawiam'"
+    ]
+  },
+
+  "poke_question_style_guide": {
+    "description": "The scorer AI generates poke_question per company. These rules ensure quality. The question is the CORE of Message 1 — it must be perfect.",
+    "tone": "Curious peer, not interrogator. Think: a colleague asking over coffee, not an auditor.",
+    "structure": "Best format: observation + binary choice. 'Przy X — macie jedno narzędzie, czy zbieracie z kilku źródeł?' The binary choice makes it easy to respond.",
+    "good_patterns": [
+      "Przy [specific fact] — macie jedno źródło prawdy, czy zbieracie z kilku miejsc?",
+      "Przy [specific fact] — jak u Was wygląda [process]? Jeden system, czy raczej Excel + spotkania?",
+      "Ciekawe, jak przy [specific fact] koordynujecie [activity] — jeden system, czy maile i telefony?",
+      "Czy przy [scale/complexity] zdarza się, że informacja o [problem] dochodzi z opóźnieniem?"
+    ],
+    "bad_patterns": [
+      "Skąd Pan wie, że... — interrogation, passive-aggressive",
+      "Jak Pan sprawdza, że... — implies they're failing at their job",
+      "Czy na pewno... — condescending",
+      "Nie martwi Pana, że... — manipulative fear-mongering"
+    ],
+    "max_length": "2 sentences. Preferably 1 sentence with a binary choice."
+  },
+
+  "signal_routing": {
+    "description": "Routes prospects to template variant based on signal type.",
+    "logic": "IF signals contain investment/expansion/growth keywords → A. IF signals contain hiring/recruitment keywords → B. ELSE → D.",
+    "clay_formula": "(({{@Company Signals Summary}}||'').match(/inwestycj|ekspansj|kontrakt|nagrod|nowy zakład|rozbudow|przejęci|akwizycj|hala|wzrost|budow|modernizacj/i)) ? 'A' : (({{@Company Signals Summary}}||'').match(/rekrutuj|hiring|szuka|zatrudni|ofert.*pracy|stanowisk/i)) ? 'B' : 'D'"
+  },
+
+  "industry_mapping": {
+    "description": "Maps English Clay Industry field → Polish instrumental case for social proof line.",
+    "mapping": {
+      "Machinery Manufacturing": "przemysłu maszynowego",
+      "Construction": "branży budowlanej",
+      "Food and Beverage Manufacturing": "branży spożywczej",
+      "Packaging and Containers Manufacturing": "branży opakowaniowej",
+      "Automotive": "branży motoryzacyjnej",
+      "Chemical Manufacturing": "przemysłu chemicznego",
+      "Plastics Manufacturing": "branży tworzyw sztucznych",
+      "Defense and Space Manufacturing": "branży obronnej",
+      "Furniture and Home Furnishings Manufacturing": "branży meblarskiej",
+      "Metal Manufacturing": "branży metalowej",
+      "Electrical Equipment Manufacturing": "branży elektrycznej",
+      "default": "branży produkcyjnej"
+    },
+    "clay_formula": "(function(){var i=({{@Industry}}||'').toLowerCase();var m={'machinery':'przemysłu maszynowego','construction':'branży budowlanej','food':'branży spożywczej','packaging':'branży opakowaniowej','automotive':'branży motoryzacyjnej','chemical':'przemysłu chemicznego','plastics':'branży tworzyw sztucznych','defense':'branży obronnej','furniture':'branży meblarskiej','metal':'branży metalowej','electric':'branży elektrycznej'};for(var k in m){if(i.includes(k))return m[k]}return 'branży produkcyjnej'})()"
+  }
+}

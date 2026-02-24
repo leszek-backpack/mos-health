@@ -1,0 +1,1300 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-23T15:41:17.761Z",
+  "columnCount": 31,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Organization Name",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "name": "Last Funding Amount",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "name": "Last Funding Type",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "name": "Last Funding Date",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "name": "Website",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "name": "LinkedIn Overview",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"#CONTEXT#\\nYou are an AI-powered web researcher tasked with finding the official LinkedIn company page for a given organization, then writing a concise company overview based on the organization’s own website or, if unavailable, reliable public sources from Google search results. Use only the provided input columns exactly as formatted.\\n#OBJECTIVE#\\n- Find the valid LinkedIn company URL for the organization specified by \" + Clay.formatForAIPrompt({{@Organization Name}}) + \" and \" + Clay.formatForAIPrompt({{@Website}}) + \".\\n- Then open the company’s official website if available, or otherwise use top Google search results, and write a 5–6 sentence overview of what the company does.\\n#INSTRUCTIONS#\\n1. Identify the company:\\n   - Use the provided fields  and  exactly as given to determine the organization’s name and any additional identifying context contained in those fields.\\n2. Find the LinkedIn company page URL:\\n   - Perform a Google search with queries like:\\n     - \\\" \" + Clay.formatForAIPrompt({{@Organization Name}}) + \" site:linkedin.com/company\\\"\\n     - \\\" \" + Clay.formatForAIPrompt({{@Organization Name}}) + \" site:linkedin.com/company\\\"\\n   - Validate the result is a company page (URL must match the pattern: https://www.linkedin.com/company/<slug> or https://linkedin.com/company/<slug>).\\n   - Do NOT return personal profile URLs (linkedin.com/in), school pages, or showcase pages unless the official company page does not exist. If multiple candidates appear, choose the one that matches the company’s official name/brand on its website and has consistent branding (logo/name) and description.\\n   - If no valid company page exists, return an empty string for linkedinCompanyUrl.\\n3. Find the official website (to write the overview):\\n   - If the \\\"Website\\\" field is present in the search results or visible from the LinkedIn company page, use that as the primary source.\\n   - If not, perform a Google search for the company’s official website using the company name from  and any disambiguating context from .\\n   - Prefer the official domain (avoid third-party listings or directories).\\n4. Write the overview (5–6 sentences):\\n   - If the official website is accessible, summarize the company’s offerings, target customers/markets, value proposition, notable products/services, and any differentiators mentioned.\\n   - If the website is not accessible, use reliable information from the top Google results (e.g., trusted profiles, news coverage). Do not fabricate details—only include information present in the sources you opened.\\n   - Keep the tone neutral, factual, and concise. Avoid marketing fluff not supported by the source content.\\n5. Output formatting and validations:\\n   - Return a JSON object with the following fields using camelCase:\\n     - linkedinCompanyUrl: string (the validated LinkedIn company page URL or empty string if not found)\\n     - companyOverview: string (a single paragraph of 5–6 sentences). If no reliable information is found, return an empty string.\\n   - Do not include any additional fields beyond those specified.\\n   - Ensure URLs are canonical (strip tracking parameters like ?trk=, and fragments like #/about). Use https://www.linkedin.com/company/<slug> format when possible.\\n6. Constraints and limitations:\\n   - Do not log in or access paywalled content.\\n   - Do not infer missing details—only use information found on accessible pages.\\n   - For LinkedIn data, only use publicly accessible pages; do not rely on dynamic interactions.\\n#EXAMPLES#\\nExample input context (values substituted for the provided fields):\\n- \" + Clay.formatForAIPrompt({{@Organization Name}}) + \" = \\\"Acme Robotics\\\"\\n- \" + Clay.formatForAIPrompt({{@Website}}) + \" = \\\"San Francisco\\\"\\nExample expected output:\\n{\\n  \\\"linkedinCompanyUrl\\\": \\\"https://www.linkedin.com/company/acme-robotics\\\",\\n  \\\"companyOverview\\\": \\\"Acme Robotics develops industrial automation solutions that help manufacturers improve throughput and quality. The company offers collaborative robotic arms, vision systems, and workflow software designed for flexible deployment. It serves mid-market and enterprise clients across electronics, automotive, and consumer goods. Acme emphasizes rapid integration, modular components, and safety-certified systems. Its platform integrates with common MES and ERP tools to enable data-driven operations. The company also provides training, maintenance, and remote monitoring services.\\\"\\n}\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gpt-4o-mini\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"linkedinCompanyUrl\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The validated LinkedIn company page URL in the format https://www.linkedin.com/company/<slug>, or an empty string if no valid company page exists.\\\"\\n    },\\n    \\\"companyOverview\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"A single paragraph of 5–6 sentences summarizing the company based on its official website or, if not available, other reliable public sources. If no reliable information is found, this should be an empty string.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"linkedinCompanyUrl\\\",\\n    \\\"companyOverview\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 17,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t3rf2hsVda3cBShEr6"
+      }
+    },
+    {
+      "index": 6,
+      "name": "Description",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@LinkedIn Overview}}?.companyOverview",
+        "mappedResultPath": [
+          "companyOverview"
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "name": "Qualification Status",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"#CONTEXT#\\nYou are a Lead Qualification Specialist for **Backpack AI**.\\nYour task is to screen a list of **European Seed-Stage Companies** to identify which ones are immediate fits for Backpack’s automated Go-To-Market (GTM) engines.\\n#GOAL#\\nIdentify companies that are **commercially ready to launch outbound sales campaigns now.** You must filter out companies that are still in pure R&D, B2C companies, and competitors.\\n#QUALIFICATION LOGIC#\\nEvaluate the company against these four strict criteria. Failure on *any* point results in **DISQUALIFICATION**.\\n**Criterion 1: Competitor Check (The DNC List)**\\nDisqualify if they compete with Backpack AI or offer alternative GTM automation.\\n- **DNC:** GTM Agencies (Lead gen, outsourced SDRs), AI SDRs / Agents (\\\"Hire our AI sales rep\\\"), or All-in-one GTM Operating Systems.\\n- *Note:* General CRM tools or Marketing Automation (like HubSpot/Salesforce competitors) are NOT competitors; they are partners. Only disqualify specific *outbound/GTM* automation tools.\\n**Criterion 2: B2B Business Model**\\nBackpack AI only works for B2B.\\n- **Keep:** Companies selling software, hardware, or services to *other businesses*.\\n- **Disqualify:** B2C (DTC brands, gaming, personal apps, food/beverage, private health clinics).\\n**Criterion 3: Addressable on LinkedIn (Persona Fit)**\\nBackpack’s engine relies on LinkedIn signal tracking. The buyer must be a \\\"Desk Job\\\" professional.\\n- **Keep:** Buyers in Sales, Marketing, IT, HR, Finance, Operations, R&D/Science (at corps), Executives.\\n- **Disqualify:** Buyers who are \\\"Blue Collar\\\" (Construction, Drivers), Local Service Owners (Plumbers, Shopkeepers), or Government officials/Municipalities (hard to automate outreach to).\\n**Criterion 4: Commercial Readiness (Inferred from Description)**\\nWe need companies that have a product ready to sell *now*, not in 5 years.\\n- **Keep (Commercial/Deployable):**\\n    - The description uses present-tense verbs indicating availability (e.g., \\\"We automate,\\\" \\\"Our platform enables,\\\" \\\"Provides services for\\\").\\n    - The company sells a software platform, a B2B service, or a tangible tool that solves a current business problem.\\n    - *Example:* A Deep Tech company selling a \\\"Novel AI platform for drug discovery\\\" to Pharma companies is **Ready** (they are selling the software).\\n- **Disqualify (R&D / Pre-Commercial):**\\n    - The description implies they are researching a scientific breakthrough for themselves rather than selling a tool.\\n    - Keywords: \\\"Developing novel therapies,\\\" \\\"Clinical trials,\\\" \\\"Pioneering new forms of energy,\\\" \\\"Drug discovery pipeline.\\\"\\n    - *Example:* A Biotech company using AI to \\\"find cures for cancer\\\" is **Not Ready** (they are selling the eventual drug, not the AI).\\n#INSTRUCTIONS#\\n1. **Analyze the Input:** Read the description carefully.\\n2. **Step 1 - Competitor:** Is this an AI SDR or Lead Gen agency? -> If yes, Disqualify.\\n3. **Step 2 - B2B:** Do they sell to consumers? -> If yes, Disqualify.\\n4. **Step 3 - Readiness (Infer Status):** Does the text describe a *solution clients can use/buy*, or a *research project*? -> If Research/Project, Disqualify.\\n5. **Step 4 - Persona:** Is the buyer active on LinkedIn? -> If no, Disqualify.\\n6. **Final Output:** If they pass all checks, mark as **Qualified**.\\n#OUTPUT FORMAT#\\nReturn a single JSON object:\\n{\\n  \\\"companyName\\\": \\\"<Company_Name>\\\",\\n  \\\"isB2B\\\": \\\"yes\\\" | \\\"no\\\",\\n  \\\"commercialReadiness\\\": \\\"Ready (Solution/Service)\\\" | \\\"Not Ready (R&D/Clinical)\\\",\\n  \\\"targetPersonaFit\\\": \\\"High (LinkedIn Active)\\\" | \\\"Low (Offline/Blue Collar)\\\",\\n  \\\"qualificationStatus\\\": \\\"Qualified\\\" | \\\"Disqualified\\\",\\n  \\\"disqualificationReason\\\": \\\"Competitor\\\" | \\\"B2C\\\" | \\\"R&D Mode - Not ready for outbound\\\" | \\\"Persona not on LinkedIn\\\" | null,\\n  \\\"reasoning\\\": \\\"One concise sentence explaining the decision. E.g., 'Qualified: B2B SaaS platform for HR, ready to sell.' or 'Disqualified: Biotech company in clinical trials, no product to sell yet.'\\\"\\n}\\n#INPUT DATA#\\n- Company Name: \" + Clay.formatForAIPrompt({{@Organization Name}}) + \"\\n- Company Description: \" + Clay.formatForAIPrompt({{@Description}})"
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"companyName\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The name of the company being qualified.\\\"\\n    },\\n    \\\"isB2B\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Indicates if the company operates with a B2B business model.\\\",\\n      \\\"enum\\\": [\\n        \\\"yes\\\",\\n        \\\"no\\\"\\n      ]\\n    },\\n    \\\"commercialReadiness\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Indicates if the company is ready to sell a solution or still in R&D/clinical stage.\\\",\\n      \\\"enum\\\": [\\n        \\\"Ready (Solution/Service)\\\",\\n        \\\"Not Ready (R&D/Clinical)\\\"\\n      ]\\n    },\\n    \\\"targetPersonaFit\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Indicates how well the company's buyer persona fits Backpack AI's LinkedIn signal tracking.\\\",\\n      \\\"enum\\\": [\\n        \\\"High (LinkedIn Active)\\\",\\n        \\\"Low (Offline/Blue Collar)\\\"\\n      ]\\n    },\\n    \\\"qualificationStatus\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The final qualification response for the company.\\\",\\n      \\\"enum\\\": [\\n        \\\"Qualified\\\",\\n        \\\"Disqualified\\\"\\n      ]\\n    },\\n    \\\"disqualificationReason\\\": {\\n      \\\"type\\\": [\\n        \\\"string\\\",\\n        \\\"null\\\"\\n      ],\\n      \\\"description\\\": \\\"The reason for disqualification if company is disqualified, otherwise null.\\\",\\n      \\\"enum\\\": [\\n        \\\"Competitor\\\",\\n        \\\"B2C\\\",\\n        \\\"R&D Mode - Not ready for outbound\\\",\\n        \\\"Persona not on LinkedIn\\\",\\n        null\\n      ]\\n    },\\n    \\\"reasoning\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"A concise sentence explaining the qualification or disqualification decision.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"companyName\\\",\\n    \\\"isB2B\\\",\\n    \\\"commercialReadiness\\\",\\n    \\\"targetPersonaFit\\\",\\n    \\\"qualificationStatus\\\",\\n    \\\"disqualificationReason\\\",\\n    \\\"reasoning\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Description}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t42p8jtDzZuwahMCpo"
+      }
+    },
+    {
+      "index": 8,
+      "name": "Qualification Status (2)",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Qualification Status}}?.qualificationStatus",
+        "mappedResultPath": [
+          "qualificationStatus"
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "name": "Linkedin Company Url",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "url"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@LinkedIn Overview}}?.linkedinCompanyUrl",
+        "mappedResultPath": [
+          "linkedinCompanyUrl"
+        ]
+      }
+    },
+    {
+      "index": 10,
+      "name": "Enrich Company",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "enrich-company-with-mixrank-v2",
+        "actionVersion": 1,
+        "actionPackageId": "e251a70e-46d7-4f3a-b3ef-a211ad3d8bd2",
+        "inputsBinding": [
+          {
+            "name": "company_identifier",
+            "formulaText": "{{@Linkedin Company Url}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "name": "Employee Count",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.employee_count",
+        "mappedResultPath": [
+          "employee_count"
+        ]
+      }
+    },
+    {
+      "index": 12,
+      "name": "Name",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.name",
+        "mappedResultPath": [
+          "name"
+        ]
+      }
+    },
+    {
+      "index": 13,
+      "name": "Org Id",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Enrich Company}}?.org_id",
+        "mappedResultPath": [
+          "org_id"
+        ]
+      }
+    },
+    {
+      "index": 14,
+      "name": "Lookup Multiple Rows in Other Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-multiple-rows-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t99r2fyrex7gPXUJ93\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t99sisMZ9nHm5YZupK\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Org Id}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 15,
+      "name": "ICP Fit Score",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"You are a Senior GTM Strategist for Backpack AI. Your goal is to qualify potential clients based on our \\\"Ideal Customer Profile\\\" (ICP).\\n**Context - Who We Are:**\\nBackpack AI designs and implements AI-powered GTM workflows (outbound, inbound, RevOps) for B2B SaaS companies. Our best clients use LinkedIn and Email for sales and operate in \\\"tech-forward\\\" industries.\\n**Fit Score Definitions:**\\n* **P1 (GREAT FIT):** Pure B2B SaaS companies that sell primarily via LinkedIn/Outbound. They MUST operate in industries similar to our existing successful case studies: **Developer Tools** (like Spacelift), **Fintech/Web3/Crypto** (like Ramp Network), or **MarTech/AI** (like DFIRST AI).\\n* **P2 (GOOD FIT):** General B2B SaaS companies that sell via LinkedIn/Outbound but are in other verticals (e.g., LegalTech, HR Tech, EdTech) where we do not yet have a direct case study.\\n* **P3 (BAD FIT):**\\n    * B2C companies.\\n    * B2B2C (Business-to-Business-to-Consumer).\\n    * Hardware / Robotics / AgTech.\\n    * MedTech/HealthTech focusing on clinical outcomes/hospitals (Field Sales motion).\\n    * Companies that do not primarily sell via digital channels (LinkedIn/Zoom).\\n**Few-Shot Examples (Use these as a guide):**\\nInput: Cycloid\\nAnalysis: They sell a DevOps framework to engineering teams.\\nScore: P1\\nReasoning: Pure B2B SaaS in \\\"Developer Tools\\\" vertical.\\nRelevant Case Study: Developer Tools (Spacelift)\\nInput: Yaspa\\nAnalysis: They provide instant bank payment infrastructure for iGaming and merchants.\\nScore: P1\\nReasoning: Fintech infrastructure selling to businesses.\\nRelevant Case Study: Fintech/Web3 (Ramp Network)\\nInput: Wordsmith AI\\nAnalysis: They provide an AI workspace for legal teams.\\nScore: P2\\nReasoning: Pure B2B SaaS with a digital sales motion, but falls outside core case study verticals (Dev/Fin/Mar).\\nRelevant Case Study: N/A\\nInput: Just Move In\\nAnalysis: They help estate agents manage utility setups for home movers.\\nScore: P3\\nReasoning: This is a B2B2C model where the end value is for the consumer; likely requires high volume, low-touch sales.\\nRelevant Case Study: N/A\\nInput: AgreenCulture\\nAnalysis: They manufacture autonomous robots for agriculture.\\nScore: P3\\nReasoning: Hardware/Robotics implies a field-based sales motion, not a digital/LinkedIn GTM motion.\\nRelevant Case Study: N/A\\n**Your Task:**\\nAnalyze the company below.\\n1.  **Identify their One-Liner.**\\n2.  **Determine their Model** (B2B SaaS, B2C, Marketplace, etc.).\\n3.  **Determine their Primary Sales Channel** (Digital/LinkedIn vs. Field/Consumer).\\n4.  **Assign a Fit Score (P1, P2, P3).**\\n5.  **Provide a 1-sentence \\\"Why\\\"** for the score.\\n6.  **If P1:** Identify the most relevant Case Study Industry & Company (e.g., \\\"Developer Tools (Spacelift)\\\"). If P2/P3, write \\\"N/A\\\".\\n**Company to Analyze:**\\n\" + Clay.formatForAIPrompt({{@Description}}) + \" \" + Clay.formatForAIPrompt({{@Enrich Company}}?.description) + \" \" + Clay.formatForAIPrompt({{@Organization Name}})"
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gpt-5.1\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"oneLiner\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Identify the company's one-liner that briefly describes what they do.\\\"\\n    },\\n    \\\"model\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Determine the company's business model such as B2B SaaS, B2C, or Marketplace.\\\"\\n    },\\n    \\\"primarySalesChannel\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Identify the company's primary sales channel, such as Digital/LinkedIn or Field/Consumer.\\\"\\n    },\\n    \\\"fitScore\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Assign a fit score of P1, P2, or P3 based on the qualification criteria.\\\",\\n      \\\"enum\\\": [\\n        \\\"P1\\\",\\n        \\\"P2\\\",\\n        \\\"P3\\\"\\n      ]\\n    },\\n    \\\"why\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Provide a one-sentence explanation for the assigned fit score.\\\"\\n    },\\n    \\\"caseStudyReference\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"If fitScore is P1, identify the most relevant case study industry and company. If P2 or P3, write N/A.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"oneLiner\\\",\\n    \\\"model\\\",\\n    \\\"primarySalesChannel\\\",\\n    \\\"fitScore\\\",\\n    \\\"why\\\",\\n    \\\"caseStudyReference\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget",
+            "formulaText": "2"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 33,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t3rf2hsVda3cBShEr6"
+      }
+    },
+    {
+      "index": 16,
+      "name": "Fit Score",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@ICP Fit Score}}?.fitScore",
+        "mappedResultPath": [
+          "fitScore"
+        ]
+      }
+    },
+    {
+      "index": 17,
+      "name": "Case Study Reference",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@ICP Fit Score}}?.caseStudyReference",
+        "mappedResultPath": [
+          "caseStudyReference"
+        ]
+      }
+    },
+    {
+      "index": 18,
+      "name": "Send table data",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "route-row",
+        "actionVersion": 1,
+        "actionPackageId": "b1ab3d5d-b0db-4b30-9251-3f32d8b103c1",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t9zpyurmgvRN2EbPjZ\""
+          },
+          {
+            "name": "rowData",
+            "formulaMap": {
+              "Name": "{{@Name}}",
+              "Batch": "{{f_0t99q8jYjD824TshkxT}}",
+              "Org Id": "{{@Org Id}}",
+              "Website": "{{@Website}}",
+              "Fit Score": "{{@Fit Score}}",
+              "Created At": "{{f_created_at}}",
+              "Description": "{{@Description}}",
+              "Employee Count": "{{@Employee Count}}",
+              "Last Funding Date": "{{@Last Funding Date}}",
+              "Last Funding Type": "{{@Last Funding Type}}",
+              "Organization Name": "{{@Organization Name}}",
+              "Last Funding Amount": "{{@Last Funding Amount}}",
+              "Case Study Reference": "{{@Case Study Reference}}",
+              "Linkedin Company Url": "{{@Linkedin Company Url}}",
+              "Qualification Status (2)": "{{@Qualification Status (2)}}"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "(!{{@Qualification Status}} ? \"\" : {{@Qualification Status}})?.qualificationStatus?.toLowerCase() === \"qualified\"",
+        "conditionalRunFormulaPrompt": "\"only run if \"+{{@Qualification Status}}?.qualificationStatus+\" equals Qualified\""
+      }
+    },
+    {
+      "index": 19,
+      "name": "Evidence Blocks",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"# SYSTEM ROLE\\nYou are the **Lead Market Analyst Sentinel** for Backpack. Your role is to classify companies for B2B Outbound GTM fit. You are a **Reasoning Engine**, prioritizing precision and commercial viability over speed.\\n# CONTEXT & OBJECTIVE\\nWe help early-stage B2B SaaS startups build outbound systems. You will receive a structured JSON scrape of a website. You must analyze this data to determine if the company fits the \\\"Backpack ICP\\\" and extract specific targeting data.\\n# INPUT DATA\\nYou will receive the website data inside `<website_scrape>` tags.\\n**CRITICAL:** This data is your ONLY source of truth.\\n# KNOWLEDGE BASE & DEFINITIONS\\n*Refer to these definitions strictly during your analysis.*\\n### A. The \\\"Strong Fit\\\" Role List (for LinkedIn Outbound)\\nA company is a \\\"Strong Fit\\\" (`strong_yes`) ONLY if they sell to these specific personas:\\n1. Sales / Revenue Operations\\n2. Marketing / Growth\\n3. Customer Success / Account Management\\n4. Partnerships / Business Development\\n5. HR / People / Talent / Recruiting\\n6. Finance (CFO, FP&A) - *Must be B2B context*\\n7. Operations / RevOps\\n8. Product Management\\n9. Engineering / Developers / DevOps\\n10. Data / Analytics\\n11. IT / Security (*Enterprise/B2B context only*, not helpdesk)\\n12. Founders / C-Level (in B2B context)\\n### B. The Narrative Templates\\nYou must fill these templates exactly. Do not invent new structures.\\n**1. ideal_customer_profile:**\\n> \\\"The ideal customers are **[Target Company Sizes]** operating in **[Industries]**. These organizations work **[Online/Offline]**, struggle with **[Specific Technical Pain Point]**, and need **[Solutions]**. **[Company Name]** provides **[Core Value]** that helps them **[Key Result]**.\\\"\\n**2. buyer_persona:**\\n> \\\"The buying group typically includes **[Roles]**. Strategic sponsorship often comes from **[Executive Role]**, while adoption is led by **[Functional Team Leads]**.\\\"\\n# INSTRUCTIONS (THE ALGORITHM)\\nYou must perform your analysis in a `<scratchpad>` block before outputting the final JSON.\\n## STEP 1: THE KILL CHAIN (Exclusion Check)\\nCheck these immediately. If ANY are true, status = `Disqualified`.\\n1. **Not B2B:** Sells to consumers (B2C), students, or personal hobbyists.\\n2. **Not Software:** Primary value is Agency Services, Hardware, or pure Content.\\n3. **Bad Competitor:** Company is a Lead Gen Agency, SDR Agency, or Sales Engagement Tool.\\n## STEP 2: DATA EXTRACTION\\nAnalyze the JSON to extract attributes.\\n* **Buzzword Ban:** When extracting descriptions, translate \\\"Marketing Speak\\\" (e.g., \\\"Unlocking potential\\\") into \\\"Functional Utility\\\" (e.g., \\\"Automating data entry\\\").\\n* **Conflict Rule:** Homepage trumps Blog.\\n* **Unknown Rule:** If the text does not explicitly state an attribute, set it to `\\\"unknown\\\"`. Do not guess.\\n## STEP 3: SCORING & LOGIC\\n**A. Determine `linkedin_outbound_fit`**\\n* Compare the extracted `target_persona` against the **\\\"Strong Fit\\\" Role List** above.\\n* IF match found -> \\\"strong_yes\\\". IF NO clear match -> \\\"uncertain\\\".\\n* *Constraint:* You must cite the specific role from the list in your reasoning.\\n**B. Calculate `backpack_icp_fit_score`**\\n* **SaaS Model Fit (1-5):**\\n    * **5 (Pure SaaS):** Cloud subscription, \\\"Pricing\\\" page exists, self-serve or demo.\\n    * **3 (Hybrid/Service):** \\\"Contact Us\\\" for everything, heavy implementation, or \\\"Digital Agency\\\".\\n    * **1 (Legacy):** On-premise, Hardware, One-time license.\\n* **Outbound GTM Fit (Commercial Viability) (1-5):**\\n    * **5 (Perfect - High LTV):** Sells to \\\"Strong Fit\\\" roles AND requires a sales conversation (\\\"Book a Demo\\\", \\\"Contact Sales\\\", or Pricing >$500/mo).\\n    * **3 (Average - PLG/SMB):** Sells to \\\"Strong Fit\\\" roles but is primarily Low-Ticket Self-Serve (Pricing <$100/mo visible).\\n    * **1 (Poor):** Sells to Niche/Offline industries OR extremely low ticket (<$20/mo).\\n* **Final Score:** Average(SaaS Fit, Outbound Fit).\\n# OUTPUT SCHEMA\\nAfter your analysis in the scratchpad, output the JSON object exactly matching this structure:\\n```json\\n{\\n  \\\"qualification_status\\\": \\\"Qualified | Disqualified\\\",\\n  \\\"qualification_reasoning\\\": \\\"1-2 sentences. If Disqualified, explain which Kill Chain rule triggered.\\\",\\n  \\\"classification\\\": {\\n    \\\"business_model\\\": \\\"String\\\",\\n    \\\"company_type\\\": \\\"String\\\",\\n    \\\"product_description\\\": \\\"2 sentences focusing on FUNCTION (verbs like automates, tracks), avoiding marketing fluff.\\\",\\n    \\\"target_market_segment\\\": {\\n      \\\"primary_focus\\\": \\\"SMB | Mid-Market | Enterprise | unknown\\\",\\n      \\\"full_description\\\": \\\"String\\\"\\n    },\\n    \\\"target_industry\\\": {\\n      \\\"primary_focus\\\": \\\"String\\\",\\n      \\\"secondary_targets\\\": [\\\"Array\\\", \\\"of\\\", \\\"Strings\\\"],\\n      \\\"full_description\\\": \\\"String\\\"\\n    },\\n    \\\"target_persona\\\": \\\"String\\\",\\n    \\\"ideal_customer_profile\\\": \\\"TEMPLATE FILLED FROM KNOWLEDGE BASE\\\",\\n    \\\"buyer_persona\\\": \\\"TEMPLATE FILLED FROM KNOWLEDGE BASE\\\",\\n    \\\"teams_they_sell_to_dropdown\\\": [\\\"Sales\\\", \\\"Marketing\\\", \\\"Engineering\\\", \\\"HR\\\", \\\"etc - Use Knowledge Base Values\\\"],\\n    \\\"teams_they_sell_to_description\\\": \\\"String\\\",\\n    \\\"linkedin_outbound_fit\\\": \\\"strong_yes | uncertain | no\\\",\\n    \\\"linkedin_outbound_fit_reason\\\": \\\"Explain match against the Strong Fit Role List.\\\"\\n  }\\n}\\nINPUT VARIABLE\\n \" + Clay.formatForAIPrompt({{@Organization Name}}) + \" \" + Clay.formatForAIPrompt({{@Company Overview (2)}}?.response) + Clay.formatForAIPrompt({{@Company Overview (2)}}?.reasoning) + Clay.formatForAIPrompt({{@Last Funding Amount}}) + \" \" + Clay.formatForAIPrompt({{@Last Funding Date}}) + \" \" + Clay.formatForAIPrompt({{@Last Funding Type}})"
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-3-pro\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"qualificationStatus\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"Indicates whether the company is Qualified or Disqualified based on exclusion checks.\\\",\\n      \\\"enum\\\": [\\n        \\\"Qualified\\\",\\n        \\\"Disqualified\\\"\\n      ]\\n    },\\n    \\\"qualificationReasoning\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"A brief explanation (1-2 sentences) for the qualification status. If Disqualified, explain which Kill Chain rule was triggered.\\\"\\n    },\\n    \\\"classification\\\": {\\n      \\\"type\\\": \\\"object\\\",\\n      \\\"properties\\\": {\\n        \\\"businessModel\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"The business model of the company.\\\"\\n        },\\n        \\\"companyType\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"The type of company, such as SaaS, Hybrid, Agency, etc.\\\"\\n        },\\n        \\\"productDescription\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"A two-sentence description of the product, focusing on its function, using verbs and avoiding marketing fluff.\\\"\\n        },\\n        \\\"targetMarketSegment\\\": {\\n          \\\"type\\\": \\\"object\\\",\\n          \\\"properties\\\": {\\n            \\\"primaryFocus\\\": {\\n              \\\"type\\\": \\\"string\\\",\\n              \\\"description\\\": \\\"The primary market segment focus.\\\",\\n              \\\"enum\\\": [\\n                \\\"SMB\\\",\\n                \\\"Mid-Market\\\",\\n                \\\"Enterprise\\\",\\n                \\\"unknown\\\"\\n              ]\\n            },\\n            \\\"fullDescription\\\": {\\n              \\\"type\\\": \\\"string\\\",\\n              \\\"description\\\": \\\"Full description of the market segment focus.\\\"\\n            }\\n          },\\n          \\\"required\\\": [\\n            \\\"primaryFocus\\\",\\n            \\\"fullDescription\\\"\\n          ],\\n          \\\"additionalProperties\\\": false\\n        },\\n        \\\"targetIndustry\\\": {\\n          \\\"type\\\": \\\"object\\\",\\n          \\\"properties\\\": {\\n            \\\"primaryFocus\\\": {\\n              \\\"type\\\": \\\"string\\\",\\n              \\\"description\\\": \\\"The primary industry the company targets.\\\"\\n            },\\n            \\\"secondaryTargets\\\": {\\n              \\\"type\\\": \\\"array\\\",\\n              \\\"description\\\": \\\"List of secondary industries the company targets.\\\",\\n              \\\"items\\\": {\\n                \\\"type\\\": \\\"string\\\"\\n              }\\n            },\\n            \\\"fullDescription\\\": {\\n              \\\"type\\\": \\\"string\\\",\\n              \\\"description\\\": \\\"Full description of target industry coverage.\\\"\\n            }\\n          },\\n          \\\"required\\\": [\\n            \\\"primaryFocus\\\",\\n            \\\"secondaryTargets\\\",\\n            \\\"fullDescription\\\"\\n          ],\\n          \\\"additionalProperties\\\": false\\n        },\\n        \\\"targetPersona\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"A description of the roles or personas the company targets.\\\"\\n        },\\n        \\\"idealCustomerProfile\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"The ideal customer profile completed using the specified template from the knowledge base.\\\"\\n        },\\n        \\\"buyerPersona\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"The buyer persona completed using the specified template from the knowledge base.\\\"\\n        },\\n        \\\"teamsTheySellToDropdown\\\": {\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"description\\\": \\\"Dropdown list of team names they sell to, based on the knowledge base values.\\\",\\n          \\\"items\\\": {\\n            \\\"type\\\": \\\"string\\\"\\n          }\\n        },\\n        \\\"teamsTheySellToDescription\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"A plain sentence that describes the teams they sell to.\\\"\\n        },\\n        \\\"linkedinOutboundFit\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Indicates outbound fit: strong_yes, uncertain, or no.\\\",\\n          \\\"enum\\\": [\\n            \\\"strong_yes\\\",\\n            \\\"uncertain\\\",\\n            \\\"no\\\"\\n          ]\\n        },\\n        \\\"linkedinOutboundFitReason\\\": {\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"description\\\": \\\"Explanation of the match (or not) against the Strong Fit Role List.\\\"\\n        }\\n      },\\n      \\\"required\\\": [\\n        \\\"businessModel\\\",\\n        \\\"companyType\\\",\\n        \\\"productDescription\\\",\\n        \\\"targetMarketSegment\\\",\\n        \\\"targetIndustry\\\",\\n        \\\"targetPersona\\\",\\n        \\\"idealCustomerProfile\\\",\\n        \\\"buyerPersona\\\",\\n        \\\"teamsTheySellToDropdown\\\",\\n        \\\"teamsTheySellToDescription\\\",\\n        \\\"linkedinOutboundFit\\\",\\n        \\\"linkedinOutboundFitReason\\\"\\n      ],\\n      \\\"additionalProperties\\\": false\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"qualificationStatus\\\",\\n    \\\"qualificationReasoning\\\",\\n    \\\"classification\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget",
+            "formulaText": "3"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t6ah8gA3Hz3a7fRzP7"
+      }
+    },
+    {
+      "index": 20,
+      "name": "Company Overview (2)",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Crawl the internet and gather data about company called: \" + Clay.formatForAIPrompt({{@Organization Name}}) + \" \" + Clay.formatForAIPrompt({{@Enrich Company}}?.url) + \"\\n\\nFind information about:\\n\\n1. What do they do and for whom\\n2. Whats their business model\\n3. How do they position themselves and what do they say about themselves\\n\\nFor each section, output 3-5 sentences. The more data you can find, the better. The only rule is that you cant make up data. It needs to be factual. \""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gemini-2.5-flash\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "fields": "{\"response\":{\"type\":\"string\"}}"
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 5,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_FfAwz41BuzME"
+      }
+    },
+    {
+      "index": 21,
+      "name": "Qualification Status (3)",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Evidence Blocks}}?.qualificationStatus",
+        "mappedResultPath": [
+          "qualificationStatus"
+        ]
+      }
+    },
+    {
+      "index": 22,
+      "name": "CEO LinkedIn Profile",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"claygent\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Find the CEO of \" + Clay.formatForAIPrompt({{@Linkedin Company Url}}) + \" and their linkedin profile. If not available on the linkedin page, search google.\\n\\nOutput the profile link\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"gpt-4.1-mini\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "fields": "{\"Linkedin_profile\":{\"type\":\"url\",\"description\":\"\",\"id\":\"6e53c931-fceb-4160-b1e7-a0463b947f7e\",\"options\":\"\"}}"
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "({{@Qualification Status (3)}}?.toLowerCase()||\"\")===\"qualified\"",
+        "conditionalRunFormulaPrompt": "\"run only if \"+{{@Qualification Status (3)}}+\" equals Qualified\"",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 17,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 750,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0t3rf2hsVda3cBShEr6"
+      }
+    },
+    {
+      "index": 23,
+      "name": "LinkedIn Username",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text",
+          "label": "Text",
+          "iconType": {
+            "displayName": "TextT"
+          }
+        },
+        "formulaType": "text",
+        "formulaText": "({{@CEO LinkedIn Profile}}?.Linkedin_profile||\"\")?.toLowerCase()?.split(\"linkedin.com/in/\")?.[1]?.split(/[/?#]/)?.[0]",
+        "formulaPrompt": "\"output the username from \"+{{@CEO LinkedIn Profile}}?.Linkedin_profile+\" -> it's the value after linkedin.com/in/ -> if it ends with '/', remove this sign\""
+      }
+    },
+    {
+      "index": 24,
+      "name": "RapidAPI / CEO Activity",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://web-production-39565.up.railway.app/process\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"username\\\": \\\"\" + Clay.formatForJSON({{@LinkedIn Username}}) + \"\\\",\\n  \\\"webhook_url\\\": \\\"https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-801d3416-e040-4bd5-9b83-9fec6d6a2643\\\",\\n  \\\"posted_max_days_ago\\\": 360,\\n  \\\"include_experiences\\\": false,\\n  \\\"include_skills\\\": false,\\n  \\\"include_bio\\\": false\\n}\""
+          },
+          {
+            "name": "headers"
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ],
+        "conditionalRunFormulaText": "({{@Qualification Status (3)}}?.toLowerCase()||\"\")===\"qualified\""
+      }
+    },
+    {
+      "index": 25,
+      "name": "RapidAPI / Get Detailed Company Data",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://web-production-39565.up.railway.app/process\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"target_api\\\": \\\"https://fresh-linkedin-scraper-api.p.rapidapi.com/api/v1/company/associated-member-insights?company_id=\" + Clay.formatForJSON({{@Org Id}}) + \"\\\",\\n  \\\"org_id\\\": \\\"\" + Clay.formatForJSON({{@Org Id}}) + \"\\\",\\n  \\\"headers\\\": {\\n    \\\"x-rapidapi-key\\\": \\\"476820a5c7msh0326fc5d9cfd957p11723cjsn36b4d62297ad\\\",\\n    \\\"x-rapidapi-host\\\": \\\"fresh-linkedin-scraper-api.p.rapidapi.com\\\"\\n  },\\n  \\\"callback_webhook\\\": \\\"https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-7ae7d7b5-a66e-4a95-b1eb-b800fe8631e5\\\"\\n}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\""
+            }
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ],
+        "conditionalRunFormulaPrompt": "\"Run only if \"+{{f_0t95sssRDaNBem7fynb}}+\" equals Qualified\""
+      }
+    },
+    {
+      "index": 26,
+      "name": "Lookup RapidAPI Data",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0tar6w2Aop789Qw7MSw\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0tar8a8CfNhge3Zq2je\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Org Id}}"
+          }
+        ],
+        "authAccountId": "aa_KfM2Ys6wyDfC"
+      }
+    },
+    {
+      "index": 27,
+      "name": "Batch",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 28,
+      "name": "Sales + BD",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup RapidAPI Data}}?.record?.[\"Sales + BD\"]",
+        "mappedResultPath": [
+          "record",
+          "Sales + BD"
+        ]
+      }
+    },
+    {
+      "index": 29,
+      "name": "Lookup Multiple Rows in Other Table (2)",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-multiple-rows-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0tarapqgZGi6xPaccYu\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0taraw8u72MAqkHbD2M\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@Org Id}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 30,
+      "name": "Account Overview & Prospect Scoring",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"You are a Senior GTM Analyst for Backpack AI — a company that builds custom AI-powered Go-to-Market engines for B2B SaaS companies.\\nYour job is two things:\\n1. Analyze a company's GTM team to produce a structured account overview\\n2. Identify and score the best outreach prospects for Backpack AI\\nBackpack AI solves these problems for sales teams:\\n- Building lead lists is manual and inefficient\\n- SDRs send generic, non-personalized outreach\\n- No consistent systems for email, LinkedIn, or phone outreach\\n- Buying signals are ignored; inbound leads are not engaged properly\\n- Salespeople arrive at meetings unprepared\\n- Deals are poorly tracked and stakeholders are missed\\nThis is a prospecting and account overview prompt only. Do not generate outreach copy or personalization suggestions.\\n---\\n## STEP 1 — COMPANY SELECTION\\nIf profiles span multiple companies, identify the single company most members currently share. All analysis must focus only on that company. Match company names case-insensitively; treat minor naming variations as identical (e.g. \\\"Meta\\\" and \\\"Meta Platforms Inc.\\\" are the same).\\n---\\n## STEP 2 — CLASSIFY EACH PERSON\\nBefore scoring anyone, classify every person in the input as one of:\\n**budget_holder** — Controls GTM spend and makes the final purchasing decision. Look for: ownership of a revenue number, authority over headcount and tooling budgets, reporting to the CEO or board. Reason from career history — someone whose entire career has been in sales and revenue roles is a stronger signal than a title alone.\\n**champion** — Feels the daily operational pain of inefficient outbound most acutely and would push internally for Backpack's solution. Look for: direct management of SDRs, BDRs, or AEs; hands-on involvement in outbound strategy; RevOps or Sales Operations ownership.\\n**both** — A single person may hold both roles when their position and responsibilities clearly imply full GTM ownership with no one above them in the revenue org (e.g. a VP Sales at a small company who both sets strategy and manages the SDR team directly).\\n**none** — Non-GTM leadership role. Technical roles (CTO, VP Engineering, CPO), financial roles (CFO, Finance Director), advisory or board titles, channel/partnerships roles without direct revenue ownership. Score these but do not surface as prospects.\\n**ic** — Individual contributors executing GTM tasks without owning strategy or budget: SDRs, BDRs, AEs, Growth Analysts, Sales Engineers, RevOps Analysts. Do not score. Classify by ic_type only.\\nUse this question as your north star for every person:\\n> \\\"Would this person feel the pain of slow pipeline, manual prospecting, or inefficient outbound — and do they have the authority to buy a solution for it?\\\"\\nTitles are not always reliable. Reason holistically from title, headline, summary, and career history (for decision-makers) or title_description (for ICs).\\n**CEO/Founder nuances — reason from career history, not title:**\\n- Sales or GTM background throughout career → strong Budget Holder and likely Champion; high score\\n- Generic CEO/Founder with no dedicated revenue leader present → moderate score, likely Budget Holder only\\n- Technical co-founder whose career is entirely engineering or product → low score, classify as \\\"none\\\"\\n---\\n## STEP 3 — ASSESS SALES MOTION\\nEvaluate whether outbound is a viable channel for this company. Use this priority order:\\n1. **Explicit signals** — SDRs/BDRs present in the team; summaries or descriptions mention cold outreach, pipeline generation, or outbound sequencing tools → outbound confirmed\\n2. **Company and product type** — if the company appears to be B2B SaaS with a clear business buyer persona, assume outbound is viable even with zero SDRs (they may simply not have built the motion yet — exactly what Backpack helps with). Label this reasoning as (assumption).\\n3. **Suspicious signals** — no outbound roles AND the product appears to be PLG, developer-tool, or consumer-facing → lean toward false or unknown\\n4. **Insufficient data** → output classification: \\\"unknown\\\" and outbound_viable: null\\nImportant: the absence of SDRs at a Seed-stage B2B SaaS company is NOT disqualifying on its own.\\n---\\n## STEP 4 — SCORE ALL NON-IC PEOPLE (1–10)\\nScore every person classified as budget_holder, champion, both, or none. ICs are not scored.\\n- **8–10:** Directly owns revenue or pipeline, manages sellers, career confirms GTM authority\\n- **5–7:** Partial GTM relevance, indirect authority, or mixed background\\n- **1–4:** No pipeline ownership, no GTM buying authority, fundamentally non-GTM role\\nReasoning must be 2–3 sentences grounded in their actual profile. Reference specific past roles, tenure, or descriptions — not generic statements.\\n---\\n## STEP 5 — SELECT TOP PROSPECTS\\nFrom all scored people, select up to 3 with score ≥ 7, ranked 1 (best) to 3. If fewer than 3 qualify, include only those who do. If nobody scores ≥ 7, return an empty array.\\n---\\n## STEP 6 — TEAM-LEVEL INSIGHTS\\nAnalyze all matching profiles and extract:\\n**Team structure:** Classify current roles into SDR/BDR, AE, BD/Partnerships, Growth, RevOps/SalesOps, Leadership. Summarize in 1–3 bullets.\\n**Seniority:** Overall summary only — e.g. \\\"senior-heavy team with a junior IC layer.\\\" Never describe individuals here.\\n**Sales tools:** Explicit mentions only — CRM, outbound platforms, enrichment tools, sequencing tools. Never infer from job titles. If none found → \\\"no information found\\\".\\n**Hiring signals:** Only if explicitly mentioned in profile data. Never infer. If nothing explicit → \\\"no information found\\\".\\n**Automation maturity:** 1–3 bullets inferred from tool mentions and role descriptions. All inferences must be labeled (assumption).\\n**New joiners:** Anyone with less than 6 months in their current role.\\n---\\n## DATA DISCIPLINE\\n- If data is absent and no allowed assumption applies → \\\"no information found\\\"\\n- All inferences must include (assumption) inline\\n- Sales tools and hiring signals: explicit only, never assumed\\n- Never skip a profile because a field is missing — reason from what's available\\n- Headcount = count of profiles whose company field matches the selected company (case-insensitive, minor naming variations treated as identical)\\n- ic_breakdown counts must exactly match the number of entries in the ics array\\n---\\n## OUTPUT\\nReturn valid JSON only. No text, explanation, or prose outside the JSON.\\n{\\n  \\\"company\\\": \\\"string\\\",\\n  \\\"sales_motion\\\": {\\n    \\\"classification\\\": \\\"outbound | inbound | plg | mixed | unknown\\\",\\n    \\\"outbound_viable\\\": true | false | null,\\n    \\\"evidence\\\": \\\"string — explicit signals + labeled assumptions explaining the outbound_viable verdict\\\"\\n  },\\n  \\\"team_insights\\\": {\\n    \\\"headcount\\\": {\\n      \\\"total\\\": integer,\\n      \\\"decision_makers\\\": integer,\\n      \\\"ics\\\": integer\\n    },\\n    \\\"ic_breakdown\\\": {\\n      \\\"sdr\\\": integer,\\n      \\\"bdr\\\": integer,\\n      \\\"ae\\\": integer,\\n      \\\"growth\\\": integer,\\n      \\\"other\\\": integer\\n    },\\n    \\\"team_structure\\\": [\\\"string\\\"],\\n    \\\"seniority\\\": \\\"string\\\",\\n    \\\"sales_tools\\\": [\\\"string\\\"] | \\\"no information found\\\",\\n    \\\"hiring_signals\\\": \\\"string | no information found\\\",\\n    \\\"automation_maturity\\\": [\\\"string (assumption)\\\"],\\n    \\\"new_joiners\\\": [\\\"Name — Title, X months\\\"] | []\\n  },\\n  \\\"top_prospects\\\": [\\n    {\\n      \\\"rank\\\": integer,\\n      \\\"vmid\\\": \\\"string | null\\\",\\n      \\\"name\\\": \\\"string\\\",\\n      \\\"current_title\\\": \\\"string\\\",\\n      \\\"role\\\": \\\"budget_holder | champion | both\\\",\\n      \\\"score\\\": integer,\\n      \\\"is_new_joiner\\\": boolean,\\n      \\\"months_in_role\\\": integer | null,\\n      \\\"reasoning\\\": \\\"string\\\"\\n    }\\n  ],\\n  \\\"all_decision_makers\\\": [\\n    {\\n      \\\"vmid\\\": \\\"string | null\\\",\\n      \\\"name\\\": \\\"string\\\",\\n      \\\"current_title\\\": \\\"string\\\",\\n      \\\"role\\\": \\\"budget_holder | champion | both | none\\\",\\n      \\\"score\\\": integer,\\n      \\\"is_new_joiner\\\": boolean,\\n      \\\"months_in_role\\\": integer | null,\\n      \\\"reasoning\\\": \\\"string\\\"\\n    }\\n  ],\\n  \\\"ics\\\": [\\n    {\\n      \\\"vmid\\\": \\\"string | null\\\",\\n      \\\"name\\\": \\\"string\\\",\\n      \\\"current_title\\\": \\\"string\\\",\\n      \\\"ic_type\\\": \\\"sdr | bdr | ae | growth | other\\\"\\n    }\\n  ]\\n}\\nOutput rules:\\n- top_prospects: max 3, score ≥ 7 only, sorted rank ascending. Empty array [] if nobody qualifies.\\n- all_decision_makers: all non-IC profiles, sorted score descending.\\n- ics: all IC profiles. ic_breakdown counts must match exactly.\\n- vmid: pass through as-is from input. null if not provided.\\n- is_new_joiner: true if < 6 months in current role. months_in_role: null if unknown.\\n- ic_breakdown: all five keys always present, default to 0.\\n- reasoning: 2–3 sentences, factual, grounded in actual data from the profile.\\n---\\n## INPUT\\n<people>\\n[\" + Clay.formatForAIPrompt({{@Lookup Multiple Rows in Other Table (2)}}) + \"]\\n</people>\\nDecision-makers include: vmid, name, current_title, headline, summary, experience (array of { title, company, duration }).\\nICs include: vmid, name, current_title, headline, summary, title_description.\\nAll fields are optional — reason from whatever is available.\\n\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"claude-sonnet-4-6\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "fields": "{\"response\":{\"type\":\"string\"}}"
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget",
+            "formulaText": "1"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 32,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 1000,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ],
+          "concurrency": [
+            {
+              "limit": 60,
+              "bucket": [
+                "PRIVATE_AUTH_KEY"
+              ]
+            }
+          ]
+        },
+        "authAccountId": "aa_0svqk6cbifNxyobXCrw"
+      }
+    }
+  ]
+}

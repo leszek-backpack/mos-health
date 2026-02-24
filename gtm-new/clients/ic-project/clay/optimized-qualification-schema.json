@@ -1,0 +1,44 @@
+{
+  "version": "5.0",
+  "name": "IC Project — Qualification + Personalization (v5)",
+  "description": "One AI call per company. Few-shot examples from manually written gold standards. Outputs: qualified, tier, segment, signal_type, personalization_hook, poke_question.",
+  "model": "anthropic/claude-sonnet-4-6",
+  "model_note": "Sonnet 4.6 won head-to-head: 100% reliability vs 85%, 90% segment accuracy vs 82%, 2.1x cheaper, flawless Polish grammar.",
+  "model_alternatives": ["google/gemini-3.1-pro-preview", "google/gemini-2.5-flash"],
+
+  "cost": {
+    "measured_from_20_company_test": true,
+    "sonnet-4.6": "$0.0095/company → $3.09/325 companies (recommended)",
+    "gemini-3.1-pro": "$0.0204/company → $6.62/325 companies (3 failures in 20)",
+    "gemini-2.5-flash": "~$0.0004/company → $0.13/325 (lower quality, untested with v5 prompt)",
+    "vs_old_pipeline": "$26.68/run for qualification alone → now $3.09/run with better output"
+  },
+
+  "prompt": "Kwalifikuj leada dla IC Project — polskiego narzędzia do zarządzania projektami w firmach produkcyjnych.\n\n<product>\nIC Project pomaga firmom:\n- Koordynować projekty między działami (produkcja, logistyka, R&D, marketing)\n- Śledzić budżety i harmonogramy WSZYSTKICH projektów w jednym miejscu\n- Przydzielać zasoby między projekty\n- Eliminować ręczne raportowanie (Excel, maile, spotkania statusowe)\nKlienci: Wawel (200+ projektów rocznie), ATAL (deweloper, 7+ lokalizacji), VOX Meble.\n</product>\n\n<data>\nFirma: {{company_name}}\nBranża: {{industry}}\nPracownicy: {{employee_count}}\nOpis: {{company_bio}}\nSygnały: {{signals}}\nOferty pracy: {{job_offers}}\n</data>\n\n<task>\nWygeneruj JSON z polami:\n\n1. qualified (true/false): Czy firma zarządza projektami wymagającymi koordynacji wielu ludzi/działów?\n   Produkcja, budownictwo, inżynieria = tak. Handel, usługi proste = nie.\n\n2. tier (P1/P2/P3):\n   P1 = firma 50+ osób Z wyraźnymi sygnałami (budowa, ekspansja, rekrutacja, wiele lokalizacji)\n   P2 = firma pasuje do profilu ale brak wyraźnych sygnałów bólu\n   P3 = słabe dopasowanie (mała, prosta produkcja)\n\n3. segment: 'Produkcja Projektowa i Ciężka' | 'Produkcja Montażowa' | 'Produkcja Dóbr Konsumpcyjnych' | 'Inne'\n   UWAGA: Opakowania (folie, kartony, tektura) = 'Produkcja Dóbr Konsumpcyjnych'.\n\n4. signal_type: 'event' | 'hiring' | 'generic'\n   event = inwestuje, buduje, rozbudowuje, przejmuje, zdobyła kontrakt/nagrodę\n   hiring = rekrutuje, szuka ludzi, otwiera stanowiska\n   generic = brak konkretnego sygnału, tylko opis firmy/produktów\n   MUSI pasować do personalization_hook.\n\n5. personalization_hook (5-15 słów, po polsku):\n   FORMA: dopełniacz — pojawi się po \"przeczytałem o...\"\n   NIE kopiuj surowych danych. Napisz naturalnie, jak człowiek.\n   Przykłady: 'rozbudowie hali w Wilkowicach', 'otwarciu zakładu w USA', 'Waszej specjalizacji w sterownikach grzewczych'\n\n6. poke_question (max 25 słów, po polsku):\n   FORMA: \"Przy [odniesienie do firmy, max 5 słów] — [pytanie z wyborem A lub B]\"\n   MUSI dotyczyć CODZIENNEJ koordynacji projektów, NIE samego sygnału.\n   Np. firma buduje halę → NIE pytaj o budżet hali → pytaj jak koordynują bieżące projekty.\n\n7. reasoning (po angielsku): Krótkie uzasadnienie.\n</task>\n\n<rules>\nNIGDY nie pisz: \"Domyślam się\", \"Skąd Pan wie\", \"Zauważyłem że\", \"Jak Pan sprawdza\", \"Nie martwi Pana\"\nNIGDY nie wymieniaj \"IC Project\" w hook ani poke_question.\nNIGDY nie spekuluj o procesach firmy — pisz tylko o tym, co WIESZ z danych.\nNIGDY nie używaj angielskiego żargonu (MTO, ETO, NPI, KPI) — pisz po polsku: \"produkcja na zamówienie\", \"wdrożenie nowego produktu\".\npoke_question MUSI mieć wybór A/B (np. \"jedno narzędzie, czy raczej Excel i spotkania?\").\npoke_question NIE MOŻE powtarzać dosłownie treści z personalization_hook.\n</rules>\n\n<examples>\nPrzykład 1 (event + Projektowa):\nFirma: FOGO, 60 osób, producent agregatów prądotwórczych. Buduje nową halę w Wilkowicach.\n{\"qualified\":true,\"tier\":\"P1\",\"segment\":\"Produkcja Projektowa i Ciężka\",\"signal_type\":\"event\",\"personalization_hook\":\"rozbudowie hali produkcyjno-magazynowej w Wilkowicach\",\"poke_question\":\"Przy takim wzroście — koordynacja projektów między R&D a produkcją to jedno narzędzie, czy raczej Excel i spotkania?\",\"reasoning\":\"Manufacturer expanding production, clear investment signal\"}\n\nPrzykład 2 (event + Montażowa):\nFirma: EMBS, 104 osoby, producent baterii. Otworzył zakład w USA (10 000 m²).\n{\"qualified\":true,\"tier\":\"P1\",\"segment\":\"Produkcja Montażowa\",\"signal_type\":\"event\",\"personalization_hook\":\"otwarciu zakładu produkcyjnego w Greenville w USA\",\"poke_question\":\"Przy dwóch zakładach na dwóch kontynentach — statusy projektów widać w jednym miejscu, czy każdy zespół prowadzi to po swojemu?\",\"reasoning\":\"Battery manufacturer with new US plant, cross-continent coordination\"}\n\nPrzykład 3 (generic + Projektowa):\nFirma: Alchemia, 75 osób, producent rur stalowych w 400+ gatunkach. Cztery zakłady w Polsce.\n{\"qualified\":true,\"tier\":\"P3\",\"segment\":\"Produkcja Projektowa i Ciężka\",\"signal_type\":\"generic\",\"personalization_hook\":\"produkcji rur w ponad 400 gatunkach stali i czterech zakładach w Polsce\",\"poke_question\":\"Przy czterech lokalizacjach — status każdego zlecenia widać w jednym miejscu, czy każdy zakład prowadzi to osobno?\",\"reasoning\":\"Multi-site steel producer, small (75 employees), no clear pain signals\"}\n</examples>\n\nZwróć TYLKO JSON, bez komentarzy.",
+
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "qualified": {"type": "boolean"},
+      "tier": {"type": "string", "enum": ["P1", "P2", "P3"]},
+      "segment": {"type": "string", "enum": ["Produkcja Projektowa i Ciężka", "Produkcja Montażowa", "Produkcja Dóbr Konsumpcyjnych", "Inne"]},
+      "signal_type": {"type": "string", "enum": ["event", "hiring", "generic"]},
+      "personalization_hook": {"type": "string", "description": "5-15 words, Polish dopełniacz (genitive) — used after 'przeczytałem o...'"},
+      "poke_question": {"type": "string", "description": "Max 25 words, binary choice question about daily project coordination"},
+      "reasoning": {"type": "string"}
+    },
+    "required": ["qualified", "tier", "segment", "signal_type", "personalization_hook", "poke_question", "reasoning"]
+  },
+
+  "changelog": {
+    "v4→v5": [
+      "Added 3 few-shot examples from manually written gold standards",
+      "XML structure for clearer parsing",
+      "Explicit <rules> and <banned_phrases> sections",
+      "Word limits: hook 5-15 words, poke max 25 words",
+      "signal_type is now a required output field",
+      "Model upgraded to gemini-3.1-pro-preview (with sonnet-4.6 as alternative)",
+      "Removed redundant instructions — leaner prompt, same constraints"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-02-24T12:34:30Z",
+  "model": "anthropic/claude-sonnet-4-6",
+  "schema_version": "v5",
+  "tier_match": "1/1",
+  "segment_match": "1/1",
+  "total_prompt_tokens": 1982,
+  "total_completion_tokens": 215,
+  "total_cost": "$0.0092",
+  "cost_per_company": "$0.009171",
+  "results": [
+    {
+      "company": "Mostostal Zabrze Konstrukcje Przemysłowe S.A.",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "hiring",
+        "personalization_hook": "rekrutacji Specjalisty ds. Planowania Produkcji z wymogiem biegłości w Excelu",
+        "poke_question": "Przy produkcji jednostkowej konstrukcji — harmonogramy i statusy zleceń prowadzicie w jednym systemie, czy głównie w arkuszach i mailach?",
+        "reasoning": "ETO manufacturer (cranes, rail vehicles) with 60 employees actively hiring a production planner where Excel proficiency is mandatory while ERP knowledge is optional — a textbook execution gap signal. Custom, multi-department project coordination is core to their business, making this a strong P1 fit.",
+        "_tokens": 2197,
+        "_prompt_tokens": 1982,
+        "_completion_tokens": 215
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rekrutacji Specjalisty ds. Planowania Produkcji z wymogiem biegłości w Excelu — widzę, że się rozwijacie.\n\nPrzy produkcji jednostkowej konstrukcji — harmonogramy i statusy zleceń prowadzicie w jednym systemie, czy głównie w arkuszach i mailach?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy to coś, z czym się u Was mierzycie? Pozdrawiam"
+    }
+  ]
+}

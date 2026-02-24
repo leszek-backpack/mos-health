@@ -1,0 +1,754 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-23T15:40:03.784Z",
+  "columnCount": 31,
+  "columns": [
+    {
+      "index": 0,
+      "name": "fullName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "name": "firstName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "name": "lastName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "name": "companyName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "name": "title",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "name": "companyId",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "name": "regularCompanyUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "name": "summary",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "name": "titleDescription",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "name": "industry",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "name": "location",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "name": "companyLocation",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "name": "vmid",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "name": "isOpenLink",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "name": "linkedInProfileUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "name": "defaultProfileUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "name": "Lookup Single Row in Other Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t99oh0a6vYuKbhGCia\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t99qhsYTek6MFm992p\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@companyId}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 17,
+      "name": "XAI / Qualification Status",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"xAI / Qualification Status\"]",
+        "mappedResultPath": [
+          "record",
+          "xAI / Qualification Status"
+        ]
+      }
+    },
+    {
+      "index": 18,
+      "name": "Target Persona Fit",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table}}?.record?.[\"Target Persona Fit\"]",
+        "mappedResultPath": [
+          "record",
+          "Target Persona Fit"
+        ]
+      }
+    },
+    {
+      "index": 19,
+      "name": "RapidAPI / Get Experiences",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://web-production-39565.up.railway.app/process\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"target_api_url\\\": \\\"https://fresh-linkedin-scraper-api.p.rapidapi.com/api/v1/user/profile?username=\" + Clay.formatForJSON({{@vmid}}) + \"&include_experiences=true\\\",\\n  \\\"callback_webhook_url\\\": \\\"https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-bfd20abb-18bd-44a7-89b5-a10cd67b4404\\\",\\n  \\\"row_id\\\": \\\"\" + Clay.formatForJSON({{@vmid}}) + \"\\\",\\n  \\\"request_method\\\": \\\"GET\\\",\\n  \\\"request_headers\\\": {\\n    \\\"x-rapidapi-host\\\": \\\"fresh-linkedin-scraper-api.p.rapidapi.com\\\",\\n    \\\"x-rapidapi-key\\\": \\\"476820a5c7msh0326fc5d9cfd957p11723cjsn36b4d62297ad\\\"\\n  }\\n}\""
+          },
+          {
+            "name": "headers",
+            "formulaMap": {
+              "Content-Type": "\"application/json\""
+            }
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ]
+      }
+    },
+    {
+      "index": 20,
+      "name": "Lookup Single Row in Other Table (2)",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0tar7ifXbCDcx4RzAmQ\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0tara1aWzdTYUJrPjvv\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@vmid}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 21,
+      "name": "Experiences",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table (2)}}?.record?.Experiences",
+        "mappedResultPath": [
+          "record",
+          "Experiences"
+        ]
+      }
+    },
+    {
+      "index": 22,
+      "name": "Lookup Single Row in Other Table (3)",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-row-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0t99oh0a6vYuKbhGCia\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0t99qhsYTek6MFm992p\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@companyId}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 23,
+      "name": "Assign Prospect Score",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"Your task is to assign properties to a prospect based on this research: \\n{{\\n\" + Clay.formatForAIPrompt({{@Prospect Scoring}}) + \"\\n}}\\nprospect to analyze:\\n{{\\n\" + Clay.formatForAIPrompt({{@vmid}}) + \"\\n}}\\nOUTPUT SCHEMA:\\n      \\\"rank\\\": 1,\\n      \\\"vmid\\\": \\\"string\\\",\\n      \\\"name\\\": \\\"string\\\",\\n      \\\"current_title\\\": \\\"string\\\",\\n      \\\"score\\\": integer,\\n      \\\"reasoning\\\": \\\"2–3 sentences grounded in their actual profile. Reference specific past roles or signals that justify the score.\\\"\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"grok-4-1-fast-reasoning\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"rank\\\": {\\n      \\\"type\\\": \\\"integer\\\",\\n      \\\"description\\\": \\\"The rank assigned to the prospect.\\\"\\n    },\\n    \\\"vmid\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The unique identifier for the prospect being analyzed.\\\"\\n    },\\n    \\\"name\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The full name of the prospect.\\\"\\n    },\\n    \\\"currentTitle\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"The current job title of the prospect.\\\"\\n    },\\n    \\\"score\\\": {\\n      \\\"type\\\": \\\"integer\\\",\\n      \\\"description\\\": \\\"The prospect's score based on the research.\\\"\\n    },\\n    \\\"reasoning\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"A justification of the score, including 2–3 sentences referencing the prospect's actual profile, past roles, or specific signals.\\\"\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"rank\\\",\\n    \\\"vmid\\\",\\n    \\\"name\\\",\\n    \\\"currentTitle\\\",\\n    \\\"score\\\",\\n    \\\"reasoning\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "conditionalRunFormulaText": "{{@Prospect Scoring}}",
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 8,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 1000,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0tachtr7MgX9QoKWWme"
+      }
+    },
+    {
+      "index": 24,
+      "name": "Prospect Scoring",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Lookup Single Row in Other Table (3)}}?.record?.[\"Prospect Scoring\"]",
+        "mappedResultPath": [
+          "record",
+          "Prospect Scoring"
+        ]
+      }
+    },
+    {
+      "index": 25,
+      "name": "Rank",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Assign Prospect Score}}?.rank",
+        "mappedResultPath": [
+          "rank"
+        ]
+      }
+    },
+    {
+      "index": 26,
+      "name": "Score",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "number"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Assign Prospect Score}}?.score",
+        "mappedResultPath": [
+          "score"
+        ]
+      }
+    },
+    {
+      "index": 27,
+      "name": "HTTP API",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "http-api-v2",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "method",
+            "formulaText": "\"POST\""
+          },
+          {
+            "name": "url",
+            "formulaText": "\"https://web-production-39565.up.railway.app/process\""
+          },
+          {
+            "name": "queryString"
+          },
+          {
+            "name": "body",
+            "formulaText": "\"{\\n  \\\"target_api_url\\\": \\\"https://fresh-linkedin-scraper-api.p.rapidapi.com/api/v1/user/posts?urn=\" + Clay.formatForJSON({{@vmid}}) + \"&page=1\\\",\\n  \\\"callback_webhook_url\\\": \\\"https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-e4a2db75-6c76-4c72-921c-6df7f56d4c49\\\",\\n  \\\"row_id\\\": \\\"\" + Clay.formatForJSON({{@vmid}}) + \"\\\",\\n  \\\"method\\\": \\\"Accept all\\\",\\n  \\\"request_method\\\": \\\"GET\\\",\\n  \\\"request_headers\\\": {\\n    \\\"x-rapidapi-host\\\": \\\"fresh-linkedin-scraper-api.p.rapidapi.com\\\",\\n    \\\"x-rapidapi-key\\\": \\\"476820a5c7msh0326fc5d9cfd957p11723cjsn36b4d62297ad\\\"\\n  }\\n}\""
+          },
+          {
+            "name": "headers"
+          },
+          {
+            "name": "fieldPaths"
+          },
+          {
+            "name": "removeNull",
+            "formulaText": "true"
+          },
+          {
+            "name": "returnResponseMetadata"
+          },
+          {
+            "name": "followRedirects",
+            "formulaText": "true"
+          },
+          {
+            "name": "followRedirectsOptions|maxRedirects"
+          },
+          {
+            "name": "responseTimeout"
+          },
+          {
+            "name": "shouldRetry",
+            "formulaText": "true"
+          },
+          {
+            "name": "retryOptions|maxRetries"
+          },
+          {
+            "name": "retryOptions|statusCodesToRetry"
+          },
+          {
+            "name": "retryOptions|errorCodesToRetry"
+          }
+        ]
+      }
+    },
+    {
+      "index": 28,
+      "name": "Lookup Multiple Rows in Other Table",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "lookup-multiple-rows-in-other-table",
+        "actionVersion": 1,
+        "actionPackageId": "4299091f-3cd3-4d68-b198-0143575f471d",
+        "inputsBinding": [
+          {
+            "name": "tableId",
+            "formulaText": "\"t_0tarcnkFPwfimdFxaze\""
+          },
+          {
+            "name": "fields|targetColumn",
+            "formulaText": "\"f_0tarctnuPD9cHxgKfZr\""
+          },
+          {
+            "name": "fields|filterOperator",
+            "formulaText": "\"EQUAL\""
+          },
+          {
+            "name": "fields|rowValue",
+            "formulaText": "{{@vmid}}"
+          }
+        ]
+      }
+    },
+    {
+      "index": 29,
+      "name": "Comment Campaign Tracking",
+      "type": "action",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "json"
+        },
+        "actionKey": "use-ai",
+        "actionVersion": 1,
+        "actionPackageId": "67ba01e9-1898-4e7d-afe7-7ebe24819a57",
+        "inputsBinding": [
+          {
+            "name": "useCase",
+            "formulaText": "\"use-ai\""
+          },
+          {
+            "name": "prompt",
+            "formulaText": "\"You are analyzing a LinkedIn profile to determine whether this person should be added to a prospect comment campaign.\\nThe goal of the campaign: warm up a specific prospect by commenting on their posts before outreach. The author needs to notice Leszek's name repeatedly. This only works if the person posts often enough AND their content allows for a natural, non-generic comment.\\n---\\n## DECISION THRESHOLD\\nOutput should_track: true ONLY if the person has at least 6 comment-worthy posts in the provided data (representing the last 90 days).\\n---\\n## WHAT COUNTS AS COMMENT-WORTHY\\nCount a post as comment-worthy if it falls into any of these categories:\\nALWAYS comment-worthy (warm touch opportunities):\\n- Milestone posts: funding announcements, product launches, awards, new role announcements, company anniversaries\\n- Community or initiative announcements the author is personally involved in\\nCOMMENT-WORTHY if the post has genuine substance:\\n- Original opinion piece where the author defends a specific take\\n- Lessons learned narrative with a concrete hook\\n- Thought-provoking question that invites a real answer\\n- Industry observation with a specific angle — topic does not need to be GTM-related\\nNOT comment-worthy (skip these):\\n- Engagement bait: posts that ask readers to \\\"comment X to get Y\\\" — look for this pattern explicitly in the post text\\n- Pure reshares with no added author commentary — the author didn't write anything original\\n- Generic internal updates: \\\"great session with the team today\\\", \\\"proud of our team\\\" with no substance\\n- Purely personal posts: birthdays, holidays, personal life with no professional angle\\n- Posts in a language where a natural English comment would feel out of place\\nFor reshares: if the author added a meaningful paragraph of their own commentary on top of the reshare, count it. If they just clicked share with no added text, don't count it.\\n---\\n## OUTPUT\\nReturn valid JSON only. No prose outside the JSON.\\n{\\n  \\\"should_track\\\": true | false,\\n  \\\"qualifying_post_count\\\": integer,\\n  \\\"total_post_count\\\": integer,\\n  \\\"content_mix\\\": {\\n    \\\"opinion_pieces\\\": integer,\\n    \\\"milestones\\\": integer,\\n    \\\"engagement_bait\\\": integer,\\n    \\\"reshares_no_commentary\\\": integer,\\n    \\\"personal\\\": integer,\\n    \\\"other\\\": integer\\n  },\\n  \\\"reasoning\\\": \\\"2-3 sentences explaining the decision — reference the content mix and why the threshold is or isn't met\\\",\\n  \\\"qualifying_posts\\\": [\\n    {\\n      \\\"post_id\\\": \\\"string\\\",\\n      \\\"post_text_preview\\\": \\\"first 100 chars of post text\\\",\\n      \\\"category\\\": \\\"milestone | opinion | community | question | other\\\"\\n    }\\n  ]\\n}\\nRules:\\n- qualifying_post_count must equal the length of qualifying_posts array\\n- qualifying_posts should only include posts that ARE comment-worthy\\n- content_mix counts must add up to total_post_count\\n---\\n## INPUT\\n<posts>\\n[\" + Clay.formatForAIPrompt({{@Lookup Multiple Rows in Other Table}}?.records) + \"]\\n</posts>\\nEach post object contains: text, content_type, is_reshare, activity (likes, comments count), created_at, post_id.\\n\""
+          },
+          {
+            "name": "temperature"
+          },
+          {
+            "name": "reasoningLevel"
+          },
+          {
+            "name": "reasoningBudget"
+          },
+          {
+            "name": "claygentId"
+          },
+          {
+            "name": "claygentFieldMapping"
+          },
+          {
+            "name": "maxTokens"
+          },
+          {
+            "name": "model",
+            "formulaText": "\"grok-4-1-fast-reasoning\""
+          },
+          {
+            "name": "maxCostInCents"
+          },
+          {
+            "name": "jsonMode"
+          },
+          {
+            "name": "systemPrompt"
+          },
+          {
+            "name": "answerSchemaType",
+            "formulaMap": {
+              "type": "\"json\"",
+              "jsonType": "\"JSONSchema\"",
+              "jsonSchema": "\"{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"shouldTrack\\\": {\\n      \\\"type\\\": \\\"boolean\\\",\\n      \\\"description\\\": \\\"Indicates if the profile meets the threshold for tracking based on comment-worthy posts.\\\"\\n    },\\n    \\\"qualifyingPostCount\\\": {\\n      \\\"type\\\": \\\"integer\\\",\\n      \\\"description\\\": \\\"The number of posts considered comment-worthy according to the given criteria.\\\"\\n    },\\n    \\\"totalPostCount\\\": {\\n      \\\"type\\\": \\\"integer\\\",\\n      \\\"description\\\": \\\"The total number of posts analyzed in the data.\\\"\\n    },\\n    \\\"contentMix\\\": {\\n      \\\"type\\\": \\\"object\\\",\\n      \\\"properties\\\": {\\n        \\\"opinionPieces\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Number of original opinion pieces with a defended take.\\\"\\n        },\\n        \\\"milestones\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Number of milestone posts such as funding, launches, awards, role announcements, and anniversaries.\\\"\\n        },\\n        \\\"engagementBait\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Number of engagement bait posts asking for comments to get something.\\\"\\n        },\\n        \\\"resharesNoCommentary\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Number of reshares with no added author commentary.\\\"\\n        },\\n        \\\"personal\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Number of purely personal or generic posts without a professional angle.\\\"\\n        },\\n        \\\"other\\\": {\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"description\\\": \\\"Number of posts that don't fit other categories, including posts in non-English where commenting would be unnatural.\\\"\\n        }\\n      },\\n      \\\"required\\\": [\\n        \\\"opinionPieces\\\",\\n        \\\"milestones\\\",\\n        \\\"engagementBait\\\",\\n        \\\"resharesNoCommentary\\\",\\n        \\\"personal\\\",\\n        \\\"other\\\"\\n      ],\\n      \\\"additionalProperties\\\": false\\n    },\\n    \\\"reasoning\\\": {\\n      \\\"type\\\": \\\"string\\\",\\n      \\\"description\\\": \\\"A concise explanation (2-3 sentences) referencing the content mix and explaining the decision and threshold.\\\"\\n    },\\n    \\\"qualifyingPosts\\\": {\\n      \\\"type\\\": \\\"array\\\",\\n      \\\"description\\\": \\\"Array of comment-worthy posts.\\\",\\n      \\\"items\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n          \\\"postId\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"Unique identifier of the post.\\\"\\n          },\\n          \\\"postTextPreview\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"First 100 characters of the post text.\\\"\\n          },\\n          \\\"category\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"Category of comment-worthy post.\\\",\\n            \\\"enum\\\": [\\n              \\\"milestone\\\",\\n              \\\"opinion\\\",\\n              \\\"community\\\",\\n              \\\"question\\\",\\n              \\\"other\\\"\\n            ]\\n          }\\n        },\\n        \\\"required\\\": [\\n          \\\"postId\\\",\\n          \\\"postTextPreview\\\",\\n          \\\"category\\\"\\n        ],\\n        \\\"additionalProperties\\\": false\\n      }\\n    }\\n  },\\n  \\\"required\\\": [\\n    \\\"shouldTrack\\\",\\n    \\\"qualifyingPostCount\\\",\\n    \\\"totalPostCount\\\",\\n    \\\"contentMix\\\",\\n    \\\"reasoning\\\",\\n    \\\"qualifyingPosts\\\"\\n  ],\\n  \\\"additionalProperties\\\": false\\n}\""
+            }
+          },
+          {
+            "name": "tableExamples"
+          },
+          {
+            "name": "stopSequence"
+          },
+          {
+            "name": "runBudget"
+          },
+          {
+            "name": "topP"
+          },
+          {
+            "name": "contextDocumentIds"
+          },
+          {
+            "name": "browserbaseContextId"
+          },
+          {
+            "name": "mcpSettings"
+          },
+          {
+            "name": "_metadata",
+            "formulaMap": {
+              "modelSource": "user"
+            }
+          }
+        ],
+        "customRateLimitRules": {
+          "timeWindow": [
+            {
+              "limit": 8,
+              "bucket": [
+                "PRIVATE_AUTH_KEY",
+                "CUSTOM_KEY"
+              ],
+              "durationMs": 1000
+            },
+            {
+              "limit": 1000,
+              "bucket": [
+                "GLOBAL"
+              ],
+              "durationMs": 1000
+            }
+          ]
+        },
+        "authAccountId": "aa_0tachtr7MgX9QoKWWme"
+      }
+    },
+    {
+      "index": 30,
+      "name": "Should Track",
+      "type": "formula",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        },
+        "formulaType": "text",
+        "formulaText": "{{@Comment Campaign Tracking}}?.shouldTrack",
+        "mappedResultPath": [
+          "shouldTrack"
+        ]
+      }
+    }
+  ]
+}

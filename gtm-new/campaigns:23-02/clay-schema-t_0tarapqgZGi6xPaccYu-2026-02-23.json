@@ -1,0 +1,167 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-02-23T15:41:13.404Z",
+  "columnCount": 16,
+  "columns": [
+    {
+      "index": 0,
+      "name": "fullName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 1,
+      "name": "firstName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "name": "lastName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "name": "companyName",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "name": "title",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "name": "companyId",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "name": "regularCompanyUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "name": "summary",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "name": "titleDescription",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "name": "industry",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "name": "companyLocation",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "name": "location",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "name": "vmid",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "name": "linkedInProfileUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "name": "isOpenLink",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "name": "defaultProfileUrl",
+      "type": "text",
+      "typeSettings": {
+        "dataTypeSettings": {
+          "type": "text"
+        }
+      }
+    }
+  ]
+}

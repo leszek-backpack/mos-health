@@ -1,0 +1,159 @@
+{
+  "case_studies": [
+    {
+      "id": "spacelift-2024",
+      "client_name": "Spacelift",
+      "client_industry": "DevOps/Infrastructure",
+      "client_stage": "Series B",
+      "client_revenue_range": "Unknown",
+      "sales_team_size": 2,
+      "target_customer_profile": {
+        "buyer_personas": [
+          "VP Engineering",
+          "CTO",
+          "Engineering Director",
+          "Director of Infrastructure"
+        ],
+        "company_types": [
+          "Mid-market tech",
+          "Enterprise tech",
+          "Mid-market SaaS"
+        ],
+        "industries_sold_to": [
+          "Technology",
+          "SaaS"
+        ]
+      },
+      "sales_motion": {
+        "primary_motion": "Outbound",
+        "deal_size": "Enterprise",
+        "sales_cycle_length": "Unknown"
+      },
+      "gtm_challenges_solved": [
+        "Scaling from 2 SDRs to full sales team",
+        "Breaking into US enterprise market",
+        "Targeting senior technical buyers at scale",
+        "Building outbound motion for technical product"
+      ],
+      "solutions_implemented": [
+        "LinkedIn engagement tracking system",
+        "Automated account research workflow",
+        "Outbound sales automation"
+      ],
+      "results": {
+        "pipeline_generated": "$12M",
+        "leads_qualified": null,
+        "time_to_value": "6 months",
+        "other_metrics": "Scaled from 2 SDRs to full US outbound team"
+      },
+      "relevant_when": [
+        "Company has small sales team (<5 people) trying to scale",
+        "Company sells to senior engineering or technical leaders (VPs, CTOs)",
+        "Company targeting enterprise or mid-market deals",
+        "Company needs to expand to US market",
+        "Company selling B2B SaaS infrastructure/DevOps products",
+        "Company has technical product requiring technical buyer engagement"
+      ]
+    },
+    {
+      "id": "ramp-2024",
+      "client_name": "Ramp",
+      "client_industry": "FinTech/Payments",
+      "client_stage": "Unknown",
+      "client_revenue_range": "Unknown",
+      "sales_team_size": null,
+      "target_customer_profile": {
+        "buyer_personas": [
+          "Unknown"
+        ],
+        "company_types": [
+          "Unknown"
+        ],
+        "industries_sold_to": [
+          "Crypto",
+          "Blockchain",
+          "Web3"
+        ]
+      },
+      "sales_motion": {
+        "primary_motion": "Outbound",
+        "deal_size": "Unknown",
+        "sales_cycle_length": "Unknown"
+      },
+      "gtm_challenges_solved": [
+        "Targeting specific vertical (crypto/blockchain companies)",
+        "Building outbound sales workflows"
+      ],
+      "solutions_implemented": [
+        "Outbound workflows",
+        "Vertical-specific targeting"
+      ],
+      "results": {
+        "pipeline_generated": "Unknown",
+        "leads_qualified": null,
+        "time_to_value": "Unknown",
+        "other_metrics": "Positive results (not quantified)"
+      },
+      "relevant_when": [
+        "Company needs to target crypto/blockchain/Web3 vertical",
+        "Company needs outbound sales workflows",
+        "Company selling fintech products to crypto companies"
+      ]
+    },
+    {
+      "id": "infermedica-2024",
+      "client_name": "Infermedica",
+      "client_industry": "Healthcare/Health Tech",
+      "client_stage": "Unknown",
+      "client_revenue_range": "Unknown",
+      "sales_team_size": 2,
+      "target_customer_profile": {
+        "buyer_personas": [
+          "VP of Innovation",
+          "Chief Medical Officer",
+          "Chief Digital Officer",
+          "VP of Health IT"
+        ],
+        "company_types": [
+          "Enterprise healthcare",
+          "Healthcare systems",
+          "Payers/Insurance"
+        ],
+        "industries_sold_to": [
+          "Healthcare",
+          "Insurance"
+        ]
+      },
+      "sales_motion": {
+        "primary_motion": "Outbound",
+        "deal_size": "Enterprise",
+        "sales_cycle_length": "Unknown"
+      },
+      "gtm_challenges_solved": [
+        "Scaling from 2 SDRs to US market expansion",
+        "Identifying decision-makers at target healthcare accounts",
+        "Building US sales operation from Europe",
+        "Targeting enterprise healthcare organizations"
+      ],
+      "solutions_implemented": [
+        "LinkedIn scraping workflow for decision-maker identification",
+        "Clay enrichment pipeline",
+        "Automated prospect research for healthcare initiatives"
+      ],
+      "results": {
+        "pipeline_generated": "$8M",
+        "leads_qualified": null,
+        "time_to_value": "4 months to first meetings, 6 months for pipeline results",
+        "other_metrics": "15 qualified enterprise meetings in 4 months; hired 3 additional US SDRs"
+      },
+      "relevant_when": [
+        "Company has small sales team (2-5) trying to scale to new market",
+        "Company needs to expand from Europe to US",
+        "Company sells to enterprise healthcare organizations",
+        "Company targeting healthcare systems or payers",
+        "Company selling AI/software to regulated industries",
+        "Company needs decision-maker identification at target accounts"
+      ]
+    }
+  ]
+}

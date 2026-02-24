@@ -1,0 +1,340 @@
+{
+  "timestamp": "2026-02-24T12:42:34Z",
+  "model": "google/gemini-3.1-pro-preview",
+  "schema_version": "v5",
+  "tier_match": "8/17",
+  "segment_match": "14/17",
+  "total_prompt_tokens": 29012,
+  "total_completion_tokens": 24011,
+  "total_cost": "$0.3462",
+  "cost_per_company": "$0.020362",
+  "results": [
+    {
+      "company": "Mostostal Zabrze Konstrukcje Przemysłowe S.A.",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "hiring",
+        "personalization_hook": "rekrutacji Specjalisty ds. Planowania Produkcji i wymogu biegłej znajomości Excela",
+        "poke_question": "Przy produkcji wielkogabarytowych konstrukcji — harmonogramowanie projektów to jeden spójny system, czy raczej polegacie na Excelu i spotkaniach?",
+        "reasoning": "Heavy steel construction manufacturer (ETO model) with 60 employees. Hiring signal reveals reliance on Excel for production planning despite having an ERP, indicating a clear tech gap.",
+        "_tokens": 2928,
+        "_prompt_tokens": 1696,
+        "_completion_tokens": 1232
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rekrutacji Specjalisty ds. Planowania Produkcji i wymogu biegłej znajomości Excela — widzę, że się rozwijacie.\n\nPrzy produkcji wielkogabarytowych konstrukcji — harmonogramowanie projektów to jeden spójny system, czy raczej polegacie na Excelu i spotkaniach?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy to coś, z czym się u Was mierzycie? Pozdrawiam"
+    },
+    {
+      "company": "FOGO",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "rozbudowie hali produkcyjno-magazynowej w Wilkowicach oraz premierze nowych agregatów",
+        "poke_question": "Przy takiej dynamice wdrożeń — koordynacja projektów między R&D a produkcją to jedno narzędzie, czy raczej Excel i spotkania?",
+        "reasoning": "Generator manufacturer expanding physical footprint and launching new products, indicating strong need for R&D and production coordination.",
+        "_tokens": 3538,
+        "_prompt_tokens": 1713,
+        "_completion_tokens": 1825
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rozbudowie hali produkcyjno-magazynowej w Wilkowicach oraz premierze nowych agregatów — dużo się u Was dzieje.\n\nPrzy takiej dynamice wdrożeń — koordynacja projektów między R&D a produkcją to jedno narzędzie, czy raczej Excel i spotkania?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "Saferoad Production",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "budowie nowej, zautomatyzowanej hali produkcyjno-magazynowej w Inowrocławiu",
+        "poke_question": "Przy tak dynamicznym rozwoju firmy — harmonogramy projektów macie w jednym systemie, czy opieracie się na Excelu i mailach?",
+        "reasoning": "Metal products manufacturer with 50+ employees, building a new automated hall and showing signs of ERP-Excel gap, strong P1.",
+        "_tokens": 3296,
+        "_prompt_tokens": 1724,
+        "_completion_tokens": 1572
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie nowej, zautomatyzowanej hali produkcyjno-magazynowej w Inowrocławiu — dużo się u Was dzieje.\n\nPrzy tak dynamicznym rozwoju firmy — harmonogramy projektów macie w jednym systemie, czy opieracie się na Excelu i mailach?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "RF MAH®",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "budowie piątej hali produkcyjnej w Wołowie",
+        "poke_question": "Przy pięciu halach produkcyjnych — koordynacja projektów między działami to jedno narzędzie, czy raczej Excel i spotkania statusowe?",
+        "reasoning": "Machinery manufacturer expanding to a 5th production hall and hiring ERP staff, indicating growing operational complexity and a strong need for better project coordination.",
+        "_tokens": 2755,
+        "_prompt_tokens": 1683,
+        "_completion_tokens": 1072
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie piątej hali produkcyjnej w Wołowie — dużo się u Was dzieje.\n\nPrzy pięciu halach produkcyjnych — koordynacja projektów między działami to jedno narzędzie, czy raczej Excel i spotkania statusowe?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "Benalu-Legras Polska",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "budowie nowej hali pod automatyczną śrutownię w Nysie",
+        "poke_question": "Przy takich inwestycjach w park maszynowy — koordynacja projektów między technologami a produkcją to jeden system, czy wciąż głównie Excel?",
+        "reasoning": "Trailer manufacturer with 60+ employees expanding production facilities in Nysa and hiring engineers, showing clear signs of growth and potential operational bottlenecks.",
+        "_tokens": 2833,
+        "_prompt_tokens": 1749,
+        "_completion_tokens": 1084
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie nowej hali pod automatyczną śrutownię w Nysie — dużo się u Was dzieje.\n\nPrzy takich inwestycjach w park maszynowy — koordynacja projektów między technologami a produkcją to jeden system, czy wciąż głównie Excel?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "PEX DEFENCE POLSKA",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "hiring",
+        "personalization_hook": "rekrutacji specjalisty ds. planowania i Waszych zaawansowanych projektach dla sektora obronnego",
+        "poke_question": "Przy zaawansowanych projektach inżynieryjnych — koordynacja między R&D a produkcją to jeden system, czy raczej arkusze i spotkania?",
+        "reasoning": "ETO manufacturer with 50+ employees. Hiring a planning specialist with Excel requirements indicates a clear gap between their ERP and actual project scheduling needs.",
+        "_tokens": 2969,
+        "_prompt_tokens": 1683,
+        "_completion_tokens": 1286
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rekrutacji specjalisty ds. planowania i Waszych zaawansowanych projektach dla sektora obronnego — widzę, że się rozwijacie.\n\nPrzy zaawansowanych projektach inżynieryjnych — koordynacja między R&D a produkcją to jeden system, czy raczej arkusze i spotkania?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy to coś, z czym się u Was mierzycie? Pozdrawiam"
+    },
+    {
+      "company": "Alchemia S.A",
+      "expected_tier": "P3",
+      "expected_segment": "Produkcja Projektowa i Ciężka",
+      "result": {
+        "qualified": true,
+        "tier": "P2",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "generic",
+        "personalization_hook": "produkcji rur w ponad 400 gatunkach i rozproszeniu operacji na cztery zakłady w Polsce",
+        "poke_question": "Przy tak złożonej strukturze — koordynacja zamówień między zakładami to jeden system, czy raczej maile i Excel?",
+        "reasoning": "Primary metal manufacturer with multiple facilities and complex MTO production, but lacking recent trigger events.",
+        "_tokens": 3451,
+        "_prompt_tokens": 1707,
+        "_completion_tokens": 1744
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o produkcji rur w ponad 400 gatunkach i rozproszeniu operacji na cztery zakłady w Polsce — to zwróciło moją uwagę.\n\nPrzy tak złożonej strukturze — koordynacja zamówień między zakładami to jeden system, czy raczej maile i Excel?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nJak to wygląda u Was? Pozdrawiam"
+    },
+    {
+      "company": "EMBS",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Montażowa",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Montażowa",
+        "signal_type": "event",
+        "personalization_hook": "otwarciu nowego zakładu produkcyjnego w Greenville w USA",
+        "poke_question": "Przy dwóch zakładach na różnych kontynentach — statusy projektów widać w jednym miejscu, czy każdy zespół prowadzi to po swojemu?",
+        "reasoning": "Battery systems manufacturer expanding to the US with a new facility, operating in an ETO model requiring cross-continent project coordination.",
+        "_tokens": 2837,
+        "_prompt_tokens": 1671,
+        "_completion_tokens": 1166
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o otwarciu nowego zakładu produkcyjnego w Greenville w USA — sporo się u Was zmienia.\n\nPrzy dwóch zakładach na różnych kontynentach — statusy projektów widać w jednym miejscu, czy każdy zespół prowadzi to po swojemu?\n\nFirmy produkcyjne, z którymi współpracujemy — jak Wawel czy VOX Meble — mierzyły się z tym samym pytaniem.\n\nCiekaw jestem, jak to wygląda u Was. Pozdrawiam"
+    },
+    {
+      "company": "Yetico S.A.",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Montażowa",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "zakupie 7 nowych wtryskarek do zakładu w Gorzowie Wielkopolskim",
+        "poke_question": "Przy sześciu fabrykach w Polsce — harmonogramy projektów macie w jednym systemie, czy rozbijacie to na maile i Excela?",
+        "reasoning": "Plastics manufacturer with 50+ employees, expanding machinery and operating across 6 locations, indicating strong need for multi-site project coordination.",
+        "_tokens": 3113,
+        "_prompt_tokens": 1670,
+        "_completion_tokens": 1443
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o zakupie 7 nowych wtryskarek do zakładu w Gorzowie Wielkopolskim — dużo się u Was dzieje.\n\nPrzy sześciu fabrykach w Polsce — harmonogramy projektów macie w jednym systemie, czy rozbijacie to na maile i Excela?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "TECH Sterowniki",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Montażowa",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Montażowa",
+        "signal_type": "hiring",
+        "personalization_hook": "rekrutacji na Asystenta Zarządu i Waszej pozycji lidera w produkcji sterowników",
+        "poke_question": "Przy produkcji zaawansowanych sterowników — koordynacja projektów między R&D a produkcją to jedno narzędzie, czy raczej arkusze Excela i spotkania statusowe?",
+        "reasoning": "Electronics manufacturer with 146 employees. Hiring signal reveals reliance on Excel alongside ERP, indicating a clear execution gap in project coordination.",
+        "_tokens": 3096,
+        "_prompt_tokens": 1713,
+        "_completion_tokens": 1383
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rekrutacji na Asystenta Zarządu i Waszej pozycji lidera w produkcji sterowników — widzę, że się rozwijacie.\n\nPrzy produkcji zaawansowanych sterowników — koordynacja projektów między R&D a produkcją to jedno narzędzie, czy raczej arkusze Excela i spotkania statusowe?\n\nFirmy produkcyjne, z którymi współpracujemy — jak Wawel czy VOX Meble — mierzyły się z tym samym pytaniem.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "SK hi-tech battery materials Poland",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Montażowa",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Projektowa i Ciężka",
+        "signal_type": "event",
+        "personalization_hook": "budowie dwóch kolejnych hal produkcyjnych w Dąbrowie Górniczej",
+        "poke_question": "Przy tak ogromnej inwestycji — koordynacja projektów między działami to jeden wspólny system, czy raczej rozproszone arkusze Excel i spotkania?",
+        "reasoning": "Battery materials manufacturer undergoing massive 6 bln PLN expansion and scaling up to 1200 employees, creating a strong need for project coordination.",
+        "_tokens": 3127,
+        "_prompt_tokens": 1737,
+        "_completion_tokens": 1390
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie dwóch kolejnych hal produkcyjnych w Dąbrowie Górniczej — dużo się u Was dzieje.\n\nPrzy tak ogromnej inwestycji — koordynacja projektów między działami to jeden wspólny system, czy raczej rozproszone arkusze Excel i spotkania?\n\nWspółpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "ITW Lys Fusion Poland Sp. z.o.o.",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Montażowa",
+      "result": null,
+      "assembled_m1": null
+    },
+    {
+      "company": "DRE - producent drzwi",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Montażowa",
+      "result": null,
+      "assembled_m1": null
+    },
+    {
+      "company": "Davis Fabrics",
+      "expected_tier": "P3",
+      "expected_segment": "Produkcja Montażowa",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Dóbr Konsumpcyjnych",
+        "signal_type": "generic",
+        "personalization_hook": "wprowadzaniu nowych kolekcji tkanin i obsłudze blisko 60 rynków na świecie",
+        "poke_question": "Przy tak rozbudowanej sieci dystrybucji — koordynacja wdrożeń nowych produktów to jeden centralny system, czy raczej rozproszone arkusze i maile?",
+        "reasoning": "Global textile manufacturer with over 146 employees, multiple international warehouses, and continuous new product introductions requiring cross-departmental coordination.",
+        "_tokens": 3277,
+        "_prompt_tokens": 1700,
+        "_completion_tokens": 1577
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o wprowadzaniu nowych kolekcji tkanin i obsłudze blisko 60 rynków na świecie — to zwróciło moją uwagę.\n\nPrzy tak rozbudowanej sieci dystrybucji — koordynacja wdrożeń nowych produktów to jeden centralny system, czy raczej rozproszone arkusze i maile?\n\nPracujemy m.in. z Wawelem — koordynują setki wdrożeń rocznie i to ich stały temat.\n\nCiekaw jestem, jak to wygląda u Was. Pozdrawiam"
+    },
+    {
+      "company": "KB Folie Polska Sp. z o. o.",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Dóbr Konsumpcyjnych",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Dóbr Konsumpcyjnych",
+        "signal_type": "hiring",
+        "personalization_hook": "rekrutacji Specjalisty ds. Przygotowania i Zaopatrzenia Produkcji",
+        "poke_question": "Przy dwóch zakładach produkcyjnych — harmonogramy zleceń koordynujecie w jednym systemie, czy opieracie się na Excelu i spotkaniach?",
+        "reasoning": "Packaging manufacturer with 73 employees and two plants, actively hiring for production preparation, indicating potential coordination challenges.",
+        "_tokens": 3525,
+        "_prompt_tokens": 1733,
+        "_completion_tokens": 1792
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rekrutacji Specjalisty ds. Przygotowania i Zaopatrzenia Produkcji — widzę, że się rozwijacie.\n\nPrzy dwóch zakładach produkcyjnych — harmonogramy zleceń koordynujecie w jednym systemie, czy opieracie się na Excelu i spotkaniach?\n\nPracujemy m.in. z Wawelem, który koordynuje setki wdrożeń produktowych rocznie — to ich stały temat.\n\nByłbym ciekaw, jak to wygląda u Was. Pozdrawiam"
+    },
+    {
+      "company": "ROYALPACK",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Dóbr Konsumpcyjnych",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Dóbr Konsumpcyjnych",
+        "signal_type": "event",
+        "personalization_hook": "zakupie gruntu pod budowę nowej hali i inwestycjach w park maszynowy",
+        "poke_question": "Przy indywidualnych projektach opakowań — koordynacja prac między konstruktorami a produkcją to jeden system, czy raczej Excel i maile?",
+        "reasoning": "Packaging manufacturer with 58 employees operating in an ETO model, showing strong expansion signals (new machines, land for a new hall). High need for cross-departmental project coordination.",
+        "_tokens": 3031,
+        "_prompt_tokens": 1702,
+        "_completion_tokens": 1329
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o zakupie gruntu pod budowę nowej hali i inwestycjach w park maszynowy.\n\nPrzy indywidualnych projektach opakowań — koordynacja prac między konstruktorami a produkcją to jeden system, czy raczej Excel i maile?\n\nPracujemy m.in. z Wawelem, który koordynuje setki wdrożeń produktowych rocznie — to ich stały temat.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "KARTON-PAK S.A.",
+      "expected_tier": "P1",
+      "expected_segment": "Produkcja Dóbr Konsumpcyjnych",
+      "result": null,
+      "assembled_m1": null
+    },
+    {
+      "company": "Marma Polskie Folie Sp. z o.o.",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Dóbr Konsumpcyjnych",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Dóbr Konsumpcyjnych",
+        "signal_type": "event",
+        "personalization_hook": "budowie nowoczesnej hali produkcyjno-magazynowej w Nowej Dębie",
+        "poke_question": "Przy pięciu zakładach produkcyjnych — koordynacja projektów między działami to jedno narzędzie, czy raczej Excel i maile?",
+        "reasoning": "Large plastics and packaging manufacturer with 5 plants and a major facility expansion in Nowa Dęba, indicating high need for cross-plant project coordination.",
+        "_tokens": 2897,
+        "_prompt_tokens": 1743,
+        "_completion_tokens": 1154
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o budowie nowoczesnej hali produkcyjno-magazynowej w Nowej Dębie.\n\nPrzy pięciu zakładach produkcyjnych — koordynacja projektów między działami to jedno narzędzie, czy raczej Excel i maile?\n\nPracujemy m.in. z Wawelem, który koordynuje setki wdrożeń produktowych rocznie — to ich stały temat.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    },
+    {
+      "company": "SALAG Sp. z o.o.",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Dóbr Konsumpcyjnych",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Dóbr Konsumpcyjnych",
+        "signal_type": "hiring",
+        "personalization_hook": "rekrutacji na stanowisko Specjalisty ds. Produktu i planach zwiększenia eksportu",
+        "poke_question": "Przy tak szerokim asortymencie — koordynacja zadań między działami to jeden system, czy nadal opieracie się na Excelu i mailach?",
+        "reasoning": "Consumer goods manufacturer expanding exports and hiring a Product Specialist with Excel requirements, indicating a clear tech gap in project coordination.",
+        "_tokens": 3149,
+        "_prompt_tokens": 1646,
+        "_completion_tokens": 1503
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o rekrutacji na stanowisko Specjalisty ds. Produktu i planach zwiększenia eksportu — widzę, że się rozwijacie.\n\nPrzy tak szerokim asortymencie — koordynacja zadań między działami to jeden system, czy nadal opieracie się na Excelu i mailach?\n\nPracujemy m.in. z Wawelem, który koordynuje setki wdrożeń produktowych rocznie — to ich stały temat.\n\nByłbym ciekaw, jak to wygląda u Was. Pozdrawiam"
+    },
+    {
+      "company": "Develey Polska Sp. z o.o.",
+      "expected_tier": "P2",
+      "expected_segment": "Produkcja Dóbr Konsumpcyjnych",
+      "result": {
+        "qualified": true,
+        "tier": "P1",
+        "segment": "Produkcja Dóbr Konsumpcyjnych",
+        "signal_type": "event",
+        "personalization_hook": "uruchomieniu nowego zakładu w Łęczycy i planach budowy dużego magazynu",
+        "poke_question": "Przy dwóch zakładach produkcyjnych — koordynacja projektów między działami to jeden spójny system, czy raczej Excel i maile?",
+        "reasoning": "Food manufacturer with 130+ employees opening a new facility in Łęczyca and planning a massive warehouse, indicating strong need for cross-departmental project coordination.",
+        "_tokens": 3201,
+        "_prompt_tokens": 1742,
+        "_completion_tokens": 1459
+      },
+      "assembled_m1": "Dzień dobry, przeczytałem o uruchomieniu nowego zakładu w Łęczycy i planach budowy dużego magazynu.\n\nPrzy dwóch zakładach produkcyjnych — koordynacja projektów między działami to jeden spójny system, czy raczej Excel i maile?\n\nPracujemy m.in. z Wawelem, który koordynuje setki wdrożeń produktowych rocznie — to ich stały temat.\n\nCzy u Was wygląda to podobnie? Pozdrawiam"
+    }
+  ]
+}

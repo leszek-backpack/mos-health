@@ -1,0 +1,197 @@
+{
+  "version": "2.0",
+  "name": "IC Project — Clay Table Schema (v5 Pipeline)",
+  "description": "Complete column definitions for the new Clay table. Replaces the old 42-column table with 3 AI steps. New table: 23 columns, 1 AI call, rest is formulas. Signal routing uses scorer's signal_type (not regex).",
+  "total_ai_calls_per_row": 1,
+  "total_columns": 23,
+  "estimated_cost_per_row": "$0.0004",
+  "estimated_cost_per_325_rows": "$0.13",
+  "note": "Industry Label column removed — social proof references Wawel/VOX directly without implying they are in the prospect's industry.",
+
+  "tables": {
+    "qualification_and_copy": {
+      "description": "Single table that qualifies prospects AND assembles copy. No separate copy table needed.",
+
+      "columns": [
+        {
+          "name": "Company Name",
+          "type": "text",
+          "source": "input / enrichment",
+          "notes": "From Clay enrichment or CSV import"
+        },
+        {
+          "name": "Domain",
+          "type": "text",
+          "source": "input / enrichment"
+        },
+        {
+          "name": "Industry",
+          "type": "text",
+          "source": "input / enrichment",
+          "notes": "English industry name from Clay/LinkedIn. E.g. 'Machinery Manufacturing', 'Food and Beverage Manufacturing'"
+        },
+        {
+          "name": "Employee Count",
+          "type": "text",
+          "source": "input / enrichment"
+        },
+        {
+          "name": "Company Bio",
+          "type": "text",
+          "source": "Spider scrape / enrichment",
+          "notes": "Company description from website. Can be empty — scorer handles gracefully."
+        },
+        {
+          "name": "Company Signals Summary",
+          "type": "text",
+          "source": "input / enrichment",
+          "notes": "Signals from news, website changes, etc. Used for signal routing and by scorer for personalization."
+        },
+        {
+          "name": "Job Signals",
+          "type": "text",
+          "source": "input / enrichment",
+          "notes": "Active job postings that indicate growth/pain."
+        },
+        {
+          "name": "First Name",
+          "type": "text",
+          "source": "input / enrichment",
+          "notes": "Prospect's first name in Mianownik (nominative). Used in M3 only."
+        },
+        {
+          "name": "Fallback Contact 1",
+          "type": "text",
+          "source": "input / enrichment",
+          "notes": "Alternative contact name in genitive/declined form. E.g. 'Tomasza Kowalskiego'."
+        },
+        {
+          "name": "Fallback Contact 2",
+          "type": "text",
+          "source": "input / enrichment",
+          "notes": "Second alternative contact name in genitive/declined form."
+        },
+
+        {
+          "name": "Qualification",
+          "type": "ai_action",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.1,
+          "response_format": "json",
+          "prompt_source": "See optimized-qualification-schema.json → prompt field",
+          "input_variables": {
+            "company_name": "{{@Company Name}}",
+            "industry": "{{@Industry}}",
+            "employee_count": "{{@Employee Count}}",
+            "company_bio": "{{@Company Bio}}",
+            "signals": "{{@Company Signals Summary}}",
+            "job_offers": "{{@Job Signals}}"
+          },
+          "output_fields": ["qualified", "tier", "segment", "personalization_hook", "poke_question", "reasoning"],
+          "conditional_run": "Always run (it's the only AI call)",
+          "notes": "Single AI call per row. ~1,400 tokens. Cost: ~$0.0004/row."
+        },
+
+        {
+          "name": "Qualified",
+          "type": "formula",
+          "formula": "JSON.parse({{@Qualification}}).qualified",
+          "notes": "Boolean. true = proceed with copy assembly."
+        },
+        {
+          "name": "Tier",
+          "type": "formula",
+          "formula": "JSON.parse({{@Qualification}}).tier",
+          "notes": "P1/P2/P3. Used for HeyReach campaign routing."
+        },
+        {
+          "name": "Segment",
+          "type": "formula",
+          "formula": "JSON.parse({{@Qualification}}).segment",
+          "notes": "Produkcja Projektowa i Ciężka / Montażowa / Dóbr Konsumpcyjnych / Inne"
+        },
+        {
+          "name": "Personalization Hook",
+          "type": "formula",
+          "formula": "JSON.parse({{@Qualification}}).personalization_hook",
+          "notes": "One sentence in dopełniacz (genitive). Used in M1 opening after 'przeczytałem o...'."
+        },
+        {
+          "name": "Poke Question",
+          "type": "formula",
+          "formula": "JSON.parse({{@Qualification}}).poke_question",
+          "notes": "Company-specific curiosity question. The core of M1."
+        },
+
+        {
+          "name": "Signal Type",
+          "type": "formula",
+          "formula": "JSON.parse({{@Qualification}}).signal_type",
+          "notes": "event/hiring/generic — from AI scorer. Used by Signal Bucket."
+        },
+        {
+          "name": "Signal Bucket",
+          "type": "formula",
+          "formula": "({'event':'A','hiring':'B','generic':'D'})[{{@Signal Type}}] || 'D'",
+          "notes": "A = event/expansion, B = hiring, D = generic. Maps scorer's signal_type to template variant. More accurate than regex."
+        },
+        {
+          "name": "Copy 1 / Step 1",
+          "type": "formula",
+          "formula": "(function(){var b={{@Signal Bucket}};var s={{@Segment}};var h={{@Personalization Hook}};var p={{@Poke Question}};if(!{{@Qualified}})return '';var opener;if(b==='A')opener='Dzień dobry, przeczytałem o '+h+' — dużo się u Was dzieje.';else if(b==='B')opener='Dzień dobry, przeczytałem o '+h+' — sporo się u Was dzieje.';else opener='Dzień dobry, przeczytałem o '+h+' — to zwróciło moją uwagę.';var social;if(s==='Produkcja Projektowa i Ciężka')social='Współpracujemy m.in. z Wawelem (200+ projektów rocznie) i VOX Meble — to temat, który wraca w każdej rozmowie.';else if(s==='Produkcja Montażowa')social='Firmy produkcyjne, z którymi współpracujemy — jak Wawel czy VOX Meble — mierzyły się z tym samym pytaniem.';else social='Pracujemy m.in. z Wawelem — koordynują setki wdrożeń rocznie i to ich stały temat.';var cta;if(b==='A')cta='Czy u Was wygląda to podobnie? Pozdrawiam';else if(b==='B')cta='Czy to coś, z czym się u Was mierzycie? Pozdrawiam';else cta='Jak to wygląda u Was? Pozdrawiam';return opener+'\\n\\n'+p+'\\n\\n'+social+'\\n\\n'+cta})()",
+          "notes": "Assembles Message 1 from signal opener + AI poke question + social proof + CTA. No industry_label — social proof names Wawel/VOX directly without implying they're in prospect's industry.",
+          "heyreach_field": "Step1"
+        },
+        {
+          "name": "Copy 2 / Step 2",
+          "type": "formula",
+          "formula": "(function(){var s={{@Segment}};if(!{{@Qualified}})return '';if(s==='Produkcja Projektowa i Ciężka')return 'Dzień dobry, wracam z innym wątkiem.\\n\\nIle czasu w tygodniu Wasz zespół spędza na zbieraniu statusów projektów? Od firm tej wielkości słyszę: za dużo.\\n\\nIC Project pokazuje budżety, harmonogramy i statusy na żywo — bez ręcznego raportowania. Np. Wawel zarządza tak ponad 200 projektami.\\n\\nByłoby 15 minut w przyszłym tygodniu na krótki pokaz? Pozdrawiam';if(s==='Produkcja Montażowa')return 'Dzień dobry, wracam z innym wątkiem.\\n\\nJak u Was wygląda planowanie obłożenia zespołu na kolejne tygodnie? Jeden system, czy ręczne zbieranie z kilku źródeł?\\n\\nIC Project daje jeden widok na alokację, statusy zleceń i raporty — bez Excela i ręcznego przepisywania.\\n\\nByłoby 15 minut w przyszłym tygodniu na krótki pokaz? Pozdrawiam';return 'Dzień dobry, wracam z innym wątkiem.\\n\\nCzy marketing, R&D i produkcja u Was mają jedno miejsce, gdzie widzą status każdego wdrożenia? Czy składacie to z różnych narzędzi?\\n\\nIC Project łączy te działy w jednym widoku — Wawel np. koordynuje tak setki projektów wdrożeniowych.\\n\\nByłoby 15 minut w przyszłym tygodniu na krótki pokaz? Pozdrawiam'})()",
+          "notes": "Message 2 — reveals IC Project, asks for meeting. Template by segment.",
+          "heyreach_field": "Step2"
+        },
+        {
+          "name": "Copy 3 / Step 3",
+          "type": "formula",
+          "formula": "(function(){var fn={{@First Name}};var f1={{@Fallback Contact 1}};var f2={{@Fallback Contact 2}};if(!{{@Qualified}})return '';if(f1&&f2)return 'Dzień dobry, nie chcę zapychać skrzynki. Jeśli jestem pod złym adresem — może powinienem napisać do '+f1+' albo '+f2+'? Będę wdzięczny za nakierowanie. Pozdrawiam';if(f1)return 'Dzień dobry, nie chcę zapychać skrzynki. Jeśli jestem pod złym adresem — może '+f1+' jest lepszą osobą do rozmowy? Będę wdzięczny za podpowiedź. Pozdrawiam';return 'Dzień dobry, nie chcę zapychać skrzynki. Jeśli jestem pod złym adresem — kto u Was koordynuje projekty? Będę wdzięczny za nakierowanie. Pozdrawiam'})()",
+          "notes": "Message 3 — graceful exit with referral ask. Template by fallback availability.",
+          "heyreach_field": "Step3"
+        }
+      ],
+
+      "heyreach_integration": {
+        "description": "Copy 1/2/3 map directly to HeyReach campaign step custom fields.",
+        "field_mapping": {
+          "Step1": "{{@Copy 1 / Step 1}}",
+          "Step2": "{{@Copy 2 / Step 2}}",
+          "Step3": "{{@Copy 3 / Step 3}}"
+        },
+        "campaign_routing": {
+          "description": "Route prospects to different HeyReach campaigns based on tier or SDR assignment.",
+          "by_tier": "P1 → high-touch campaign (faster follow-up), P2 → standard campaign, P3 → skip or low-priority"
+        }
+      },
+
+      "columns_to_disable_from_old_table": [
+        "Step 1 / Data orchestrator (gemini-2.5-pro) — replaced by Qualification AI column",
+        "Step 2 / Sequencer (gemini-2.5-pro) — replaced by Copy 1/2/3 formulas",
+        "Step 3 / Curator (gemini-2.5-flash) — no longer needed, templates guarantee format",
+        "Step 1 Formula / Step 2 Formula / Step 3 Formula — replaced by new formula columns",
+        "Persona Bucket / Signal Bucket old — replaced by new Signal Bucket formula",
+        "Copy 1 fix / Copy 2 fix / Copy 3 fix — no longer needed"
+      ]
+    }
+  },
+
+  "migration_steps": [
+    "1. Create new columns in existing Clay table (don't delete old ones yet)",
+    "2. Add the Qualification AI column with the optimized prompt",
+    "3. Add formula columns to extract qualified/tier/segment/hook/poke from Qualification JSON",
+    "4. Add Signal Type + Signal Bucket formula columns",
+    "5. Add Copy 1/2/3 formula columns with the assembly formulas",
+    "6. Run on 5 test rows — verify output looks correct",
+    "7. Run on full table — spot-check 20 rows",
+    "8. Map Copy 1/2/3 to HeyReach Step1/Step2/Step3 fields",
+    "9. Disable old AI columns (Step 1/2/3) to stop burning credits",
+    "10. After 1 campaign cycle confirming quality: delete old columns"
+  ]
+}
